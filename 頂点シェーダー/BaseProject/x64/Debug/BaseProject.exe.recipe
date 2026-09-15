@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\x64\Debug\BaseProject.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\LensDistortion.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\Monotone.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\GatePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\GateVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\MetalModelPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\MetalModelVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\PixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\ScanLine.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\RimShaderPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\RimShaderVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\StandardShaderPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\Vignette.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\StandardShaderVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\VertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\WaterPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\2416030\Desktop\Task\頂点シェーダー\Data\Shader\WaterVS.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>
