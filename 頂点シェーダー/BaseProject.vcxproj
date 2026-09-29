@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\MeshCutter\MeshCutter.cpp" />
     <ClCompile Include="Src\Object\Gate.cpp" />
     <ClCompile Include="Src\Object\Rim.cpp" />
     <ClCompile Include="Src\Object\Metal.cpp" />
@@ -52,8 +53,11 @@
     <ClCompile Include="Src\Renderer\VertexRenderer.cpp" />
     <ClCompile Include="Src\Renderer\VertexMaterial.cpp" />
     <ClCompile Include="Src\Object\Water.cpp" />
+    <ClCompile Include="Src\Object\Sword.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\MeshCutter\MeshCut.h" />
+    <ClInclude Include="Src\MeshCutter\MeshCutter.h" />
     <ClInclude Include="Src\Object\Gate.h" />
     <ClInclude Include="Src\Object\Rim.h" />
     <ClInclude Include="Src\Object\Metal.h" />
@@ -87,6 +91,7 @@
     <ClInclude Include="Src\Renderer\VertexRenderer.h" />
     <ClInclude Include="Src\Renderer\VertexMaterial.h" />
     <ClInclude Include="Src\Object\Water.h" />
+    <ClInclude Include="Src\Object\Sword.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\Shader\Common\Pixel\PixelShader2DHeader.hlsli" />

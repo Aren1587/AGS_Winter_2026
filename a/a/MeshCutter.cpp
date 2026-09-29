@@ -11,32 +11,31 @@
 void MeshCutter::SetMesh(
     const MeshCut::Mesh& mesh)
 {
-    // 元データを保存
     originalMesh_ = mesh;
 
-    // 現在の破片を消す
+    // バウンディングボックスを求め直す (GetCenter/GetRadius/SetFloorFromMesh が使う)
+    boundsMin_ = mesh.verts[0];
+    boundsMax_ = mesh.verts[0];
+
+    for (const auto& v : mesh.verts)
+    {
+        boundsMin_ = VGet(
+            std::fmin(boundsMin_.x, v.x),
+            std::fmin(boundsMin_.y, v.y),
+            std::fmin(boundsMin_.z, v.z));
+
+        boundsMax_ = VGet(
+            std::fmax(boundsMax_.x, v.x),
+            std::fmax(boundsMax_.y, v.y),
+            std::fmax(boundsMax_.z, v.z));
+    }
+
     pieces_.clear();
 
-
-    // 最初の破片を作る
-    Piece piece;
-
-    piece.mesh = mesh;
-
-    piece.pos =
-        VGet(0, 0, 0);
-
-    piece.vel =
-        VGet(0, 0, 0);
-
-    piece.color = 0;
-
+    colorCounter_ = 0;
 
     pieces_.push_back(
-        std::move(piece));
-
-
-    colorCounter_ = 1;
+        MakePiece(MeshCut::Mesh(mesh), VGet(0, 0, 0)));
 }
 
 
@@ -48,31 +47,15 @@ void MeshCutter::Reset()
 {
     pieces_.clear();
 
-
-    Piece piece;
-
-    piece.mesh =
-        originalMesh_;
-
-    piece.pos =
-        VGet(0, 0, 0);
-
-    piece.vel =
-        VGet(0, 0, 0);
-
-    piece.color = 0;
-
+    colorCounter_ = 0;
 
     pieces_.push_back(
-        std::move(piece));
-
-
-    colorCounter_ = 1;
+        MakePiece(MeshCut::Mesh(originalMesh_), VGet(0, 0, 0)));
 }
 
 
 // ================================================================
-// 切断
+// 切断 (押し出し速度は pushSpeed_ を使う)
 // ================================================================
 
 void MeshCutter::Cut(
@@ -98,42 +81,22 @@ void MeshCutter::Cut(
     if (VSize(normal) < 1e-6f)
         return;
 
-
-    normal =
-        VNorm(normal);
-
+    normal = VNorm(normal);
 
     std::vector<Piece> next;
 
     // 現在存在する全破片を切る
-    for (auto& piece :
-        pieces_)
+    for (auto& piece : pieces_)
     {
-        // --------------------------------------------------------
-        // 現在の移動量をメッシュに反映
-        // --------------------------------------------------------
+        // 現在の移動量をメッシュに反映してから切る
+        // (そうしないと、見えている位置と切断平面の位置がずれてしまう)
+        for (auto& vertex : piece.mesh.verts)
+            vertex = VAdd(vertex, piece.pos);
 
-        for (auto& vertex :
-            piece.mesh.verts)
-        {
-            vertex =
-                VAdd(
-                    vertex,
-                    piece.pos);
-        }
-
-
-        piece.pos =
-            VGet(0, 0, 0);
-
-
-        // --------------------------------------------------------
-        // 切断
-        // --------------------------------------------------------
+        piece.pos = VGet(0, 0, 0);
 
         MeshCut::Mesh positive;
         MeshCut::Mesh negative;
-
 
         MeshCut::Cut(
             piece.mesh,
@@ -141,108 +104,61 @@ void MeshCutter::Cut(
             normal,
             positive,
             negative,
-            true);
+            capEnabled_);
 
-
-        // --------------------------------------------------------
-        // 切断されなかった場合
-        // --------------------------------------------------------
-
-        if (
-            positive.faces.empty() ||
-            negative.faces.empty())
+        // 平面をまたいでいなかった場合はそのまま残す
+        if (positive.faces.empty() || negative.faces.empty())
         {
-            next.push_back(
-                std::move(piece));
-
+            next.push_back(std::move(piece));
             continue;
         }
 
-
-        // --------------------------------------------------------
-        // 正側の破片
-        // --------------------------------------------------------
-
-        Piece positivePiece;
-
-        positivePiece.mesh =
-            std::move(positive);
-
-        positivePiece.pos =
-            VGet(0, 0, 0);
-
-        positivePiece.vel =
-            VScale(
-                normal,
-                pushSpeed);
-
-        positivePiece.color =
-            colorCounter_++;
-
-
-        // --------------------------------------------------------
-        // 負側の破片
-        // --------------------------------------------------------
-
-        Piece negativePiece;
-
-        negativePiece.mesh =
-            std::move(negative);
-
-        negativePiece.pos =
-            VGet(0, 0, 0);
-
-        negativePiece.vel =
-            VScale(
-                normal,
-                -pushSpeed);
-
-        negativePiece.color =
-            colorCounter_++;
-
-
-        // --------------------------------------------------------
-        // 結果に追加
-        // --------------------------------------------------------
-
-        next.push_back(
-            std::move(
-                positivePiece));
-
-        next.push_back(
-            std::move(
-                negativePiece));
+        next.push_back(MakePiece(std::move(positive), VScale(normal, pushSpeed)));
+        next.push_back(MakePiece(std::move(negative), VScale(normal, -pushSpeed)));
     }
 
-
-    // 入れ替える
-    pieces_ =
-        std::move(next);
+    pieces_ = std::move(next);
 }
 
 
 // ================================================================
-// 更新
+// 更新 (重力・床判定・移動)
 // ================================================================
 
 void MeshCutter::Update(
-    float damping)
+    float deltaTime)
 {
-    for (auto& piece :
-        pieces_)
+    for (auto& piece : pieces_)
     {
+        // 重力
+        piece.vel.y -= gravity_ * deltaTime;
+
+        // 減衰 (damping_ が 1.0 なら何もしない)
+        piece.vel = VScale(piece.vel, damping_);
+
         // 移動
-        piece.pos =
-            VAdd(
-                piece.pos,
-                piece.vel);
+        piece.pos = VAdd(piece.pos, VScale(piece.vel, deltaTime));
 
+        if (!floorEnabled_)
+            continue;
 
-        // 減速
-        piece.vel =
-            VScale(
-                piece.vel,
-                damping);
+        // 床との当たり判定: 破片の一番低い点が床より下に来たら押し戻す
+        float worldMinY = piece.minY + piece.pos.y;
+
+        if (worldMinY >= floorY_)
+            continue;
+
+        piece.pos.y += floorY_ - worldMinY;
+
+        if (piece.vel.y < 0.0f)
+            piece.vel.y = -piece.vel.y * bounce_;
+
+        piece.vel.x *= friction_;
+        piece.vel.z *= friction_;
+
+        // 跳ね返りが十分小さくなったら、完全に止める
+        if (std::fabs(piece.vel.y) < gravity_ * deltaTime * 2.0f + 1e-5f)
+            piece.vel.y = 0.0f;
     }
 }
 
@@ -253,116 +169,46 @@ void MeshCutter::Update(
 
 void MeshCutter::Draw()
 {
-    // 簡単な平行光
-    const VECTOR light =
-        VNorm(
-            VGet(
-                0.4f,
-                0.8f,
-                -0.5f));
-
-
-    for (const auto& piece :
-        pieces_)
-    {
-        DrawPiece(
-            piece,
-            light);
-    }
+    for (const auto& piece : pieces_)
+        DrawPiece(piece);
 }
 
 
 // ================================================================
-// 破片1個を描画
+// 破片1個描画
 // ================================================================
 
 void MeshCutter::DrawPiece(
-    const Piece& piece,
-    VECTOR light)
+    const Piece& piece)
 {
-    const int* color =
-        Palette[
-            piece.color % 6];
+    const auto& color = palette_[piece.color % palette_.size()];
 
-
-    for (const auto& face :
-        piece.mesh.faces)
+    for (const auto& face : piece.mesh.faces)
     {
-        // --------------------------------------------------------
-        // ワールド座標
-        // --------------------------------------------------------
+        VECTOR p0 = VAdd(piece.mesh.verts[face[0]], piece.pos);
+        VECTOR p1 = VAdd(piece.mesh.verts[face[1]], piece.pos);
+        VECTOR p2 = VAdd(piece.mesh.verts[face[2]], piece.pos);
 
-        VECTOR p0 =
-            VAdd(
-                piece.mesh.verts[face[0]],
-                piece.pos);
+        VECTOR normal = VCross(VSub(p1, p0), VSub(p2, p0));
 
-        VECTOR p1 =
-            VAdd(
-                piece.mesh.verts[face[1]],
-                piece.pos);
+        float length = VSize(normal);
 
-        VECTOR p2 =
-            VAdd(
-                piece.mesh.verts[face[2]],
-                piece.pos);
-
-
-        // --------------------------------------------------------
-        // 法線
-        // --------------------------------------------------------
-
-        VECTOR normal =
-            VCross(
-                VSub(p1, p0),
-                VSub(p2, p0));
-
-
-        float length =
-            VSize(normal);
-
-
-        // --------------------------------------------------------
-        // 明るさ
-        // --------------------------------------------------------
-
-        float brightness =
-            0.35f;
-
+        float brightness = 0.35f;
 
         if (length > 0.0f)
         {
             brightness +=
-                0.65f *
-                std::fabs(
-                    VDot(
-                        normal,
-                        light))
-                / length;
+                0.65f * std::fabs(VDot(normal, light_)) / length;
         }
-
-
-        // --------------------------------------------------------
-        // 描画
-        // --------------------------------------------------------
 
         DrawTriangle3D(
             p0,
             p1,
             p2,
             GetColor(
-                (int)(
-                    color[0] *
-                    brightness),
-
-                (int)(
-                    color[1] *
-                    brightness),
-
-                (int)(
-                    color[2] *
-                    brightness)),
-
+                (int)(color[0] * brightness),
+                (int)(color[1] * brightness),
+                (int)(color[2] * brightness)),
             TRUE);
     }
 }
@@ -374,13 +220,12 @@ void MeshCutter::DrawPiece(
 
 int MeshCutter::GetPieceCount() const
 {
-    return static_cast<int>(
-        pieces_.size());
+    return static_cast<int>(pieces_.size());
 }
 
 
 // ================================================================
-// 破片取得
+// 破片一覧
 // ================================================================
 
 const std::vector<MeshCutter::Piece>&
@@ -398,11 +243,178 @@ MeshCutter::GetPieces()
 
 
 // ================================================================
-// 押し出し速度
+// 元メッシュの中心・半径
+// ================================================================
+
+VECTOR MeshCutter::GetCenter() const
+{
+    return VScale(VAdd(boundsMin_, boundsMax_), 0.5f);
+}
+
+
+float MeshCutter::GetRadius() const
+{
+    return VSize(VSub(boundsMax_, boundsMin_)) * 0.5f;
+}
+
+
+// ================================================================
+// 切断時の設定
 // ================================================================
 
 void MeshCutter::SetPushSpeed(
     float speed)
 {
     pushSpeed_ = speed;
+}
+
+
+void MeshCutter::SetCapEnabled(
+    bool enabled)
+{
+    capEnabled_ = enabled;
+}
+
+
+// ================================================================
+// 重力・床の設定
+// ================================================================
+
+void MeshCutter::SetGravity(
+    float gravity)
+{
+    gravity_ = gravity;
+}
+
+
+void MeshCutter::SetDamping(
+    float damping)
+{
+    damping_ = damping;
+}
+
+
+void MeshCutter::SetFloor(
+    float floorY)
+{
+    floorEnabled_ = true;
+    floorY_ = floorY;
+}
+
+
+void MeshCutter::SetFloorFromMesh()
+{
+    SetFloor(boundsMin_.y);
+}
+
+
+void MeshCutter::DisableFloor()
+{
+    floorEnabled_ = false;
+}
+
+
+void MeshCutter::SetBounce(
+    float bounce)
+{
+    bounce_ = bounce;
+}
+
+
+void MeshCutter::SetFriction(
+    float friction)
+{
+    friction_ = friction;
+}
+
+
+// ================================================================
+// 描画の見た目
+// ================================================================
+
+void MeshCutter::SetLight(
+    VECTOR light)
+{
+    light_ = VNorm(light);
+}
+
+
+void MeshCutter::SetPalette(
+    const std::vector<std::array<int, 3>>& palette)
+{
+    if (!palette.empty())
+        palette_ = palette;
+}
+
+
+// ================================================================
+// ドラッグした線から切断平面を作る
+// ================================================================
+
+bool MeshCutter::ComputePlaneFromDrag(
+    int startX,
+    int startY,
+    int endX,
+    int endY,
+    VECTOR& outOrigin,
+    VECTOR& outNormal)
+{
+    VECTOR camPos = GetCameraPosition();
+
+    VECTOR a = VSub(
+        ConvScreenPosToWorldPos(VGet((float)startX, (float)startY, 0.0f)),
+        camPos);
+
+    VECTOR b = VSub(
+        ConvScreenPosToWorldPos(VGet((float)endX, (float)endY, 0.0f)),
+        camPos);
+
+    if (VSize(a) < 1e-6f || VSize(b) < 1e-6f)
+        return false;
+
+    VECTOR normal = VCross(VNorm(a), VNorm(b));
+
+    if (VSize(normal) < 1e-6f)
+        return false;
+
+    outOrigin = camPos;
+    outNormal = VNorm(normal);
+
+    return true;
+}
+
+
+// ================================================================
+// mesh の最小 Y 座標
+// ================================================================
+
+float MeshCutter::ComputeMinY(
+    const MeshCut::Mesh& mesh)
+{
+    float minY = mesh.verts[0].y;
+
+    for (const auto& v : mesh.verts)
+        minY = std::fmin(minY, v.y);
+
+    return minY;
+}
+
+
+// ================================================================
+// Piece を1個組み立てる
+// ================================================================
+
+MeshCutter::Piece MeshCutter::MakePiece(
+    MeshCut::Mesh&& mesh,
+    VECTOR vel)
+{
+    Piece piece;
+
+    piece.minY = ComputeMinY(mesh);
+    piece.mesh = std::move(mesh);
+    piece.pos = VGet(0, 0, 0);
+    piece.vel = vel;
+    piece.color = colorCounter_++;
+
+    return piece;
 }

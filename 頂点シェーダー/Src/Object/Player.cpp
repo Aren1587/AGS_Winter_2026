@@ -12,36 +12,27 @@
 #include "Player.h"
 
 Player::Player(void)
+	:
+	animationController_(nullptr),
+	state_(STATE::NONE),
+	speed_(0.0f),
+	moveDir_(AsoUtility::VECTOR_ZERO),
+	movePow_(AsoUtility::VECTOR_ZERO),
+	movedPos_(AsoUtility::VECTOR_ZERO),
+	playerRotY_(Quaternion()),
+	goalQuaRot_(Quaternion()),
+	stepRotTime_(0.0f),
+	gravHitPosDown_(AsoUtility::VECTOR_ZERO),
+	gravHitPosUp_(AsoUtility::VECTOR_ZERO),
+	imgShadow_(-1),
+	capsule_(nullptr),
+	swordModelId_(-1)
 {
-
-	animationController_ = nullptr;
-	state_ = STATE::NONE;
-
-	speed_ = 0.0f;
-	moveDir_ = AsoUtility::VECTOR_ZERO;
-	movePow_ = AsoUtility::VECTOR_ZERO;
-	movedPos_ = AsoUtility::VECTOR_ZERO;
-
-	playerRotY_ = Quaternion();
-	goalQuaRot_ = Quaternion();
-	stepRotTime_ = 0.0f;
-
-	jumpPow_ = AsoUtility::VECTOR_ZERO;
-	isJump_ = false;
-	stepJump_ = 0.0f;
-
-	// 衝突チェック
-	gravHitPosDown_ = AsoUtility::VECTOR_ZERO;
-	gravHitPosUp_ = AsoUtility::VECTOR_ZERO;
-
-	imgShadow_ = -1;
-
-	capsule_ = nullptr;
 
 	// 状態管理
 	stateChanges_.emplace(STATE::NONE, std::bind(&Player::ChangeStateNone, this));
 	stateChanges_.emplace(STATE::PLAY, std::bind(&Player::ChangeStatePlay, this));
-	
+
 }
 
 Player::~Player(void)
@@ -76,6 +67,10 @@ void Player::Init(void)
 	// 初期状態
 	ChangeState(STATE::PLAY);
 
+	swordTransform_ = transform_;
+	swordTransform_.SetModel(resMng_.LoadModelDuplicate(
+		ResourceManager::SRC::SWORD));
+	swordTransform_.scl = VScale(AsoUtility::VECTOR_ONE, 0.1f);
 }
 
 void Player::Update(void)
@@ -86,9 +81,25 @@ void Player::Update(void)
 
 	// モデル制御更新
 	transform_.Update();
+	swordTransform_.Update();
 
 	// アニメーション再生
 	animationController_->Update();
+
+	// 中指
+	int frame = MV1SearchFrame(transform_.modelId, "mixamorig:LeftHandMiddle1");
+
+	// フレームのワールド行列(回転+位置+スケール)
+	MATRIX frameMat = MV1GetFrameLocalWorldMatrix(transform_.modelId, frame);
+
+	// 剣を握りに合わせるためのオフセット(手のボーン軸と剣の軸のズレ補正)
+	MATRIX offset = MMult(
+		MGetRotY(DX_PI_F * 180.0f),          // 角度は実際に見ながら調整
+		MGetTranslate(VGet(0.0f, 0.0f, 0.0f))
+	);
+
+	MATRIX swordMat = MMult(offset, frameMat);
+	MV1SetMatrix(swordTransform_.modelId, swordMat);
 
 }
 
@@ -97,6 +108,7 @@ void Player::Draw(void)
 
 	// モデルの描画
 	MV1DrawModel(transform_.modelId);
+	MV1DrawModel(swordTransform_.modelId);
 
 	// 丸影描画
 	DrawShadow();

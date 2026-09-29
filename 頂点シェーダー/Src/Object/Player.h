@@ -118,6 +118,9 @@ private:
 	// ŠÛ‰e
 	int imgShadow_;
 
+	int swordModelId_;
+	Transform swordTransform_;
+
 	void InitAnimation(void);
 
 	// ó‘Ô‘JˆÚ

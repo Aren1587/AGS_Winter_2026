@@ -136,8 +136,12 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::GATE, std::move(res));
 
 	// ÉQÅ[Ég
-	res = std::make_unique<RES>(RES_T::MODEL, PATH_MDL + "Gate/Noise2.png");
+	res = std::make_unique<RES>(RES_T::IMG, PATH_MDL + "Gate/Noise2.png");
 	resourcesMap_.emplace(SRC::NOISE, std::move(res));
+
+	// ÉQÅ[Ég
+	res = std::make_unique<RES>(RES_T::MODEL, PATH_MDL + "Sword/Sword.mv1");
+	resourcesMap_.emplace(SRC::SWORD, std::move(res));
 
 }
 

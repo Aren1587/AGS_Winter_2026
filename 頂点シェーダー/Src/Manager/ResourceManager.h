@@ -40,6 +40,7 @@ public:
 		WATER,
 		GATE,
 		NOISE,
+		SWORD,
 	};
 
 	// 明示的にインステンスを生成する

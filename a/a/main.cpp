@@ -1,506 +1,173 @@
 ﻿// ============================================================================
-// main.cpp
-//
-// ドラッグした線で3Dモデルを切断するデモ
-//
-// 操作:
-//   左ドラッグ       : 切断
-//   ← →             : カメラ回転
-//   R               : リセット
-//   ESC             : 終了
+//  main.cpp : ドラッグした線でモデルを切断するデモ (DxLib + MeshCutter)
 // ============================================================================
-
+//  model.mv1 があればそれを、なければ立方体を切断する。
+//
+//  操作:
+//    左ボタンを押したまま動かして離す ... その線でモデルを切断
+//    ←→ キー ... カメラ回転
+//    R キー   ... 切る前の状態に戻す
+//    ESC キー ... 終了
+//
+//  切断・破片の移動・重力・描画は、すべて MeshCutter (MeshCutter.h/.cpp) が
+//  行う。このファイルは「入力を受け取って MeshCutter に渡すだけ」の薄い層に
+//  なっているので、他のプロジェクトでは MeshCut.h / MeshCutter.h / .cpp の
+//  3ファイルをコピーし、このファイルの WinMain を参考に組み込めばよい。
+//
+//  プロジェクト設定: リンカー -> システム -> サブシステム を Windows にすること
+// ============================================================================
 #include "DxLib.h"
-#include <EffekseerForDXLib.h>
 #include "MeshCut.h"
 #include "MeshCutter.h"
 
 #include <cmath>
 
+using MeshCut::Mesh;
 
-// ================================================================
-// 立方体を作る
-// ================================================================
-
-static MeshCut::Mesh MakeCube(
-    float size)
+// ----------------------------------------------------------------------------
+//  MakeCube : 一辺 s の立方体メッシュを作る (model.mv1 がないとき用)
+// ----------------------------------------------------------------------------
+static Mesh MakeCube(
+    float s)
 {
-    MeshCut::Mesh mesh;
+    Mesh m;
 
-    float h =
-        size * 0.5f;
+    const float h = s * 0.5f;
 
-
-    // 頂点
-    for (int i = 0;
-        i < 8;
-        ++i)
+    for (int i = 0; i < 8; ++i)
     {
-        mesh.verts.push_back(
-            VGet(
-                (i & 1)
-                ? h
-                : -h,
-
-                (i & 2)
-                ? h
-                : -h,
-
-                (i & 4)
-                ? h
-                : -h));
+        m.verts.push_back(VGet(
+            (i & 1) ? h : -h,
+            (i & 2) ? h : -h,
+            (i & 4) ? h : -h));
     }
 
-
-    // 三角形
-    mesh.faces =
+    m.faces =
     {
-        {0, 2, 3},
-        {0, 3, 1},
-
-        {4, 5, 7},
-        {4, 7, 6},
-
-        {0, 1, 5},
-        {0, 5, 4},
-
-        {2, 6, 7},
-        {2, 7, 3},
-
-        {0, 4, 6},
-        {0, 6, 2},
-
-        {1, 3, 7},
-        {1, 7, 5}
+        {0, 2, 3}, {0, 3, 1}, {4, 5, 7}, {4, 7, 6}, {0, 1, 5}, {0, 5, 4},
+        {2, 6, 7}, {2, 7, 3}, {0, 4, 6}, {0, 6, 2}, {1, 3, 7}, {1, 7, 5}
     };
 
-
-    return mesh;
+    return m;
 }
 
 
-// ================================================================
-// メイン
-// ================================================================
-
-int WINAPI WinMain(
-    _In_ HINSTANCE,
-    _In_opt_ HINSTANCE,
-    _In_ LPSTR,
-    _In_ int)
+// ----------------------------------------------------------------------------
+//  WinMain : エントリポイント
+// ----------------------------------------------------------------------------
+int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
-    // ------------------------------------------------------------
-    // DxLib 初期化
-    // ------------------------------------------------------------
-
-    // アプリケーションの初期設定
-    SetWindowText("3DAction");
-
-    // ウィンドウサイズ
-    SetGraphMode(1024, 768, 32);
+    // ---- DxLib の初期化 ----
     ChangeWindowMode(TRUE);
+    SetGraphMode(1024, 768, 32);
 
-    SetUseDirect3DVersion(DX_DIRECT3D_11);
     if (DxLib_Init() == -1)
-    {
         return -1;
-    }
 
-    //InitEffekseer();
-
-    SetDrawScreen(
-        DX_SCREEN_BACK);
-
+    SetDrawScreen(DX_SCREEN_BACK);
     SetUseZBuffer3D(TRUE);
-
     SetWriteZBuffer3D(TRUE);
+    SetUseBackCulling(DX_CULLING_NONE);  // 両面描画 (切断面のフタも見えるように)
 
-    SetUseBackCulling(
-        DX_CULLING_NONE);
+    // ---- メッシュの読み込み (失敗したら立方体) ----
+    Mesh mesh;
 
+    int handle = MV1LoadModel("model.mv1");
 
-    // ------------------------------------------------------------
-    // モデル読み込み
-    // ------------------------------------------------------------
-
-    MeshCut::Mesh mesh;
-
-
-    int modelHandle =
-        MV1LoadModel(
-            "model.mv1");
-
-
-    if (modelHandle != -1)
-    {
-        mesh =
-            MeshCut::FromMV1(
-                modelHandle);
-    }
+    if (handle != -1)
+        mesh = MeshCut::FromMV1(handle);
     else
-    {
-        mesh =
-            MakeCube(100.0f);
-    }
+        mesh = MakeCube(100.0f);
 
-
-    // ------------------------------------------------------------
-    // モデルの大きさを計算
-    // ------------------------------------------------------------
-
-    if (mesh.verts.empty())
-    {
-        DxLib_End();
-        return -1;
-    }
-
-
-    VECTOR min =
-        mesh.verts[0];
-
-    VECTOR max =
-        mesh.verts[0];
-
-
-    for (const auto& vertex :
-        mesh.verts)
-    {
-        min =
-            VGet(
-                std::fmin(
-                    min.x,
-                    vertex.x),
-
-                std::fmin(
-                    min.y,
-                    vertex.y),
-
-                std::fmin(
-                    min.z,
-                    vertex.z));
-
-
-        max =
-            VGet(
-                std::fmax(
-                    max.x,
-                    vertex.x),
-
-                std::fmax(
-                    max.y,
-                    vertex.y),
-
-                std::fmax(
-                    max.z,
-                    vertex.z));
-    }
-
-
-    VECTOR center =
-        VScale(
-            VAdd(min, max),
-            0.5f);
-
-
-    float radius =
-        VSize(
-            VSub(max, min))
-        * 0.5f;
-
-
-    SetCameraNearFar(
-        radius * 0.05f,
-        radius * 30.0f);
-
-
-    // ------------------------------------------------------------
-    // 切断クラス
-    // ------------------------------------------------------------
-
+    // ---- MeshCutter の初期化 ----
+    //   中心・半径は SetMesh の時点で自動計算される (GetCenter/GetRadius)。
+    //   カメラの位置決めや、重力・押し出し速度の大きさにそのまま使える。
     MeshCutter cutter;
 
     cutter.SetMesh(mesh);
 
-    cutter.SetPushSpeed(
-        radius * 0.02f);
+    const VECTOR center = cutter.GetCenter();
+    const float radius = cutter.GetRadius();
 
+    cutter.SetPushSpeed(radius * 0.02f);
+    cutter.SetGravity(radius * 0.0015f);
+    cutter.SetFloorFromMesh();   // 元モデルの一番低い場所を床にする
+    cutter.SetBounce(0.25f);
+    cutter.SetFriction(0.85f);
 
-    // ------------------------------------------------------------
-    // カメラ
-    // ------------------------------------------------------------
+    SetCameraNearFar(radius * 0.05f, radius * 30.0f);
 
-    float cameraAngle =
-        0.0f;
+    float camAngle = 0.0f;       // カメラがモデルの周りを回る角度
+    bool dragging = false;       // ドラッグ中か
+    int startX = 0, startY = 0;  // ドラッグを始めた画面座標
+    int prevMouse = 0;           // 前フレームの左ボタンの状態
 
-
-    // ------------------------------------------------------------
-    // マウス
-    // ------------------------------------------------------------
-
-    bool dragging =
-        false;
-
-
-    int startX = 0;
-    int startY = 0;
-
-
-    int mouseX = 0;
-    int mouseY = 0;
-
-
-    int previousMouse =
-        0;
-
-
-    // ------------------------------------------------------------
-    // メインループ
-    // ------------------------------------------------------------
-
-    while (
-        ProcessMessage() == 0 &&
-        CheckHitKey(
-            KEY_INPUT_ESCAPE) == 0)
+    // ---- メインループ ----
+    while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
     {
-        // ========================================================
-        // 入力
-        // ========================================================
+        if (CheckHitKey(KEY_INPUT_LEFT))  camAngle -= 0.02f;
+        if (CheckHitKey(KEY_INPUT_RIGHT)) camAngle += 0.02f;
+        if (CheckHitKey(KEY_INPUT_R)) cutter.Reset();
 
-        if (CheckHitKey(
-            KEY_INPUT_LEFT))
-        {
-            cameraAngle -=
-                0.02f;
-        }
-
-
-        if (CheckHitKey(
-            KEY_INPUT_RIGHT))
-        {
-            cameraAngle +=
-                0.02f;
-        }
-
-
-        if (CheckHitKey(
-            KEY_INPUT_R))
-        {
-            cutter.Reset();
-        }
-
-
-        // ========================================================
-        // カメラ
-        // ========================================================
-
-        VECTOR cameraPosition =
-            VGet(
-                center.x +
-                std::sin(cameraAngle)
-                * radius
-                * 3.0f,
-
-                center.y +
-                radius * 0.8f,
-
-                center.z -
-                std::cos(cameraAngle)
-                * radius
-                * 3.0f);
-
-
+        // カメラを設定する。
+        // 画面座標をワールド座標に変換する処理(下)がこのカメラを使うので、
+        // マウス処理よりも先に設定しておくこと
         SetCameraPositionAndTarget_UpVecY(
-            cameraPosition,
+            VGet(
+                center.x + std::sin(camAngle) * radius * 3.0f,
+                center.y + radius * 0.8f,
+                center.z - std::cos(camAngle) * radius * 3.0f),
             center);
 
+        // ---- マウス処理: 押した位置から離した位置までを切断線とする ----
+        int mouseX = 0, mouseY = 0;
+        GetMousePoint(&mouseX, &mouseY);
 
-        // ========================================================
-        // マウス
-        // ========================================================
+        int mouse = GetMouseInput() & MOUSE_INPUT_LEFT;
 
-        GetMousePoint(
-            &mouseX,
-            &mouseY);
-
-
-        int mouse =
-            GetMouseInput() &
-            MOUSE_INPUT_LEFT;
-
-
-        // --------------------------------------------------------
-        // 押した瞬間
-        // --------------------------------------------------------
-
-        if (
-            mouse &&
-            !previousMouse)
+        if (mouse && !prevMouse)
         {
             dragging = true;
-
             startX = mouseX;
             startY = mouseY;
         }
 
-
-        // --------------------------------------------------------
-        // 離した瞬間
-        // --------------------------------------------------------
-
-        if (
-            !mouse &&
-            previousMouse &&
-            dragging)
+        if (!mouse && prevMouse && dragging)
         {
             dragging = false;
 
+            float dx = (float)(mouseX - startX);
+            float dy = (float)(mouseY - startY);
 
-            float dx =
-                (float)(
-                    mouseX -
-                    startX);
-
-
-            float dy =
-                (float)(
-                    mouseY -
-                    startY);
-
-
-            // 短すぎるドラッグは無視
-            if (
-                dx * dx +
-                dy * dy >
-                100.0f)
+            // ドラッグの長さが10ピクセル未満なら、ただのクリックとみなして無視する
+            if (dx * dx + dy * dy > 100.0f)
             {
-                // =================================================
-                // 画面上の2点から切断平面を作る
-                // =================================================
+                VECTOR origin, normal;
 
-                VECTOR camera =
-                    GetCameraPosition();
-
-
-                VECTOR screenStart =
-                    ConvScreenPosToWorldPos(
-                        VGet(
-                            (float)startX,
-                            (float)startY,
-                            0.0f));
-
-
-                VECTOR screenEnd =
-                    ConvScreenPosToWorldPos(
-                        VGet(
-                            (float)mouseX,
-                            (float)mouseY,
-                            0.0f));
-
-
-                // カメラから画面上の点への方向
-                VECTOR directionA =
-                    VNorm(
-                        VSub(
-                            screenStart,
-                            camera));
-
-
-                VECTOR directionB =
-                    VNorm(
-                        VSub(
-                            screenEnd,
-                            camera));
-
-
-                // 2方向を含む平面の法線
-                VECTOR normal =
-                    VCross(
-                        directionA,
-                        directionB);
-
-
-                // ------------------------------------------------
-                // 切断
-                // ------------------------------------------------
-
-                if (VSize(normal) >
-                    1e-6f)
-                {
-                    cutter.Cut(
-                        camera,
-                        VNorm(normal));
-                }
+                if (MeshCutter::ComputePlaneFromDrag(startX, startY, mouseX, mouseY, origin, normal))
+                    cutter.Cut(origin, normal);
             }
         }
 
+        prevMouse = mouse;
 
-        previousMouse =
-            mouse;
-
-
-        // ========================================================
-        // 更新
-        // ========================================================
-
+        // ---- 破片の更新(重力・床判定・移動)と描画 ----
         cutter.Update();
-
-
-        // ========================================================
-        // 描画
-        // ========================================================
 
         ClearDrawScreen();
 
-
         cutter.Draw();
 
-
-        // --------------------------------------------------------
-        // ドラッグ中の線
-        // --------------------------------------------------------
-
+        // ドラッグ中は、押した位置から現在位置まで白い線を引く
         if (dragging)
-        {
-            DrawLine(
-                startX,
-                startY,
-                mouseX,
-                mouseY,
-                GetColor(
-                    255,
-                    255,
-                    255),
-                2);
-        }
+            DrawLine(startX, startY, mouseX, mouseY, GetColor(255, 255, 255), 2);
 
-
-        // --------------------------------------------------------
-        // UI
-        // --------------------------------------------------------
-
-        DrawFormatString(
-            10,
-            10,
-            GetColor(
-                255,
-                255,
-                255),
-
-            "左ドラッグで切断 / "
-            "R:リセット / "
-            "<- ->:カメラ回転  "
-            "破片数: %d",
-
+        DrawFormatString(10, 10, GetColor(255, 255, 255),
+            "左ドラッグで切断 / R:リセット / ←→:カメラ回転   破片数: %d",
             cutter.GetPieceCount());
-
 
         ScreenFlip();
     }
-
-
-    // ------------------------------------------------------------
-    // 終了
-    // ------------------------------------------------------------
 
     DxLib_End();
 

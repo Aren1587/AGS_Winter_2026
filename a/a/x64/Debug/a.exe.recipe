@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\2416030\Desktop\new\a\x64\Debug\a.exe</FullPath>
+      <FullPath>C:\AGS_Winter_2027\a\x64\Debug\a.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\2416030\Desktop\new\a\x64\Debug\a.alt.exe</FullPath>
+      <FullPath>C:\AGS_Winter_2027\a\x64\Debug\a.alt.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
