@@ -1,0 +1,5 @@
+﻿  main.cpp
+C:\Users\2416030\Desktop\new\a\a\MeshCut.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'main.cpp' をコンパイルしています)
+  
+  a.vcxproj -> C:\Users\2416030\Desktop\new\a\x64\Debug\a.exe
