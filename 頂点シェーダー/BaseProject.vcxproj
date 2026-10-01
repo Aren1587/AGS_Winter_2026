@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Src\MeshCutter\MeshCutter.cpp" />
     <ClCompile Include="Src\Object\Gate.cpp" />
+    <ClCompile Include="Src\Object\Moon.cpp" />
     <ClCompile Include="Src\Object\Rim.cpp" />
     <ClCompile Include="Src\Object\Metal.cpp" />
     <ClCompile Include="Src\Renderer\PixelRenderer.cpp" />
@@ -59,6 +60,7 @@
     <ClInclude Include="Src\MeshCutter\MeshCut.h" />
     <ClInclude Include="Src\MeshCutter\MeshCutter.h" />
     <ClInclude Include="Src\Object\Gate.h" />
+    <ClInclude Include="Src\Object\Moon.h" />
     <ClInclude Include="Src\Object\Rim.h" />
     <ClInclude Include="Src\Object\Metal.h" />
     <ClInclude Include="Src\Renderer\PixelRenderer.h" />

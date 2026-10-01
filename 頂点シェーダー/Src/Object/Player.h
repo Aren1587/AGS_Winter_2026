@@ -5,6 +5,7 @@
 #include <functional>
 #include <DxLib.h>
 #include "ActorBase.h"
+#include "Sword.h"
 class AnimationController;
 class Collider;
 class Capsule;
@@ -69,6 +70,9 @@ public:
 	// 衝突用カプセルの取得
 	const Capsule& GetCapsule(void) const;
 
+	bool IsSlashing() const { return isSlashing_; }
+	const Sword& GetSword() const { return sword_; }
+
 private:
 
 	// アニメーション
@@ -120,6 +124,9 @@ private:
 
 	int swordModelId_;
 	Transform swordTransform_;
+
+	Sword sword_;
+	bool isSlashing_ = false;
 
 	void InitAnimation(void);
 

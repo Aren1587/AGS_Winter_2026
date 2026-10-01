@@ -10,6 +10,7 @@
 #include "../Object/Stage.h"
 #include "../Object/Player.h"
 #include "../Object/Planet.h"
+#include "../Object/Moon.h"
 #include "../Renderer/PixelMaterial.h"
 #include "../Renderer/PixelRenderer.h"
 #include "GameScene.h"
@@ -32,6 +33,9 @@ void GameScene::Init(void)
 	// プレイヤー
 	player_ = std::make_unique<Player>();
 	player_->Init();
+
+	moon_ = std::make_unique<Moon>();
+	moon_->Init();
 
 	// ステージ
 	stage_ = std::make_unique<Stage>(*player_);
@@ -132,17 +136,73 @@ void GameScene::Update(void)
 	stage_->Update();
 
 	player_->Update();
+	moon_->Update();
 
+	if (player_->IsSlashing() && !alreadyCutThisSwing_)
+	{
+		VECTOR tip = player_->GetSword().GetTip();
+		VECTOR center = moon_->GetCenter();
+
+		VECTOR toTip = VSub(tip, center);
+
+		float distance = VSize(toTip);
+		float radius = moon_->GetRadius();
+
+		// 月の当たり判定を可視化
+		DrawSphere3D(
+			center,
+			radius,
+			16,
+			GetColor(255, 0, 0),
+			GetColor(255, 0, 0),
+			FALSE
+		);
+
+		// 月の中心 → 剣先を線で表示
+		DrawLine3D(
+			center,
+			tip,
+			GetColor(0, 255, 0)
+		);
+
+		// 剣先を小さい球で表示
+		DrawSphere3D(
+			tip,
+			10.0f,
+			8,
+			GetColor(0, 0, 255),
+			GetColor(0, 0, 255),
+			TRUE
+		);
+
+		// 判定
+		if (distance < radius)
+		{
+			VECTOR origin, normal;
+			if (player_->GetSword().ComputeSwingPlane(origin, normal))
+			{
+				moon_->Cut(origin, normal);
+				alreadyCutThisSwing_ = true;  // 1回の振りで何度も切らないようにする
+			}
+		}
+	}
+
+	if (!player_->IsSlashing())
+	{
+		alreadyCutThisSwing_ = false;  // 振り終わったらリセット
+	}
 }
 
 void GameScene::Draw(void)
 {
-
+	int mainScreen = SceneManager::GetInstance().GetMainScreen();
 	// 背景
-	skyDome_->Draw();
-	stage_->Draw();
+	//skyDome_->Draw();
+	//stage_->Draw();
 	
+	moon_->Draw();
 	player_->Draw();
+	
 
 	// ヘルプ
 	DrawFormatString(840, 20, 0x000000, "移動　　：WASD");
@@ -151,80 +211,80 @@ void GameScene::Draw(void)
 	DrawFormatString(840, 80, 0x000000, "ジャンプ：＼(バクスラ)");
 
 
-	int mainScreen = SceneManager::GetInstance().GetMainScreen();
-
-	for (auto& star : stage_->GetWarpStar())
-	{
-		
-	}
-
-	// ポストエフェクト(モノクロ)
-	//-----------------------------------------
-	if (mode_ < MODE::MONO) { return; }
-	
-	SetDrawScreen(postEffectScreen_);
-
-	// 画面を初期化
-	ClearDrawScreen();
-
-	monoRenderer_->Draw();
-
-	// メインに戻す
-	SetDrawScreen(mainScreen);
-	DrawGraph(0, 0, postEffectScreen_, false);
-	//-----------------------------------------
-
-	// ポストエフェクト(走査線)
-	//-----------------------------------------
-	if (mode_ < MODE::SCAN) { return; }
-	
-	SetDrawScreen(postEffectScreen_);
-
-	// 画面を初期化
-	ClearDrawScreen();
-
-	scanMaterial_->SetConstBuf(
-		1,
-		{ SceneManager::GetInstance().GetTotalTime(), 0.0f, 0.0f, 0.0f }
-	);
-	scanRenderer_->Draw();
-
-	// メインに戻す
-	SetDrawScreen(mainScreen);
-	DrawGraph(0, 0, postEffectScreen_, false);
-	//-----------------------------------------
-
-
-	// ポストエフェクト(レンズの歪み)
-	//-----------------------------------------
-	if (mode_ < MODE::LENS) { return; }
-
-	SetDrawScreen(postEffectScreen_);
-
-	// 画面を初期化
-	ClearDrawScreen();
-
-	lensRenderer_->Draw();
-
-	// メインに戻す
-	SetDrawScreen(mainScreen);
-	DrawGraph(0, 0, postEffectScreen_, false);
-	//-----------------------------------------
 	
 
-	// ポストエフェクト(ビネット)
-	//-----------------------------------------
-	if (mode_ < MODE::VINE) { return; }
+	//for (auto& star : stage_->GetWarpStar())
+	//{
+	//	
+	//}
 
-	SetDrawScreen(postEffectScreen_);
+	//// ポストエフェクト(モノクロ)
+	////-----------------------------------------
+	//if (mode_ < MODE::MONO) { return; }
+	//
+	//SetDrawScreen(postEffectScreen_);
 
-	// 画面を初期化
-	ClearDrawScreen();
+	//// 画面を初期化
+	//ClearDrawScreen();
 
-	vineRenderer_->Draw();
+	//monoRenderer_->Draw();
 
-	// メインに戻す
-	SetDrawScreen(mainScreen);
-	DrawGraph(0, 0, postEffectScreen_, false);
-	//-----------------------------------------
+	//// メインに戻す
+	//SetDrawScreen(mainScreen);
+	//DrawGraph(0, 0, postEffectScreen_, false);
+	////-----------------------------------------
+
+	//// ポストエフェクト(走査線)
+	////-----------------------------------------
+	//if (mode_ < MODE::SCAN) { return; }
+	//
+	//SetDrawScreen(postEffectScreen_);
+
+	//// 画面を初期化
+	//ClearDrawScreen();
+
+	//scanMaterial_->SetConstBuf(
+	//	1,
+	//	{ SceneManager::GetInstance().GetTotalTime(), 0.0f, 0.0f, 0.0f }
+	//);
+	//scanRenderer_->Draw();
+
+	//// メインに戻す
+	//SetDrawScreen(mainScreen);
+	//DrawGraph(0, 0, postEffectScreen_, false);
+	////-----------------------------------------
+
+
+	//// ポストエフェクト(レンズの歪み)
+	////-----------------------------------------
+	//if (mode_ < MODE::LENS) { return; }
+
+	//SetDrawScreen(postEffectScreen_);
+
+	//// 画面を初期化
+	//ClearDrawScreen();
+
+	//lensRenderer_->Draw();
+
+	//// メインに戻す
+	//SetDrawScreen(mainScreen);
+	//DrawGraph(0, 0, postEffectScreen_, false);
+	////-----------------------------------------
+	//
+
+	//// ポストエフェクト(ビネット)
+	////-----------------------------------------
+	//if (mode_ < MODE::VINE) { return; }
+
+	//SetDrawScreen(postEffectScreen_);
+
+	//// 画面を初期化
+	//ClearDrawScreen();
+
+	//vineRenderer_->Draw();
+
+	//// メインに戻す
+	//SetDrawScreen(mainScreen);
+	//DrawGraph(0, 0, postEffectScreen_, false);
+	////-----------------------------------------
 }

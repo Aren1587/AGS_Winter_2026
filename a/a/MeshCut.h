@@ -40,8 +40,9 @@ namespace MeshCut
 
     struct Mesh
     {
-        std::vector<VECTOR> verts;
-        std::vector<std::array<int, 3>> faces;
+        std::vector<VECTOR> verts;              // 頂点
+        std::vector<std::array<int, 3>> faces;  // どの頂点で３角形を作るか
+        FLOAT2 u;
     };
 
 
@@ -143,6 +144,14 @@ namespace MeshCut
         raw.faces.reserve(
             polygonList.PolygonNum);
 
+        //raw.u.u = 10;
+
+        //raw.u.reserve(
+        //    polygonList.VertexNum);
+
+        //raw.v.reserve(
+        //    polygonList.VertexNum);
+
         // 頂点
         for (int i = 0;
             i < polygonList.VertexNum;
@@ -150,6 +159,11 @@ namespace MeshCut
         {
             raw.verts.push_back(
                 polygonList.Vertexs[i].Position);
+
+            //raw.u = polygonList.Vertexs[i].TexCoord->u;
+
+            //raw.v.push_back(
+              //  polygonList.Vertexs[i].TexCoord->v);
         }
 
         // ポリゴン
@@ -175,7 +189,6 @@ namespace MeshCut
 
         return Weld(raw);
     }
-
 
     namespace detail
     {

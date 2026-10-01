@@ -89,17 +89,42 @@ void Player::Update(void)
 	// 中指
 	int frame = MV1SearchFrame(transform_.modelId, "mixamorig:LeftHandMiddle1");
 
-	// フレームのワールド行列(回転+位置+スケール)
-	MATRIX frameMat = MV1GetFrameLocalWorldMatrix(transform_.modelId, frame);
+	// フレームのワールド行列
+	MATRIX frameMat =
+		MV1GetFrameLocalWorldMatrix(transform_.modelId, frame);
 
-	// 剣を握りに合わせるためのオフセット(手のボーン軸と剣の軸のズレ補正)
+	// 剣を握りに合わせるためのオフセット
 	MATRIX offset = MMult(
-		MGetRotY(DX_PI_F * 180.0f),          // 角度は実際に見ながら調整
+		MGetRotY(DX_PI_F * 180.0f),
 		MGetTranslate(VGet(0.0f, 0.0f, 0.0f))
 	);
 
+	// 剣のワールド行列
 	MATRIX swordMat = MMult(offset, frameMat);
+
 	MV1SetMatrix(swordTransform_.modelId, swordMat);
+
+
+	// ======================================================
+	// 剣の「柄」と「先端」のワールド座標を取得
+	// ======================================================
+
+	// 剣モデル内でのローカル座標
+	VECTOR localHilt = VGet(0.0f, 0.0f, 0.0f);
+
+	// 剣の長さ
+	float swordLength = 100.0f;
+
+	// 剣の先端が +Z 方向なら
+	VECTOR localTip = VGet(0.0f, 0.0f, swordLength);
+
+	// ローカル座標 → ワールド座標
+	VECTOR hilt = VTransform(localHilt, swordMat);
+	VECTOR tip = VTransform(localTip, swordMat);
+
+	sword_.UpdatePose(hilt, tip);
+
+	isSlashing_ = true;
 
 }
 

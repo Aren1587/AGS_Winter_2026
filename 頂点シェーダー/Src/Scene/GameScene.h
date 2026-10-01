@@ -4,6 +4,7 @@
 class Stage;
 class SkyDome;
 class Player;
+class Moon;
 class PixelMaterial;
 class PixelRenderer;
 
@@ -43,6 +44,7 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_;
+	std::unique_ptr<Moon> moon_;
 
 	// ポストエフェクトモード
 	MODE mode_;
@@ -65,4 +67,6 @@ private:
 	// ポストエフェクト用(レンズの歪み)
 	std::unique_ptr<PixelMaterial> lensMaterial_;
 	std::unique_ptr<PixelRenderer> lensRenderer_;
+
+	bool alreadyCutThisSwing_ = false;
 };

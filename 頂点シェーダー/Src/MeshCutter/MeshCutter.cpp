@@ -90,6 +90,10 @@ void MeshCutter::Cut(
     {
         // 現在の移動量をメッシュに反映してから切る
         // (そうしないと、見えている位置と切断平面の位置がずれてしまう)
+        // minY も同じ分だけ動かしておかないと、次の床判定が過去の高さを
+        // 見てしまい、落下中の破片を再度切ったときに床をすり抜ける原因になる
+        piece.minY += piece.pos.y;
+
         for (auto& vertex : piece.mesh.verts)
             vertex = VAdd(vertex, piece.pos);
 

@@ -7,6 +7,7 @@
 //    左ボタンを押したまま動かして離す ... その線でモデルを切断
 //    ←→ キー ... カメラ回転
 //    R キー   ... 切る前の状態に戻す
+//    H キー   ... 重力の ON/OFF を切り替え
 //    ESC キー ... 終了
 //
 //  切断・破片の移動・重力・描画は、すべて MeshCutter (MeshCutter.h/.cpp) が
@@ -74,6 +75,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
     int handle = MV1LoadModel("model.mv1");
 
+    auto test = MV1GetTextureNum(handle);
+
     if (handle != -1)
         mesh = MeshCut::FromMV1(handle);
     else
@@ -85,6 +88,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
     MeshCutter cutter;
 
     cutter.SetMesh(mesh);
+
+    cutter.SetDifColor(handle, 0);
 
     const VECTOR center = cutter.GetCenter();
     const float radius = cutter.GetRadius();
@@ -101,6 +106,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
     bool dragging = false;       // ドラッグ中か
     int startX = 0, startY = 0;  // ドラッグを始めた画面座標
     int prevMouse = 0;           // 前フレームの左ボタンの状態
+    int prevH = 0;                // 前フレームの H キーの状態 (押した瞬間だけ切り替えるため)
 
     // ---- メインループ ----
     while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
@@ -108,6 +114,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
         if (CheckHitKey(KEY_INPUT_LEFT))  camAngle -= 0.02f;
         if (CheckHitKey(KEY_INPUT_RIGHT)) camAngle += 0.02f;
         if (CheckHitKey(KEY_INPUT_R)) cutter.Reset();
+
+        // H キーを押した瞬間だけ、重力の ON/OFF を切り替える
+        // (CheckHitKey は押している間ずっと true になるので、前フレームと比べて
+        //  「今押された瞬間」かどうかを判定する)
+        int h = CheckHitKey(KEY_INPUT_H);
+
+        if (h && !prevH)
+            cutter.SetGravityEnabled(!cutter.IsGravityEnabled());
+
+        prevH = h;
 
         // カメラを設定する。
         // 画面座標をワールド座標に変換する処理(下)がこのカメラを使うので、
@@ -163,7 +179,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
             DrawLine(startX, startY, mouseX, mouseY, GetColor(255, 255, 255), 2);
 
         DrawFormatString(10, 10, GetColor(255, 255, 255),
-            "左ドラッグで切断 / R:リセット / ←→:カメラ回転   破片数: %d",
+            "左ドラッグで切断 / R:リセット / H:重力%s / ←→:カメラ回転   破片数: %d",
+            cutter.IsGravityEnabled() ? "OFF" : "ON",
             cutter.GetPieceCount());
 
         ScreenFlip();
