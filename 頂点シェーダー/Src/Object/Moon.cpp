@@ -1,3 +1,5 @@
+#include "../Application.h"
+#include "Common/AnimationController.h"
 #include "Moon.h"
 
 void Moon::Init()
@@ -7,7 +9,18 @@ void Moon::Init()
     //cutter_ = new MeshCutter();
     MV1SetPosition(handle, { 100, 100, 600
         });
+
+    std::string path = Application::PATH_MODEL + "Player/";
+    animationController_ = std::make_unique<AnimationController>(transform_.modelId);
+    animationController_->Add((int)ANIM_TYPE::IDLE, path + "Idle.mv1", 20.0f);
+
     cutter_.SetMesh(MeshCut::FromMV1(handle));
     cutter_.SetGravity(0.3f);
     cutter_.SetFloorFromMesh();
+}
+
+void Moon::Update()
+{
+    animationController_->Update();
+    cutter_.Update();
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-// Moon.h
-#pragma once
+#include <memory>
 #include "../MeshCutter/MeshCutter.h"
+class AnimationController;
 
 class Moon
 {
@@ -15,12 +15,14 @@ public:
         cutter_.Cut(origin, normal);
     }
 
-    void Update() { cutter_.Update(); }
+    void Update();
     void Draw() { cutter_.Draw(); }
 
     VECTOR GetCenter() const { return cutter_.GetCenter(); }
     float GetRadius() const { return cutter_.GetRadius(); }
 
 private:
+    std::unique_ptr<AnimationController> animationController_;
+
     MeshCutter cutter_;
 };
