@@ -1,3 +1,4 @@
+#include <memory>
 #include "../Application.h"
 #include "Common/AnimationController.h"
 #include "Moon.h"
@@ -12,7 +13,6 @@ void Moon::Init()
 
     std::string path = Application::PATH_MODEL + "Player/";
     animationController_ = std::make_unique<AnimationController>(transform_.modelId);
-    animationController_->Add((int)ANIM_TYPE::IDLE, path + "Idle.mv1", 20.0f);
 
     cutter_.SetMesh(MeshCut::FromMV1(handle));
     cutter_.SetGravity(0.3f);

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "../MeshCutter/MeshCutter.h"
+#include "Common/Transform.h"
 class AnimationController;
 
 class Moon
@@ -25,4 +26,6 @@ private:
     std::unique_ptr<AnimationController> animationController_;
 
     MeshCutter cutter_;
+
+    Transform transform_;
 };
