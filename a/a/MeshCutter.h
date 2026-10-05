@@ -188,8 +188,6 @@ public:
     void SetFriction(
         float friction);
 
-    const void SetDifColor(int& modelId, int materialIndex);
-
 
     // ============================================================
     // 描画の見た目を変える
@@ -199,8 +197,10 @@ public:
     void SetLight(
         VECTOR light);
 
-    // 破片の色。既定ではすべての破片が同じ色 (パレットの先頭) になる。
-    // palette の最初の要素が使われる (2個目以降は今は使っていない)
+    // 破片の色のフォールバック。
+    // MeshCut::Mesh が色情報 (MV1 の元のテクスチャ・マテリアルの色) を持っている
+    // 場合はそれが優先して使われ、これは色情報を持たないメッシュ (立方体などの
+    // テスト用図形) にだけ使われる。palette の最初の要素が使われる。
     void SetPalette(
         const std::vector<std::array<int, 3>>& palette);
 

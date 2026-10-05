@@ -1,169 +1,509 @@
 ﻿0:ChangeWindowMode実行 
-0:ウインドウモードフラグが立てられました
-3:ＤＸライブラリの初期化処理開始
-4:	システムの情報を出力します
-5:		ＤＸライブラリ Ver3.24f
-5:		論理プロセッサの数 : 16
-6:		ＯＳ  Windows11 ( Build 26200  )
-107:		現時点のＣＰＵ動作速度：大体2.66GHz
-107:		ＭＭＸ命令を使用します
-109:		ＳＳＥ命令が使用可能です
-110:		ＳＳＥ２命令が使用可能です
-110:		ＣＰＵベンダ：GenuineIntel
-113:		ＣＰＵ名：12th Gen Intel(R) Core(TM) i7-12650H
-114:	ＣＯＭの初期化... 成功
-129:	非同期読み込み処理の初期化...成功
-131:	ファイルアクセス処理の初期化...成功
-132:	メモリ総量:32471.49MB  空きメモリ領域:14905.48MB 
-133:	タイマーの精度を検査します
-134:	精度結果 更新回数 マルチメディアタイマー：0  パフォーマンスカウンター：60
-151:	 パフォーマンスカウンターを使用します タイマー精度 : 10000.000000 KHz 
-153:	 
-154:	ソフトの二重起動検査... 二重起動はされていませんでした
-156:	ウインドウクラスを登録します... 登録に成功しました
-158:	ウインドウモード起動用のウインドウを作成します
-159:	ディスプレイ情報のセットアップ開始
-160:		モニターの数：1  ディスプレイデバイスの数：8
-160:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　144Hz  96x96dpi
-164:	ディスプレイ情報のセットアップ完了
-164:	ウインドウ矩形 ( 432, 169 )-( 1472, 848 )
-168:	ウインドウの作成に成功しました
-169:	ウインドウを表示します
-195:	ＩＭＥを無効にしました
-196:	ウインドウスタイルをウインドウモード用に変更します... 完了
-222:	XInput DLL の読み込み中... 成功
-227:	DirectInput関係初期化処理
-227:		DirectInput8 の取得を試みます...成功
-304:			引き続き初期化処理... 初期化成功
-344:		ジョイパッドの初期化... 
-345:			XInput 対応コントローラーのチェックを開始します
-345:				XInput 対応コントローラー No.0 をチェック
-347:				XInput 対応コントローラー No.0 の接続は確認できませんでした
-348:				XInput 対応コントローラー No.1 をチェック
-349:				XInput 対応コントローラー No.1 の接続は確認できませんでした
-351:				XInput 対応コントローラー No.2 をチェック
-352:				XInput 対応コントローラー No.2 の接続は確認できませんでした
-354:				XInput 対応コントローラー No.3 をチェック
-355:				XInput 対応コントローラー No.3 の接続は確認できませんでした
-356:			XInput 対応コントローラーのチェック完了
-358:			DirectInput 対応ジョイパッドの列挙を開始します
-381:			DirectInput 対応ジョイパッドの列挙終了
-381:		ジョイパッドの初期化は正常に終了しました
-382:		マウスデバイスの初期化... 初期化成功
-383:		キーボードデバイスの初期化... 初期化成功
-386:	DirectInput 関連の初期化は正常に終了しました
-389:	WASAPI の初期化を行います
-395:		デバイス名 : スピーカー (Realtek(R) Audio)
-401:		デフォルト遅延時間 : 10.000 ms
-402:		最小遅延時間       : 3.000 ms
-402:		遅延時間           : 10.000 ms
-403:		チャンネル数  　   : 2 ch
-404:		量子化ビット深度   : 32 bit
-405:		有効ビット深度　   : 32 bit
-405:		サンプリングレート : 48000 Hz
-406:		データ形式         : 浮動小数点型
-470:		動作モード         : 共有モード
-471:	WASAPI の初期化は正常に終了しました
-479:	d3d11.dll の読み込み.... 成功
-495:	dxgi.dll の読み込み.... 成功
-504:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
-510:	IDXGIFactory2 を作成します.... 成功
-1118:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
-1119:	IDXGIAdapter を列挙
-1120:		Adapter No.0 Desc:NVIDIA GeForce RTX 4060 Laptop GPU  VRAM:7957MB
-1121:		Adapter No.1 Desc:Intel(R) UHD Graphics  VRAM:128MB
-1121:			Output Device No.0 Name:\\.\DISPLAY1 ( 0, 0 )-( 1920, 1080 )
-1122:		Adapter No.2 Desc:Microsoft Basic Render Driver  VRAM:0MB
-1122:	API D3D11CreateDevice のアドレスを取得します.... 成功
-1123:	IDXGIAdapter を取得します.... 成功
-1124:	IDXGIAdapter1 を取得します.... 成功
-1125:	IDXGIAdapter2 を取得します.... 成功
-1126:	IDXGIAdapter3 を取得します.... 成功
-1127:	IDXGIAdapter4 を取得します.... 成功
-1128:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
-1129:	ID3D11Device オブジェクトを取得します.... 成功
-1209:	IDXGIDevice1 を取得します.... 成功
-1210:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
-1211:	[ウインドウモード 1024x640 ( 448, 195 )-( 1472, 835 )]
-1211:	IDXGISwapChain2 を作成します.... 成功
-1214:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
-1214:	IDXGIOutput を取得します.... 成功
-1217:	Graphics Device:Intel(R) UHD Graphics
-1218:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-1219:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
-1219:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
-1220:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
-1221:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-1221:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-1222:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
-1222:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-1222:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
-1223:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-1224:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
-1224:	ＤＸＴ２テクスチャフォーマットは使えません
-1225:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
-1225:	ＤＸＴ４テクスチャフォーマットは使えません
-1226:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
-1227:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
-1228:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
-1228:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-1229:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-1230:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-1230:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-1231:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-1231:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-1232:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-1232:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-1233:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-1233:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-1234:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-1235:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-1235:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-1236:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-1236:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-1237:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-1237:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-1238:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-1238:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-1239:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-1239:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-1240:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-1240:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-1241:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-1242:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-1242:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
-1243:	同時にレンダリングできるバッファの数:8
-1244:	最大テクスチャサイズ　幅:16384 高さ:16384
-1244:	標準描画用の頂点バッファの作成.... 成功
-1245:	シェーダーコード関係の初期化.... 成功
-1266:	各種シェーダー用定数バッファの作成.... 成功
-1269:	各種 ID3D11InputLayout の作成.... 成功
-1282:	画像の単純転送処理の初期化... 成功
-1283:	深度バッファを作成します.... 成功
-1285:	フォントの初期化を行います
-1287:	フォントの初期化は正常に終了しました
-1324:	文字コードバッファの初期化を行います... 完了しました
-1332:ＤＸライブラリの初期化処理終了
-1461:定数バッファ用の ID3D11Buffer の作成に失敗しました
+20:ウインドウモードフラグが立てられました
+27:ＤＸライブラリの初期化処理開始
+43:	システムの情報を出力します
+43:		ＤＸライブラリ Ver3.24f
+43:		論理プロセッサの数 : 16
+43:		ＯＳ  Windows11 ( Build 26200  )
+161:		現時点のＣＰＵ動作速度：大体2.67GHz
+161:		ＭＭＸ命令を使用します
+285:		ＳＳＥ命令が使用可能です
+290:		ＳＳＥ２命令が使用可能です
+295:		ＣＰＵベンダ：GenuineIntel
+368:		ＣＰＵ名：12th Gen Intel(R) Core(TM) i7-12650H
+380:	ＣＯＭの初期化... 成功
+434:	非同期読み込み処理の初期化...成功
+450:	ファイルアクセス処理の初期化...成功
+457:	メモリ総量:32471.49MB  空きメモリ領域:13235.47MB 
+458:	タイマーの精度を検査します
+470:	精度結果 更新回数 マルチメディアタイマー：0  パフォーマンスカウンター：60
+489:	 パフォーマンスカウンターを使用します タイマー精度 : 10000.000000 KHz 
+501:	 
+510:	ソフトの二重起動検査... 二重起動はされていませんでした
+530:	ウインドウクラスを登録します... 登録に成功しました
+553:	ウインドウモード起動用のウインドウを作成します
+569:	ディスプレイ情報のセットアップ開始
+578:		モニターの数：1  ディスプレイデバイスの数：8
+588:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　144Hz  96x96dpi
+606:	ディスプレイ情報のセットアップ完了
+615:	ウインドウ矩形 ( 432, 169 )-( 1472, 848 )
+630:	ウインドウの作成に成功しました
+640:	ウインドウを表示します
+673:	ＩＭＥを無効にしました
+675:	ウインドウスタイルをウインドウモード用に変更します... 完了
+707:	XInput DLL の読み込み中... 成功
+726:	DirectInput関係初期化処理
+740:		DirectInput8 の取得を試みます...成功
+855:			引き続き初期化処理... 初期化成功
+871:		ジョイパッドの初期化... 
+872:			XInput 対応コントローラーのチェックを開始します
+873:				XInput 対応コントローラー No.0 をチェック
+874:				XInput 対応コントローラー No.0 の接続は確認できませんでした
+875:				XInput 対応コントローラー No.1 をチェック
+876:				XInput 対応コントローラー No.1 の接続は確認できませんでした
+878:				XInput 対応コントローラー No.2 をチェック
+884:				XInput 対応コントローラー No.2 の接続は確認できませんでした
+889:				XInput 対応コントローラー No.3 をチェック
+893:				XInput 対応コントローラー No.3 の接続は確認できませんでした
+898:			XInput 対応コントローラーのチェック完了
+904:			DirectInput 対応ジョイパッドの列挙を開始します
+928:			DirectInput 対応ジョイパッドの列挙終了
+929:		ジョイパッドの初期化は正常に終了しました
+930:		マウスデバイスの初期化... 初期化成功
+931:		キーボードデバイスの初期化... 初期化成功
+938:	DirectInput 関連の初期化は正常に終了しました
+942:	WASAPI の初期化を行います
+947:		デバイス名 : スピーカー (Realtek(R) Audio)
+1010:		デフォルト遅延時間 : 10.000 ms
+1011:		最小遅延時間       : 3.000 ms
+1012:		遅延時間           : 10.000 ms
+1016:		チャンネル数  　   : 2 ch
+1038:		量子化ビット深度   : 32 bit
+1039:		有効ビット深度　   : 32 bit
+1040:		サンプリングレート : 48000 Hz
+1041:		データ形式         : 浮動小数点型
+1541:		動作モード         : 共有モード
+1541:	WASAPI の初期化は正常に終了しました
+1548:	d3d11.dll の読み込み.... 成功
+1552:	dxgi.dll の読み込み.... 成功
+1561:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
+1563:	IDXGIFactory2 を作成します.... 成功
+1580:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
+1582:	IDXGIAdapter を列挙
+1583:		Adapter No.0 Desc:NVIDIA GeForce RTX 4060 Laptop GPU  VRAM:7957MB
+1584:		Adapter No.1 Desc:Intel(R) UHD Graphics  VRAM:128MB
+1584:			Output Device No.0 Name:\\.\DISPLAY1 ( 0, 0 )-( 1920, 1080 )
+1585:		Adapter No.2 Desc:Microsoft Basic Render Driver  VRAM:0MB
+1585:	API D3D11CreateDevice のアドレスを取得します.... 成功
+1587:	IDXGIAdapter を取得します.... 成功
+1588:	IDXGIAdapter1 を取得します.... 成功
+1588:	IDXGIAdapter2 を取得します.... 成功
+1589:	IDXGIAdapter3 を取得します.... 成功
+1591:	IDXGIAdapter4 を取得します.... 成功
+1592:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
+1592:	ID3D11Device オブジェクトを取得します.... 成功
+1672:	IDXGIDevice1 を取得します.... 成功
+1673:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
+1674:	[ウインドウモード 1024x640 ( 448, 195 )-( 1472, 835 )]
+1674:	IDXGISwapChain2 を作成します.... 成功
+1676:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
+1677:	IDXGIOutput を取得します.... 成功
+1678:	Graphics Device:Intel(R) UHD Graphics
+1678:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+1679:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
+1679:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
+1680:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
+1680:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+1681:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+1681:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
+1682:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+1683:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
+1683:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+1683:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
+1684:	ＤＸＴ２テクスチャフォーマットは使えません
+1685:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
+1685:	ＤＸＴ４テクスチャフォーマットは使えません
+1686:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
+1686:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
+1687:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
+1687:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+1688:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+1688:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+1689:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+1689:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+1690:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+1691:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+1691:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+1692:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+1692:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+1693:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+1693:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+1694:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+1694:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+1695:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+1695:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+1696:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+1697:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+1697:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+1698:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+1698:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+1699:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+1699:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+1700:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+1700:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+1701:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
+1701:	同時にレンダリングできるバッファの数:8
+1702:	最大テクスチャサイズ　幅:16384 高さ:16384
+1702:	標準描画用の頂点バッファの作成.... 成功
+1704:	シェーダーコード関係の初期化.... 成功
+1725:	各種シェーダー用定数バッファの作成.... 成功
+1727:	各種 ID3D11InputLayout の作成.... 成功
+1740:	画像の単純転送処理の初期化... 成功
+1741:	深度バッファを作成します.... 成功
+1743:	フォントの初期化を行います
+1745:	フォントの初期化は正常に終了しました
+1781:	文字コードバッファの初期化を行います... 完了しました
+1788:ＤＸライブラリの初期化処理終了
+1919:定数バッファ用の ID3D11Buffer の作成に失敗しました
 
-1474:定数バッファ用の ID3D11Buffer の作成に失敗しました
+1931:定数バッファ用の ID3D11Buffer の作成に失敗しました
 
-1489:定数バッファ用の ID3D11Buffer の作成に失敗しました
+1949:定数バッファ用の ID3D11Buffer の作成に失敗しました
 
-4885:ウインドウを閉じようとしています
-4896:ウインドウが破棄されようとしています
-4897:ソフトを終了する準備が整いました
-4935:フォントの初期化を行います
-4938:フォントの初期化は正常に終了しました
-4994:d3d11.dll の解放 1
-4995:dxgi.dll の解放 1
-4996:Direct3D11 のオブジェクト数を出力
-4998:Direct3D11 のオブジェクト合計数 : 0
-5000:DirectInput 関連の終了処理... 完了
-5004:サウンド関連の終了処理... 完了
-5009:ウィンドウ関連の終了処理... 完了
-5072:ＣＯＭを終了... 完了
-5072:
-5073:Alloc memory dump
-5074:	Total size:0(0.000kb)  Alloc num:0
-5075:
+4019:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4044:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4052:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4059:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4065:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4070:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4077:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4083:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4089:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4095:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4102:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4107:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4114:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4122:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4128:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4135:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4142:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4149:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4155:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4163:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4170:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4177:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4184:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4191:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4198:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4206:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4213:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4220:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4228:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4234:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4240:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4247:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4254:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4261:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4268:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4274:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4281:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4288:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4295:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4302:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4309:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4316:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4323:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4330:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4337:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4344:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4351:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4357:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4364:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4371:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4378:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4385:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4392:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4399:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4405:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4413:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4420:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4427:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4434:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4441:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4447:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4454:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4461:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4469:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4476:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4482:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4489:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4497:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4503:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4510:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4517:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4524:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4531:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4538:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4545:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4551:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4559:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4566:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4572:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4580:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4587:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4593:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4600:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4607:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4614:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4622:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4627:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4635:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4642:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4649:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4655:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4663:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4670:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4677:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4684:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4691:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4698:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4704:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4712:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4718:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4725:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4735:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4741:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4747:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4754:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4760:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4767:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4774:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4781:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4788:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4795:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4802:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4808:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4815:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4824:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4830:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4837:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4844:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4851:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4857:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4864:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4872:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4878:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4886:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4892:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4898:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4905:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4913:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4920:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4927:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4934:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4940:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4947:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4954:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4962:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4968:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4975:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4982:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4989:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4995:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5003:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5010:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5017:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5024:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5031:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5038:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5045:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5052:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5058:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5065:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5072:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5079:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5085:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5093:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5100:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5107:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5114:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5121:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5128:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5135:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5142:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5149:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5155:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5163:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5169:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5177:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5183:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5190:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5197:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5204:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5211:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5218:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5225:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5232:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5240:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5245:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5252:ID3D11SamplerState の作成に失敗しました　箇所２
+
+32062:ウインドウを閉じようとしています
+32072:ウインドウが破棄されようとしています
+32072:ソフトを終了する準備が整いました

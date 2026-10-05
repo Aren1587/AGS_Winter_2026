@@ -69,13 +69,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
     SetUseZBuffer3D(TRUE);
     SetWriteZBuffer3D(TRUE);
     SetUseBackCulling(DX_CULLING_NONE);  // 両面描画 (切断面のフタも見えるように)
-
+    SetBackgroundColor(255, 255, 255);
     // ---- メッシュの読み込み (失敗したら立方体) ----
     Mesh mesh;
 
     int handle = MV1LoadModel("model.mv1");
-
-    auto test = MV1GetTextureNum(handle);
 
     if (handle != -1)
         mesh = MeshCut::FromMV1(handle);
@@ -85,11 +83,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
     // ---- MeshCutter の初期化 ----
     //   中心・半径は SetMesh の時点で自動計算される (GetCenter/GetRadius)。
     //   カメラの位置決めや、重力・押し出し速度の大きさにそのまま使える。
+    //   色は SetMesh の時点でモデルの色が自動的に取り込まれるので、
+    //   ここで追加の呼び出しは不要。
     MeshCutter cutter;
 
     cutter.SetMesh(mesh);
-
-    cutter.SetDifColor(handle, 0);
 
     const VECTOR center = cutter.GetCenter();
     const float radius = cutter.GetRadius();

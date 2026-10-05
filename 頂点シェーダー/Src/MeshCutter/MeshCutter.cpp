@@ -132,10 +132,12 @@ void MeshCutter::Cut(
 void MeshCutter::Update(
     float deltaTime)
 {
+    const float gravity = gravityEnabled_ ? gravityValue_ : 0.0f;
+
     for (auto& piece : pieces_)
     {
         // 重力
-        piece.vel.y -= gravity_ * deltaTime;
+        piece.vel.y -= gravity * deltaTime;
 
         // 減衰 (damping_ が 1.0 なら何もしない)
         piece.vel = VScale(piece.vel, damping_);
@@ -161,7 +163,7 @@ void MeshCutter::Update(
         piece.vel.z *= friction_;
 
         // 跳ね返りが十分小さくなったら、完全に止める
-        if (std::fabs(piece.vel.y) < gravity_ * deltaTime * 2.0f + 1e-5f)
+        if (std::fabs(piece.vel.y) < gravity * deltaTime * 2.0f + 1e-5f)
             piece.vel.y = 0.0f;
     }
 }
@@ -185,10 +187,18 @@ void MeshCutter::Draw()
 void MeshCutter::DrawPiece(
     const Piece& piece)
 {
-    const auto& color = palette_[piece.color % palette_.size()];
+    // メッシュに色情報(元のテクスチャ・マテリアルの色)があればそれを使い、
+    // 無ければパレットの先頭色を使う (MakeCube など色を持たないメッシュ用)
+    bool hasColor = !piece.mesh.colors.empty();
+
+    const auto& fallback = palette_[0];
 
     for (const auto& face : piece.mesh.faces)
     {
+        int i0 = face[0];
+        int i1 = face[1];
+        int i2 = face[2];
+
         VECTOR p0 = VAdd(piece.mesh.verts[face[0]], piece.pos);
         VECTOR p1 = VAdd(piece.mesh.verts[face[1]], piece.pos);
         VECTOR p2 = VAdd(piece.mesh.verts[face[2]], piece.pos);
@@ -201,18 +211,74 @@ void MeshCutter::DrawPiece(
 
         if (length > 0.0f)
         {
+            normal = VScale(normal, 1.0f / length);
+
             brightness +=
                 0.65f * std::fabs(VDot(normal, light_)) / length;
         }
 
-        DrawTriangle3D(
-            p0,
-            p1,
-            p2,
-            GetColor(
-                (int)(color[0] * brightness),
-                (int)(color[1] * brightness),
-                (int)(color[2] * brightness)),
+        int r, g, b;
+
+        if (hasColor)
+        {
+            // 三角形の3頂点の色を平均して、その三角形の色とする
+            const auto& c0 = piece.mesh.colors[face[0]];
+            const auto& c1 = piece.mesh.colors[face[1]];
+            const auto& c2 = piece.mesh.colors[face[2]];
+
+            r = ((int)c0.r + c1.r + c2.r) / 3;
+            g = ((int)c0.g + c1.g + c2.g) / 3;
+            b = ((int)c0.b + c1.b + c2.b) / 3;
+        }
+        else
+        {
+            r = fallback[0];
+            g = fallback[1];
+            b = fallback[2];
+        }
+
+        
+        VERTEX3D vertex[3];
+
+        vertex[0].pos = p0;
+        vertex[1].pos = p1;
+        vertex[2].pos = p2;
+
+        // UV
+        vertex[0].u = piece.mesh.u[i0];
+        vertex[0].v = piece.mesh.v[i0];
+
+        vertex[1].u = piece.mesh.u[i1];
+        vertex[1].v = piece.mesh.v[i1];
+
+        vertex[2].u = piece.mesh.u[i2];
+        vertex[2].v = piece.mesh.v[i2];
+
+        // 色
+        COLOR_U8 color = GetColorU8(
+            static_cast<int>(r * brightness),
+            static_cast<int>(g * brightness),
+            static_cast<int>(b * brightness),
+            255);
+
+        vertex[0].dif = color;
+        vertex[1].dif = color;
+        vertex[2].dif = color;
+
+        // スペキュラカラー
+        vertex[0].spc = GetColorU8(255, 255, 255, 255);
+        vertex[1].spc = GetColorU8(255, 255, 255, 255);
+        vertex[2].spc = GetColorU8(255, 255, 255, 255);
+
+        // 法線
+        vertex[0].norm = normal;
+        vertex[1].norm = normal;
+        vertex[2].norm = normal;
+
+        DrawPolygon3D(
+            vertex,
+            1,
+            piece.mesh.textureHandle,
             TRUE);
     }
 }
@@ -287,7 +353,27 @@ void MeshCutter::SetCapEnabled(
 void MeshCutter::SetGravity(
     float gravity)
 {
-    gravity_ = gravity;
+    gravityValue_ = gravity;
+}
+
+
+void MeshCutter::SetGravityEnabled(
+    bool enabled)
+{
+    gravityEnabled_ = enabled;
+
+    if (!enabled)
+    {
+        // OFF にした瞬間、空中で静止させる (落下中だった速度を残さない)
+        for (auto& piece : pieces_)
+            piece.vel = VGet(0, 0, 0);
+    }
+}
+
+
+bool MeshCutter::IsGravityEnabled() const
+{
+    return gravityEnabled_;
 }
 
 

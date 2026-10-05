@@ -16,10 +16,11 @@
 #include "GameScene.h"
 
 GameScene::GameScene(void)
+	:
+	player_(nullptr),
+	skyDome_(nullptr),
+	stage_(nullptr)
 {
-	player_ = nullptr;
-	skyDome_ = nullptr;
-	stage_ = nullptr;
 }
 
 GameScene::~GameScene(void)
@@ -186,7 +187,7 @@ void GameScene::Update(void)
 			}
 		}
 	}
-
+	alreadyCutThisSwing_ = false;  // 振り終わったらリセット
 	if (!player_->IsSlashing())
 	{
 		alreadyCutThisSwing_ = false;  // 振り終わったらリセット
@@ -195,23 +196,22 @@ void GameScene::Update(void)
 
 void GameScene::Draw(void)
 {
+	SetUseZBuffer3D(TRUE);
+	SetWriteZBuffer3D(TRUE);
+
 	int mainScreen = SceneManager::GetInstance().GetMainScreen();
 	// 背景
-	//skyDome_->Draw();
-	//stage_->Draw();
+	skyDome_->Draw();
+	stage_->Draw();
 	
 	moon_->Draw();
 	player_->Draw();
-	
 
 	// ヘルプ
 	DrawFormatString(840, 20, 0x000000, "移動　　：WASD");
 	DrawFormatString(840, 40, 0x000000, "カメラ　：矢印キー");
 	DrawFormatString(840, 60, 0x000000, "ダッシュ：右Shift");
 	DrawFormatString(840, 80, 0x000000, "ジャンプ：＼(バクスラ)");
-
-
-	
 
 	//for (auto& star : stage_->GetWarpStar())
 	//{

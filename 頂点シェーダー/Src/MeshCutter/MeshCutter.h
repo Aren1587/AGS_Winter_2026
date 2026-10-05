@@ -154,6 +154,15 @@ public:
     void SetGravity(
         float gravity);
 
+    // 重力の ON/OFF だけを切り替える。
+    //   OFF にしても SetGravity で設定した値は覚えたままなので、
+    //   再び ON にすれば同じ強さの重力に戻る。
+    //   OFF にした瞬間、全破片の速度を 0 にして空中で静止させる。
+    void SetGravityEnabled(
+        bool enabled);
+
+    bool IsGravityEnabled() const;
+
     // 空中・地上を問わず毎フレームかかる速度の減衰率。
     // 1.0 なら減衰なし (既定 1.0)。
     // 重力を使わずに「切った破片が飛び散って自然に止まる」挙動にしたいときは
@@ -188,7 +197,10 @@ public:
     void SetLight(
         VECTOR light);
 
-    // 破片の色パレット。色数は自由 (切った破片数が色数を超えたら先頭に戻る)
+    // 破片の色のフォールバック。
+    // MeshCut::Mesh が色情報 (MV1 の元のテクスチャ・マテリアルの色) を持っている
+    // 場合はそれが優先して使われ、これは色情報を持たないメッシュ (立方体などの
+    // テスト用図形) にだけ使われる。palette の最初の要素が使われる。
     void SetPalette(
         const std::vector<std::array<int, 3>>& palette);
 
@@ -235,7 +247,8 @@ private:
     bool capEnabled_ = true;
 
     // 重力・床
-    float gravity_ = 0.0f;
+    float gravityValue_ = 0.0f;   // SetGravity で設定した値 (ON/OFF に関わらず覚えておく)
+    bool gravityEnabled_ = true;  // 現在 ON か (OFF の間は Update で 0 として扱う)
     float damping_ = 1.0f;
     bool floorEnabled_ = false;
     float floorY_ = 0.0f;

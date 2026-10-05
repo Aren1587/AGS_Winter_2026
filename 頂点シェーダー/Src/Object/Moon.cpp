@@ -6,13 +6,12 @@
 void Moon::Init()
 {
     int handle = MV1LoadModel("Data/Model/model.mv1");
-    MV1SetScale(handle, { 0.5, 0.5, 0.5 });
+    MV1SetScale(handle, { 0.1, 0.1, 0.1 });
     //cutter_ = new MeshCutter();
-    MV1SetPosition(handle, { 100, 100, 600
-        });
+    MV1SetPosition(handle, { 100, 100, 600 });
 
     std::string path = Application::PATH_MODEL + "Player/";
-    animationController_ = std::make_unique<AnimationController>(transform_.modelId);
+    //animationController_ = std::make_unique<AnimationController>(transform_.modelId);
 
     cutter_.SetMesh(MeshCut::FromMV1(handle));
     cutter_.SetGravity(0.3f);
@@ -21,6 +20,12 @@ void Moon::Init()
 
 void Moon::Update()
 {
-    animationController_->Update();
+    //animationController_->Update();
     cutter_.Update();
+}
+
+void Moon::Draw()
+{
+    cutter_.Draw();
+    DrawSphere3D({ 100,100,600 }, 10, 12, 0xffffff, 0xffffff, true);
 }

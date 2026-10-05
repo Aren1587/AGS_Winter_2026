@@ -17,13 +17,13 @@ public:
     }
 
     void Update();
-    void Draw() { cutter_.Draw(); }
+    void Draw();
 
     VECTOR GetCenter() const { return cutter_.GetCenter(); }
     float GetRadius() const { return cutter_.GetRadius(); }
 
 private:
-    std::unique_ptr<AnimationController> animationController_;
+    //std::unique_ptr<AnimationController> animationController_;
 
     MeshCutter cutter_;
 

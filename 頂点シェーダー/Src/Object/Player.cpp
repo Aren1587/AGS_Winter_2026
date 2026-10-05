@@ -116,7 +116,7 @@ void Player::Update(void)
 	float swordLength = 100.0f;
 
 	// 剣の先端が +Z 方向なら
-	VECTOR localTip = VGet(0.0f, 0.0f, swordLength);
+	VECTOR localTip = VGet(-swordLength, 0.0f, 0.0f);
 
 	// ローカル座標 → ワールド座標
 	VECTOR hilt = VTransform(localHilt, swordMat);
@@ -134,6 +134,7 @@ void Player::Draw(void)
 	// モデルの描画
 	MV1DrawModel(transform_.modelId);
 	MV1DrawModel(swordTransform_.modelId);
+	DrawSphere3D(GetSword().GetTip(), 10, 12, 0xffff00, 0xffff00, true);
 
 	// 丸影描画
 	DrawShadow();

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // ================================================================
 //  MeshCut : 三角形メッシュを平面で切断する処理
@@ -40,9 +40,17 @@ namespace MeshCut
 
     struct Mesh
     {
-        std::vector<VECTOR> verts;              // 頂点
-        std::vector<std::array<int, 3>> faces;  // どの頂点で３角形を作るか
-        FLOAT2 u;
+        std::vector<VECTOR> verts;
+        std::vector<std::array<int, 3>> faces;
+
+        std::vector<float> u;
+        std::vector<float> v;
+
+        int textureHandle = -1;
+
+        // 頂点ごとの色 (MV1 のディフューズカラー、つまり元のテクスチャ・マテリアルの
+        // 色をそのまま持ってきたもの)。verts と同じ数だけあるか、空(色情報なし)のどちらか。
+        std::vector<COLOR_U8> colors;
     };
 
 
@@ -63,6 +71,11 @@ namespace MeshCut
             src.verts.size());
 
         Mesh out;
+
+        bool hasColor =
+            !src.colors.empty();
+
+        out.textureHandle = src.textureHandle;
 
         for (size_t i = 0;
             i < src.verts.size();
@@ -90,6 +103,14 @@ namespace MeshCut
                     ).first;
 
                 out.verts.push_back(p);
+
+                out.u.push_back(src.u[i]);
+                out.v.push_back(src.v[i]);
+
+                if (hasColor)
+                {
+                    out.colors.push_back(src.colors[i]);
+                }
             }
 
             remap[i] =
@@ -141,18 +162,23 @@ namespace MeshCut
         raw.verts.reserve(
             polygonList.VertexNum);
 
+        raw.colors.reserve(
+            polygonList.VertexNum);
+
+        raw.u.reserve(
+            polygonList.VertexNum);
+
+        raw.v.reserve(
+            polygonList.VertexNum);
+
         raw.faces.reserve(
             polygonList.PolygonNum);
 
-        //raw.u.u = 10;
+        raw.textureHandle = MV1GetTextureGraphHandle(modelHandle, 0);
 
-        //raw.u.reserve(
-        //    polygonList.VertexNum);
-
-        //raw.v.reserve(
-        //    polygonList.VertexNum);
-
-        // 頂点
+        // 頂点 (座標と色)
+        // DiffuseColor は、頂点カラーが無いモデルでは
+        // そのままマテリアル(テクスチャ)の色が入っている
         for (int i = 0;
             i < polygonList.VertexNum;
             ++i)
@@ -160,10 +186,14 @@ namespace MeshCut
             raw.verts.push_back(
                 polygonList.Vertexs[i].Position);
 
-            //raw.u = polygonList.Vertexs[i].TexCoord->u;
+            raw.colors.push_back(
+                polygonList.Vertexs[i].DiffuseColor);
 
-            //raw.v.push_back(
-              //  polygonList.Vertexs[i].TexCoord->v);
+            raw.u.push_back(
+                polygonList.Vertexs[i].TexCoord->u);
+
+            raw.v.push_back(
+                polygonList.Vertexs[i].TexCoord->v);
         }
 
         // ポリゴン
@@ -268,9 +298,19 @@ namespace MeshCut
 
         inline Mesh Compact(
             const std::vector<VECTOR>& verts,
-            const std::vector<std::array<int, 3>>& faces)
+            const std::vector<COLOR_U8>& colors,
+            const std::vector<float>& u,
+            const std::vector<float>& v,
+            const std::vector<std::array<int, 3>>& faces,
+            int textureHandle)
         {
             Mesh out;
+
+            bool hasColor =
+                !colors.empty();
+
+            out.textureHandle =
+                textureHandle;
 
             std::vector<int> remap(
                 verts.size(),
@@ -294,6 +334,20 @@ namespace MeshCut
 
                         out.verts.push_back(
                             verts[index]);
+
+                        // UV
+                        out.u.push_back(
+                            u[index]);
+
+                        out.v.push_back(
+                            v[index]);
+
+                        // 色
+                        if (hasColor)
+                        {
+                            out.colors.push_back(
+                                colors[index]);
+                        }
                     }
 
                     newFace[i] =
@@ -355,13 +409,39 @@ namespace MeshCut
             }
         }
 
-
         // --------------------------------------------------------
-        // 頂点
+        // 頂点 (色は src に無ければ空のまま)
         // --------------------------------------------------------
 
         std::vector<VECTOR> verts =
             src.verts;
+
+        std::vector<COLOR_U8> colors =
+            src.colors;
+
+        std::vector<float> u =
+            src.u;
+
+        std::vector<float> v =
+            src.v;
+
+        bool hasColor =
+            !colors.empty();
+
+
+        // 2色を t (0〜1) で線形補間する
+        auto LerpColor =
+            [](COLOR_U8 a, COLOR_U8 b, float t)
+            {
+                COLOR_U8 c;
+
+                c.r = (unsigned char)(a.r + (b.r - a.r) * t);
+                c.g = (unsigned char)(a.g + (b.g - a.g) * t);
+                c.b = (unsigned char)(a.b + (b.b - a.b) * t);
+                c.a = (unsigned char)(a.a + (b.a - a.a) * t);
+
+                return c;
+            };
 
 
         // --------------------------------------------------------
@@ -431,6 +511,27 @@ namespace MeshCut
 
                 verts.push_back(
                     position);
+
+                // UVを補間
+                float newU =
+                    src.u[a] +
+                    (src.u[b] - src.u[a]) * t;
+
+                float newV =
+                    src.v[a] +
+                    (src.v[b] - src.v[a]) * t;
+
+                u.push_back(newU);
+                v.push_back(newV);
+
+                if (hasColor)
+                {
+                    colors.push_back(
+                        LerpColor(
+                            src.colors[a],
+                            src.colors[b],
+                            t));
+                }
 
 
                 int index =
@@ -618,14 +719,18 @@ namespace MeshCut
                         VECTOR center =
                             VGet(0, 0, 0);
 
+                        float centerU = 0.0f;
+                        float centerV = 0.0f;
 
-                        for (int index :
-                        loop)
+                        for (int index : loop)
                         {
                             center =
                                 VAdd(
                                     center,
                                     verts[index]);
+
+                            centerU += u[index];
+                            centerV += v[index];
                         }
 
 
@@ -635,9 +740,39 @@ namespace MeshCut
                                 1.0f /
                                 (float)loop.size());
 
+                        centerU /=
+                            (float)loop.size();
+
+                        centerV /=
+                            (float)loop.size();
 
                         verts.push_back(
                             center);
+
+                        u.push_back(centerU);
+                        v.push_back(centerV);
+
+                        if (hasColor)
+                        {
+                            int r = 0, g = 0, b = 0, a = 0;
+
+                            for (int index : loop)
+                            {
+                                r += colors[index].r;
+                                g += colors[index].g;
+                                b += colors[index].b;
+                                a += colors[index].a;
+                            }
+
+                            COLOR_U8 avg;
+
+                            avg.r = (unsigned char)(r / (int)loop.size());
+                            avg.g = (unsigned char)(g / (int)loop.size());
+                            avg.b = (unsigned char)(b / (int)loop.size());
+                            avg.a = (unsigned char)(a / (int)loop.size());
+
+                            colors.push_back(avg);
+                        }
 
 
                         int centerIndex =
@@ -692,13 +827,20 @@ namespace MeshCut
         outPos =
             detail::Compact(
                 verts,
-                positiveFaces);
-
+                colors,
+                u,
+                v,
+                positiveFaces,
+                src.textureHandle);
 
         outNeg =
             detail::Compact(
                 verts,
-                negativeFaces);
+                colors,
+                u,
+                v,
+                negativeFaces,
+                src.textureHandle);
     }
 
 
