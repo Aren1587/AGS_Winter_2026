@@ -236,7 +236,6 @@ void MeshCutter::DrawPiece(
             g = fallback[1];
             b = fallback[2];
         }
-
         
         VERTEX3D vertex[3];
 

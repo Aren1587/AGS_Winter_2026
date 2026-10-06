@@ -35,12 +35,12 @@ void AnimationController::Add(int type, const std::string& path, float speed)
 
 	if (animations_.count(type) == 0)
 	{
-		// “ü‚ê‘Ö‚¦
+		// ’Ç‰Á
 		animations_.emplace(type, anim);
 	}
 	else
 	{
-		// ’Ç‰Á
+		// “ü‚ê‘Ö‚¦
 		animations_[type].model = anim.model;
 		animations_[type].animIndex = anim.animIndex;
 		animations_[type].attachNo = anim.attachNo;
