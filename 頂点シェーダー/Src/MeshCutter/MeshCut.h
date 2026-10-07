@@ -51,6 +51,9 @@ namespace MeshCut
         // 頂点ごとの色 (MV1 のディフューズカラー、つまり元のテクスチャ・マテリアルの
         // 色をそのまま持ってきたもの)。verts と同じ数だけあるか、空(色情報なし)のどちらか。
         std::vector<COLOR_U8> colors;
+
+        // 追加: 描画用の頂点 (3頂点 × 面数。破片のローカル座標)
+        std::vector<VERTEX3D> drawVerts;
     };
 
 

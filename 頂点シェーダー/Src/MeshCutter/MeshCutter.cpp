@@ -184,102 +184,43 @@ void MeshCutter::Draw()
 // 破片1個描画
 // ================================================================
 
-void MeshCutter::DrawPiece(
-    const Piece& piece)
+void MeshCutter::DrawPiece(const Piece& piece)
 {
-    // メッシュに色情報(元のテクスチャ・マテリアルの色)があればそれを使い、
-    // 無ければパレットの先頭色を使う (MakeCube など色を持たないメッシュ用)
-    bool hasColor = !piece.mesh.colors.empty();
+    const auto& m = piece.mesh;
+    bool hasColor = !m.colors.empty();
+    const auto& fb = palette_[0];
 
-    const auto& fallback = palette_[0];
-
-    for (const auto& face : piece.mesh.faces)
+    // 頂点法線(Mesh に無ければ面法線を頂点に足して作る)
+    std::vector<VECTOR> normals(m.verts.size(), VGet(0, 0, 0));
+    for (const auto& f : m.faces)
     {
-        int i0 = face[0];
-        int i1 = face[1];
-        int i2 = face[2];
-
-        VECTOR p0 = VAdd(piece.mesh.verts[face[0]], piece.pos);
-        VECTOR p1 = VAdd(piece.mesh.verts[face[1]], piece.pos);
-        VECTOR p2 = VAdd(piece.mesh.verts[face[2]], piece.pos);
-
-        VECTOR normal = VCross(VSub(p1, p0), VSub(p2, p0));
-
-        float length = VSize(normal);
-
-        float brightness = 0.35f;
-
-        if (length > 0.0f)
-        {
-            normal = VScale(normal, 1.0f / length);
-
-            brightness +=
-                0.65f * std::fabs(VDot(normal, light_)) / length;
-        }
-
-        int r, g, b;
-
-        if (hasColor)
-        {
-            // 三角形の3頂点の色を平均して、その三角形の色とする
-            const auto& c0 = piece.mesh.colors[face[0]];
-            const auto& c1 = piece.mesh.colors[face[1]];
-            const auto& c2 = piece.mesh.colors[face[2]];
-
-            r = ((int)c0.r + c1.r + c2.r) / 3;
-            g = ((int)c0.g + c1.g + c2.g) / 3;
-            b = ((int)c0.b + c1.b + c2.b) / 3;
-        }
-        else
-        {
-            r = fallback[0];
-            g = fallback[1];
-            b = fallback[2];
-        }
-        
-        VERTEX3D vertex[3];
-
-        vertex[0].pos = p0;
-        vertex[1].pos = p1;
-        vertex[2].pos = p2;
-
-        // UV
-        vertex[0].u = piece.mesh.u[i0];
-        vertex[0].v = piece.mesh.v[i0];
-
-        vertex[1].u = piece.mesh.u[i1];
-        vertex[1].v = piece.mesh.v[i1];
-
-        vertex[2].u = piece.mesh.u[i2];
-        vertex[2].v = piece.mesh.v[i2];
-
-        // 色
-        COLOR_U8 color = GetColorU8(
-            static_cast<int>(r * brightness),
-            static_cast<int>(g * brightness),
-            static_cast<int>(b * brightness),
-            255);
-
-        vertex[0].dif = color;
-        vertex[1].dif = color;
-        vertex[2].dif = color;
-
-        // スペキュラカラー
-        vertex[0].spc = GetColorU8(255, 255, 255, 255);
-        vertex[1].spc = GetColorU8(255, 255, 255, 255);
-        vertex[2].spc = GetColorU8(255, 255, 255, 255);
-
-        // 法線
-        vertex[0].norm = normal;
-        vertex[1].norm = normal;
-        vertex[2].norm = normal;
-
-        DrawPolygon3D(
-            vertex,
-            1,
-            piece.mesh.textureHandle,
-            TRUE);
+        VECTOR n = VCross(VSub(m.verts[f[1]], m.verts[f[0]]),
+            VSub(m.verts[f[2]], m.verts[f[0]]));
+        for (int k = 0; k < 3; k++)
+            normals[f[k]] = VAdd(normals[f[k]], n);   // 面積重み付き
     }
+
+    std::vector<VERTEX3D> vs(m.verts.size());
+    for (size_t i = 0; i < vs.size(); i++)
+    {
+        VERTEX3D& v = vs[i];
+        v.pos = VAdd(m.verts[i], piece.pos);
+        v.norm = VSize(normals[i]) > 0 ? VNorm(normals[i]) : VGet(0, 1, 0);
+        v.u = m.u[i];  v.v = m.v[i];
+        v.su = v.sv = 0.0f;
+        v.dif = hasColor ? GetColorU8(m.colors[i].r, m.colors[i].g, m.colors[i].b, 255)
+            : GetColorU8(fb[0], fb[1], fb[2], 255);
+        v.spc = GetColorU8(0, 0, 0, 0);   // ハイライトなし
+    }
+
+    std::vector<unsigned short> idx;
+    idx.reserve(m.faces.size() * 3);
+    for (const auto& f : m.faces)
+        for (int k = 0; k < 3; k++)
+            idx.push_back((unsigned short)f[k]);
+
+    DrawPolygonIndexed3D(vs.data(), (int)vs.size(), idx.data(),
+        (int)m.faces.size(), m.textureHandle, TRUE);
 }
 
 

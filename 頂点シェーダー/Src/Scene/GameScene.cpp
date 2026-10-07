@@ -142,12 +142,12 @@ void GameScene::Update(void)
 	if (player_->IsSlashing() && !alreadyCutThisSwing_)
 	{
 		VECTOR tip = player_->GetSword().GetTip();
-		VECTOR center = moon_->GetCenter();
+		VECTOR center = moon_->GetTransform().pos;//moon_->GetCenter();
 
 		VECTOR toTip = VSub(tip, center);
 
 		float distance = VSize(toTip);
-		float radius = moon_->GetRadius();
+		float radius = 100.0f;//moon_->GetRadius();
 
 		// ŒŽ‚Ì“–‚½‚è”»’è‚ð‰ÂŽ‹‰»
 		DrawSphere3D(

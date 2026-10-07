@@ -23,8 +23,7 @@ public:
 
     VECTOR GetCenter() const { return cutter_.GetCenter(); }
     float GetRadius() const { return cutter_.GetRadius(); }
-
-    const void IsCut(bool isCut) const {}
+    Transform GetTransform() const { return transform_; }
 
 private:
     std::unique_ptr<AnimationController> animationController_;
@@ -32,4 +31,6 @@ private:
     MeshCutter cutter_;
 
     Transform transform_;
+
+    bool isCut_;
 };
