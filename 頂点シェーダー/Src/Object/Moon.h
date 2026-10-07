@@ -13,6 +13,7 @@ public:
     ~Moon();
 
     void Init();
+    void MeshInit();
 
     // 平面(origin, normal)はワールド座標。Sword 側で計算したものを渡す
     void Cut(VECTOR origin, VECTOR normal);

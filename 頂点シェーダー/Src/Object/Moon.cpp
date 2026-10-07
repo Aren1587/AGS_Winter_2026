@@ -30,6 +30,10 @@ void Moon::Init()
     animationController_->Play(0);
 }
 
+void Moon::MeshInit()
+{
+}
+
 void Moon::Cut(VECTOR origin, VECTOR normal) 
 {
     if(!isCut_)
