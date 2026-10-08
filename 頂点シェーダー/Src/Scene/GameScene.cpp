@@ -10,7 +10,8 @@
 #include "../Object/Stage.h"
 #include "../Object/Player.h"
 #include "../Object/Planet.h"
-#include "../Object/Moon.h"
+#include "../Object/Enemy.h"
+#include "../Object/Sword.h"
 #include "../Renderer/PixelMaterial.h"
 #include "../Renderer/PixelRenderer.h"
 #include "GameScene.h"
@@ -19,7 +20,8 @@ GameScene::GameScene(void)
 	:
 	player_(nullptr),
 	skyDome_(nullptr),
-	stage_(nullptr)
+	stage_(nullptr),
+	mode_(MODE::MAIN)
 {
 }
 
@@ -35,7 +37,7 @@ void GameScene::Init(void)
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
-	moon_ = std::make_unique<Moon>();
+	moon_ = std::make_unique<Enemy>();
 	moon_->Init();
 
 	// ステージ
@@ -51,68 +53,10 @@ void GameScene::Init(void)
 
 	mainCamera.SetFollow(&player_->GetTransform());
 	mainCamera.ChangeMode(Camera::MODE::FOLLOW);
-
-	// ポストエフェクト用スクリーン
-	postEffectScreen_ = MakeScreen(
-		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
-
-	// ポストエフェクト用(モノトーン)
-	monoMaterial_ = std::make_unique<PixelMaterial>("Monotone.cso", 1);
-	monoMaterial_->AddConstBuf({ 1.0f, 1.0f, 1.0f, 1.0f });
-	monoMaterial_->AddTextureBuf(SceneManager::GetInstance().GetMainScreen());
-	monoRenderer_ = std::make_unique<PixelRenderer>(*monoMaterial_);
-	monoRenderer_->MakeSquereVertex(
-		Vector2(0, 0),
-		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
-	);
-
-	// ポストエフェクト用(走査線)
-	scanMaterial_ = std::make_unique<PixelMaterial>("ScanLine.cso", 2);
-	scanMaterial_->AddConstBuf({ 1.0f, 1.0f, 1.0f, 1.0f });
-	scanMaterial_->AddConstBuf({ 0.0f, 0.0f, 0.0f, 0.0f });
-	scanMaterial_->AddTextureBuf(SceneManager::GetInstance().GetMainScreen());
-	scanRenderer_ = std::make_unique<PixelRenderer>(*scanMaterial_);
-	scanRenderer_->MakeSquereVertex(
-		Vector2(0, 0),
-		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
-	);
-
-	// ポストエフェクト用(ビネット)
-	vineMaterial_ = std::make_unique<PixelMaterial>("Vignette.cso", 1);
-	vineMaterial_->AddConstBuf({ 3.5f, 0.0f, 0.0f, 0.0f });
-	vineMaterial_->AddTextureBuf(SceneManager::GetInstance().GetMainScreen());
-	vineRenderer_ = std::make_unique<PixelRenderer>(*vineMaterial_);
-	vineRenderer_->MakeSquereVertex(
-		Vector2(0, 0),
-		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
-	);
-
-	// ポストエフェクト用(レンズの歪み)
-	lensMaterial_ = std::make_unique<PixelMaterial>("LensDistortion.cso", 1);
-	lensMaterial_->AddConstBuf({ 3.5f, 0.0f, 0.0f, 0.0f });
-	lensMaterial_->AddTextureBuf(SceneManager::GetInstance().GetMainScreen());
-	lensRenderer_ = std::make_unique<PixelRenderer>(*lensMaterial_);
-	lensRenderer_->MakeSquereVertex(
-		Vector2(0, 0),
-		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
-	);
-
-	//vertexMaterial_ = std::make_unique<VertexMaterial>("VertexShader.cso", 1);
-	//vertexMaterial_->AddConstBuf({ 1.0f, 1.0f, 1.0f, 1.0f });
-	//vertexMaterial_->AddTextureBuf(SceneManager::GetInstance().GetMainScreen());
-	//for(auto& star : stage_->GetWarpStar())
-	//{
-	//	//vertexRenderer_ = std::make_unique<VertexRenderer>(*vertexMaterial_, );
-	//}
-
-	// 初期モード
-	mode_ = MODE::MAIN;
-
 }
 
 void GameScene::Update(void)
 {
-
 	// シーン遷移
 	InputManager& ins = InputManager::GetInstance();
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
@@ -141,7 +85,7 @@ void GameScene::Update(void)
 
 	if (player_->IsSlashing() && !alreadyCutThisSwing_)
 	{
-		VECTOR tip = player_->GetSword().GetTip();
+		VECTOR tip = player_->GetSword()->GetTip();
 		VECTOR center = moon_->GetTransform().pos;//moon_->GetCenter();
 
 		VECTOR toTip = VSub(tip, center);
@@ -180,7 +124,7 @@ void GameScene::Update(void)
 		if (distance < radius)
 		{
 			VECTOR origin, normal;
-			if (player_->GetSword().ComputeSwingPlane(origin, normal))
+			if (player_->GetSword()->ComputeSwingPlane(origin, normal))
 			{
 				moon_->Cut(origin, normal);
 				alreadyCutThisSwing_ = true;  // 1回の振りで何度も切らないようにする
@@ -212,79 +156,4 @@ void GameScene::Draw(void)
 	DrawFormatString(840, 40, 0x000000, "カメラ　：矢印キー");
 	DrawFormatString(840, 60, 0x000000, "ダッシュ：右Shift");
 	DrawFormatString(840, 80, 0x000000, "ジャンプ：＼(バクスラ)");
-
-	//for (auto& star : stage_->GetWarpStar())
-	//{
-	//	
-	//}
-
-	//// ポストエフェクト(モノクロ)
-	////-----------------------------------------
-	//if (mode_ < MODE::MONO) { return; }
-	//
-	//SetDrawScreen(postEffectScreen_);
-
-	//// 画面を初期化
-	//ClearDrawScreen();
-
-	//monoRenderer_->Draw();
-
-	//// メインに戻す
-	//SetDrawScreen(mainScreen);
-	//DrawGraph(0, 0, postEffectScreen_, false);
-	////-----------------------------------------
-
-	//// ポストエフェクト(走査線)
-	////-----------------------------------------
-	//if (mode_ < MODE::SCAN) { return; }
-	//
-	//SetDrawScreen(postEffectScreen_);
-
-	//// 画面を初期化
-	//ClearDrawScreen();
-
-	//scanMaterial_->SetConstBuf(
-	//	1,
-	//	{ SceneManager::GetInstance().GetTotalTime(), 0.0f, 0.0f, 0.0f }
-	//);
-	//scanRenderer_->Draw();
-
-	//// メインに戻す
-	//SetDrawScreen(mainScreen);
-	//DrawGraph(0, 0, postEffectScreen_, false);
-	////-----------------------------------------
-
-
-	//// ポストエフェクト(レンズの歪み)
-	////-----------------------------------------
-	//if (mode_ < MODE::LENS) { return; }
-
-	//SetDrawScreen(postEffectScreen_);
-
-	//// 画面を初期化
-	//ClearDrawScreen();
-
-	//lensRenderer_->Draw();
-
-	//// メインに戻す
-	//SetDrawScreen(mainScreen);
-	//DrawGraph(0, 0, postEffectScreen_, false);
-	////-----------------------------------------
-	//
-
-	//// ポストエフェクト(ビネット)
-	////-----------------------------------------
-	//if (mode_ < MODE::VINE) { return; }
-
-	//SetDrawScreen(postEffectScreen_);
-
-	//// 画面を初期化
-	//ClearDrawScreen();
-
-	//vineRenderer_->Draw();
-
-	//// メインに戻す
-	//SetDrawScreen(mainScreen);
-	//DrawGraph(0, 0, postEffectScreen_, false);
-	////-----------------------------------------
 }

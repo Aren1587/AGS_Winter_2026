@@ -4,7 +4,7 @@
 class Stage;
 class SkyDome;
 class Player;
-class Moon;
+class Enemy;
 class PixelMaterial;
 class PixelRenderer;
 
@@ -44,7 +44,7 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_;
-	std::unique_ptr<Moon> moon_;
+	std::unique_ptr<Enemy> moon_;
 
 	// ポストエフェクトモード
 	MODE mode_;

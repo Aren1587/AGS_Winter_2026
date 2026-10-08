@@ -8,6 +8,7 @@
 #include "Common/AnimationController.h"
 #include "Common/Capsule.h"
 #include "Common/Collider.h"
+#include "Sword.h"
 #include "Planet.h"
 #include "Player.h"
 
@@ -25,8 +26,7 @@ Player::Player(void)
 	gravHitPosDown_(AsoUtility::VECTOR_ZERO),
 	gravHitPosUp_(AsoUtility::VECTOR_ZERO),
 	imgShadow_(-1),
-	capsule_(nullptr),
-	swordModelId_(-1)
+	capsule_(nullptr)
 {
 
 	// 状態管理
@@ -67,62 +67,23 @@ void Player::Init(void)
 	// 初期状態
 	ChangeState(STATE::PLAY);
 
-	swordTransform_ = transform_;
-	swordTransform_.SetModel(resMng_.LoadModelDuplicate(
-		ResourceManager::SRC::SWORD));
-	swordTransform_.scl = VScale(AsoUtility::VECTOR_ONE, 0.1f);
+	sword_ = std::make_unique<Sword>();
+
+	sword_->Init();
 }
 
 void Player::Update(void)
 {
-
 	// 更新ステップ
 	stateUpdate_();
 
 	// モデル制御更新
 	transform_.Update();
-	swordTransform_.Update();
 
 	// アニメーション再生
 	animationController_->Update();
 
-	// 中指
-	int frame = MV1SearchFrame(transform_.modelId, "mixamorig:LeftHandMiddle1");
-
-	// フレームのワールド行列
-	MATRIX frameMat =
-		MV1GetFrameLocalWorldMatrix(transform_.modelId, frame);
-
-	// 剣を握りに合わせるためのオフセット
-	MATRIX offset = MMult(
-		MGetRotY(DX_PI_F * 180.0f),
-		MGetTranslate(VGet(0.0f, 0.0f, 0.0f))
-	);
-
-	// 剣のワールド行列
-	MATRIX swordMat = MMult(offset, frameMat);
-
-	MV1SetMatrix(swordTransform_.modelId, swordMat);
-
-
-	// ======================================================
-	// 剣の「柄」と「先端」のワールド座標を取得
-	// ======================================================
-
-	// 剣モデル内でのローカル座標
-	VECTOR localHilt = VGet(0.0f, 0.0f, 0.0f);
-
-	// 剣の長さ
-	float swordLength = 100.0f;
-
-	// 剣の先端が +Z 方向なら
-	VECTOR localTip = VGet(-swordLength, 0.0f, 0.0f);
-
-	// ローカル座標 → ワールド座標
-	VECTOR hilt = VTransform(localHilt, swordMat);
-	VECTOR tip = VTransform(localTip, swordMat);
-
-	sword_.UpdatePose(hilt, tip);
+	sword_->SetFollowFrame(transform_.modelId, "mixamorig:LeftHandMiddle1");
 
 	isSlashing_ = true;
 
@@ -133,8 +94,8 @@ void Player::Draw(void)
 
 	// モデルの描画
 	MV1DrawModel(transform_.modelId);
-	MV1DrawModel(swordTransform_.modelId);
-	DrawSphere3D(GetSword().GetTip(), 10, 12, 0xffff00, 0xffff00, true);
+	sword_->Draw();
+	DrawSphere3D(GetSword()->GetTip(), 10, 12, 0xffff00, 0xffff00, true);
 
 	// 丸影描画
 	DrawShadow();

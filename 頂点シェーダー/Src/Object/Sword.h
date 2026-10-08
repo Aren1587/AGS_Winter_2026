@@ -1,12 +1,18 @@
-// Sword.h
 #pragma once
+
 #include "DxLib.h"
+#include "Common/Transform.h"
 
 class Sword
 {
 public:
     Sword();
     ~Sword();
+
+    void Init();
+    void Update();
+    void Draw();
+
     // 毎フレーム、剣の根元(hilt)と切っ先(tip)のワールド座標を渡す
     void UpdatePose(VECTOR hilt, VECTOR tip);
 
@@ -17,7 +23,13 @@ public:
 
     VECTOR GetTip() const { return tip_; }
 
+    const Transform& GetTransform(void) const { return transform_; }
+
+    const void SetFollowFrame(int& followModelId, const TCHAR* frameName);
+
 private:
     VECTOR hilt_ = VGet(0, 0, 0), tip_ = VGet(0, 0, 0);
     VECTOR prevHilt_ = VGet(0, 0, 0), prevTip_ = VGet(0, 0, 0);
+
+    Transform transform_;
 };

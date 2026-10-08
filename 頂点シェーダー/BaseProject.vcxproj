@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Src\MeshCutter\MeshCutter.cpp" />
     <ClCompile Include="Src\Object\Gate.cpp" />
-    <ClCompile Include="Src\Object\Moon.cpp" />
+    <ClCompile Include="Src\Object\Enemy.cpp" />
     <ClCompile Include="Src\Object\Rim.cpp" />
     <ClCompile Include="Src\Object\Metal.cpp" />
     <ClCompile Include="Src\Renderer\PixelRenderer.cpp" />
@@ -60,7 +60,7 @@
     <ClInclude Include="Src\MeshCutter\MeshCut.h" />
     <ClInclude Include="Src\MeshCutter\MeshCutter.h" />
     <ClInclude Include="Src\Object\Gate.h" />
-    <ClInclude Include="Src\Object\Moon.h" />
+    <ClInclude Include="Src\Object\Enemy.h" />
     <ClInclude Include="Src\Object\Rim.h" />
     <ClInclude Include="Src\Object\Metal.h" />
     <ClInclude Include="Src\Renderer\PixelRenderer.h" />
@@ -320,6 +320,7 @@
       <AdditionalIncludeDirectories>$(DXLIB_DIR)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -359,6 +360,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(DXLIB_DIR)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

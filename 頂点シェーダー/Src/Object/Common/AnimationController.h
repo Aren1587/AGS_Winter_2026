@@ -5,8 +5,8 @@ class SceneManager;
 
 class AnimationController
 {
-	
-public :
+
+public:
 
 	// アニメーションデータ
 	struct Animation
@@ -28,8 +28,10 @@ public :
 	void Add(int type, const std::string& path, float speed);
 
 	// アニメーション再生
-	void Play(int type, bool isLoop = true, 
-		float startStep = 0.0f, float endStep = -1.0f, bool isStop = false, bool isForce = false);
+	// blendTime : 前のアニメーションからのブレンド時間(秒)。0以下でブレンドなし
+	void Play(int type, bool isLoop = true,
+		float startStep = 0.0f, float endStep = -1.0f, bool isStop = false, bool isForce = false,
+		float blendTime = 0.2f);
 
 	void Update(void);
 
@@ -42,7 +44,31 @@ public :
 	// 再生終了
 	bool IsEnd(void) const;
 
-private :
+	// ブレンド中か
+	bool IsBlending(void) const;
+
+private:
+
+	// 1つのアニメーションの再生状態
+	// (現在のアニメーションと、ブレンド元のアニメーションで共通して使う)
+	struct PlayState
+	{
+		Animation anim;
+
+		// アニメーションをループするかしないか
+		bool isLoop = false;
+
+		// アニメーションを止めたままにする
+		bool isStop = false;
+
+		// アニメーション終了後に繰り返すループステップ
+		float stepEndLoopStart = -1.0f;
+		float stepEndLoopEnd = -1.0f;
+		float endLoopSpeed = 0.0f;
+
+		// 逆再生(1.0f:通常、-1.0f:逆再生)
+		float switchLoopReverse = 1.0f;
+	};
 
 	// モデルのハンドルID
 	int modelId_;
@@ -50,22 +76,22 @@ private :
 	// 種類別のアニメーションデータ
 	std::map<int, Animation> animations_;
 
+	// 再生中のアニメーション
 	int playType_;
-	Animation playAnim_;
+	PlayState cur_;
 
-	// アニメーションをループするかしないか
-	bool isLoop_;
+	// ブレンド元のアニメーション
+	PlayState prev_;
+	bool hasPrev_;
 
-	// アニメーションを止めたままにする
-	bool isStop_;
+	// ブレンド時間と経過時間
+	float blendTime_;
+	float blendTimer_;
 
-	// アニメーション終了後に繰り返すループステップ
-	float stepEndLoopStart_;
-	float stepEndLoopEnd_;
-	float endLoopSpeed_;
+	// 1つのアニメーションの時間を進める
+	void Advance(PlayState& state, float deltaTime);
 
-	// 逆再生
-	float switchLoopReverse_;
+	// ブレンド元のアニメーションを外す
+	void DetachPrev(void);
 
 };
-

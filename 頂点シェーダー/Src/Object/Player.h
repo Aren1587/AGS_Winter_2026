@@ -1,14 +1,17 @@
 #pragma once
+
 #include <memory>
 #include <vector>
 #include <map>
 #include <functional>
 #include <DxLib.h>
+
 #include "ActorBase.h"
-#include "Sword.h"
+
 class AnimationController;
 class Collider;
 class Capsule;
+class Sword;
 
 class Player : public ActorBase
 {
@@ -71,12 +74,14 @@ public:
 	const Capsule& GetCapsule(void) const;
 
 	bool IsSlashing() const { return isSlashing_; }
-	const Sword& GetSword() const { return sword_; }
+	const std::unique_ptr<Sword>& GetSword() const { return sword_; }
 
 private:
 
 	// アニメーション
 	std::unique_ptr<AnimationController> animationController_;
+
+	std::unique_ptr<Sword> sword_;
 
 	// 状態管理
 	STATE state_;
@@ -122,10 +127,6 @@ private:
 	// 丸影
 	int imgShadow_;
 
-	int swordModelId_;
-	Transform swordTransform_;
-
-	Sword sword_;
 	bool isSlashing_ = false;
 
 	void InitAnimation(void);
