@@ -30,6 +30,8 @@ private:
 
     std::unique_ptr<AnimationController> animationController_;
 
+    std::vector<std::weak_ptr<Collider>> colliders_;
+
     MeshCutter cutter_;
 
     Transform transform_;

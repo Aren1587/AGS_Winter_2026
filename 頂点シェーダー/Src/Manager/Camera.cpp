@@ -33,7 +33,6 @@ void Camera::Update(void)
 
 void Camera::SetBeforeDraw(void)
 {
-
 	// クリップ距離を設定する(SetDrawScreenでリセットされる)
 	SetCameraNearFar(CAMERA_NEAR, CAMERA_FAR);
 
@@ -56,7 +55,6 @@ void Camera::SetBeforeDraw(void)
 
 	// DXライブラリのカメラとEffekseerのカメラを同期する。
 	Effekseer_Sync3DSetting();
-
 }
 
 void Camera::Draw(void)
@@ -100,7 +98,6 @@ VECTOR Camera::GetForward(void) const
 
 void Camera::ChangeMode(MODE mode)
 {
-
 	// カメラの初期設定
 	SetDefault();
 
@@ -115,12 +112,10 @@ void Camera::ChangeMode(MODE mode)
 	case Camera::MODE::FOLLOW:
 		break;
 	}
-
 }
 
 void Camera::SetDefault(void)
 {
-
 	// カメラの初期設定
 	pos_ = DEFAULT_CAMERA_POS;
 
@@ -135,12 +130,10 @@ void Camera::SetDefault(void)
 	angles_.z = 0.0f;
 
 	rot_ = Quaternion();
-
 }
 
 void Camera::SyncFollow(void)
 {
-
 	// 同期先の位置
 	VECTOR pos = followTransform_->pos;
 
@@ -163,12 +156,10 @@ void Camera::SyncFollow(void)
 
 	// カメラの上方向
 	cameraUp_ = AsoUtility::DIR_U;
-
 }
 
 void Camera::ProcessRot(void)
 {
-
 	auto& ins = InputManager::GetInstance();
 
 	float movePow = 5.0f;
@@ -204,7 +195,6 @@ void Camera::ProcessRot(void)
 			angles_.x = -LIMIT_X_DW_RAD;
 		}
 	}
-
 }
 
 void Camera::SetBeforeDrawFixedPoint(void)
@@ -214,13 +204,11 @@ void Camera::SetBeforeDrawFixedPoint(void)
 
 void Camera::SetBeforeDrawFollow(void)
 {
-
 	// カメラ操作
 	ProcessRot();
 
 	// 追従対象との相対位置を同期
 	SyncFollow();
-
 }
 
 void Camera::SetBeforeDrawSelfShot(void)

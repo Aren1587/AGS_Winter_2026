@@ -1,3 +1,24 @@
+namespace
+{
+	// スピード
+	static constexpr float SPEED_MOVE = 5.0f;
+	static constexpr float SPEED_RUN = 10.0f;
+
+	// 回転完了までの時間
+	static constexpr float TIME_ROT = 1.0f;
+
+	// ジャンプ力
+	static constexpr float POW_JUMP = 35.0f;
+
+	// 最大値
+	static constexpr int MAX_HP = 100;
+	static constexpr int MAX_ENERGY = 100;
+
+	// 初期値
+	static constexpr int INIT_HP = 100;
+	static constexpr int INIT_ENERGY = 50;
+}
+
 #include <string>
 #include "../Application.h"
 #include "../Utility/AsoUtility.h"
@@ -26,7 +47,9 @@ Player::Player(void)
 	gravHitPosDown_(AsoUtility::VECTOR_ZERO),
 	gravHitPosUp_(AsoUtility::VECTOR_ZERO),
 	imgShadow_(-1),
-	capsule_(nullptr)
+	capsule_(nullptr),
+	hp_(INIT_HP),
+	energy_(INIT_ENERGY)
 {
 
 	// 状態管理
@@ -41,7 +64,6 @@ Player::~Player(void)
 
 void Player::Init(void)
 {
-
 	// モデルの基本設定
 	transform_.SetModel(resMng_.LoadModelDuplicate(
 		ResourceManager::SRC::PLAYER));
@@ -77,6 +99,8 @@ void Player::Update(void)
 	// 更新ステップ
 	stateUpdate_();
 
+	sword_->Update();
+
 	// モデル制御更新
 	transform_.Update();
 
@@ -86,12 +110,10 @@ void Player::Update(void)
 	sword_->SetFollowFrame(transform_.modelId, "mixamorig:LeftHandMiddle1");
 
 	isSlashing_ = true;
-
 }
 
 void Player::Draw(void)
 {
-
 	// モデルの描画
 	MV1DrawModel(transform_.modelId);
 	sword_->Draw();
@@ -99,7 +121,6 @@ void Player::Draw(void)
 
 	// 丸影描画
 	DrawShadow();
-
 }
 
 void Player::AddCollider(std::weak_ptr<Collider> collider)
@@ -119,7 +140,6 @@ const Capsule& Player::GetCapsule(void) const
 
 void Player::InitAnimation(void)
 {
-
 	std::string path = Application::PATH_MODEL + "Player/";
 	animationController_ = std::make_unique<AnimationController>(transform_.modelId);
 	animationController_->Add((int)ANIM_TYPE::IDLE, path + "Idle.mv1", 20.0f);
@@ -132,18 +152,15 @@ void Player::InitAnimation(void)
 	animationController_->Add((int)ANIM_TYPE::VICTORY, path + "Victory.mv1", 60.0f);
 
 	animationController_->Play((int)ANIM_TYPE::IDLE);
-
 }
 
 void Player::ChangeState(STATE state)
 {
-
 	// 状態変更
 	state_ = state;
 
 	// 各状態遷移の初期処理
 	stateChanges_[state_]();
-
 }
 
 void Player::ChangeStateNone(void)
@@ -162,7 +179,6 @@ void Player::UpdateNone(void)
 
 void Player::UpdatePlay(void)
 {
-
 	// 移動処理
 	ProcessMove();
 
@@ -180,12 +196,10 @@ void Player::UpdatePlay(void)
 
 	// 回転させる
 	transform_.quaRot = playerRotY_;
-
 }
 
 void Player::DrawShadow(void)
 {
-
 	float PLAYER_SHADOW_HEIGHT = 300.0f;
 	float PLAYER_SHADOW_SIZE = 30.0f;
 
@@ -274,12 +288,10 @@ void Player::DrawShadow(void)
 
 	// Ｚバッファを無効にする
 	SetUseZBuffer3D(FALSE);
-
 }
 
 void Player::ProcessMove(void)
 {
-
 	auto& ins = InputManager::GetInstance();
 
 	// 移動量をゼロ
@@ -356,12 +368,10 @@ void Player::ProcessMove(void)
 			animationController_->Play((int)ANIM_TYPE::IDLE);
 		}
 	}
-
 }
 
 void Player::ProcessJump(void)
 {
-
 	bool isHit = CheckHitKey(KEY_INPUT_BACKSLASH);
 
 	// ジャンプ
@@ -402,7 +412,6 @@ void Player::ProcessJump(void)
 
 void Player::SetGoalRotate(double rotRad)
 {
-
 	VECTOR cameraRot = mainCamera.GetAngles();
 	Quaternion axis = Quaternion::AngleAxis((double)cameraRot.y + rotRad, AsoUtility::AXIS_Y);
 
@@ -416,23 +425,19 @@ void Player::SetGoalRotate(double rotRad)
 	}
 
 	goalQuaRot_ = axis;
-
 }
 
 void Player::Rotate(void)
 {
-
 	stepRotTime_ -= scnMng_.GetDeltaTime();
 
 	// 回転の球面補間
 	playerRotY_ = Quaternion::Slerp(
 		playerRotY_, goalQuaRot_, (TIME_ROT - stepRotTime_) / TIME_ROT);
-
 }
 
 void Player::Collision(void)
 {
-
 	// 現在座標を起点に移動後座標を決める
 	movedPos_ = VAdd(transform_.pos, movePow_);
 
@@ -444,12 +449,10 @@ void Player::Collision(void)
 
 	// 移動
 	transform_.pos = movedPos_;
-
 }
 
 void Player::CollisionGravity(void)
 {
-
 	// ジャンプ量を加算
 	movedPos_ = VAdd(movedPos_, jumpPow_);
 
@@ -493,16 +496,12 @@ void Player::CollisionGravity(void)
 			}
 
 			isJump_ = false;
-
 		}
-
 	}
-
 }
 
 void Player::CollisionCapsule(void)
 {
-
 	// カプセルを移動させる
 	Transform trans = Transform(transform_);
 	trans.pos = movedPos_;
@@ -512,14 +511,12 @@ void Player::CollisionCapsule(void)
 	// カプセルとの衝突判定
 	for (const auto c : colliders_)
 	{
-
 		auto hits = MV1CollCheck_Capsule(
 			c.lock()->modelId_, -1,
 			cap.GetPosTop(), cap.GetPosDown(), cap.GetRadius());
 
 		for (int i = 0; i < hits.HitNum; i++)
 		{
-
 			auto hit = hits.Dim[i];
 
 			for (int tryCnt = 0; tryCnt < 10; tryCnt++)
@@ -537,23 +534,16 @@ void Player::CollisionCapsule(void)
 					trans.Update();
 					continue;
 				}
-
 				break;
-
 			}
-
 		}
-
 		// 検出した地面ポリゴン情報の後始末
 		MV1CollResultPolyDimTerminate(hits);
-
 	}
-
 }
 
 void Player::CalcGravityPow(void)
 {
-
 	// 重力方向
 	VECTOR dirGravity = AsoUtility::DIR_D;
 
@@ -572,12 +562,10 @@ void Player::CalcGravityPow(void)
 		// 重力方向と反対方向(マイナス)でなければ、ジャンプ力を無くす
 		jumpPow_ = gravity;
 	}
-
 }
 
 bool Player::IsEndLanding(void)
 {
-
 	bool ret = true;
 
 	// アニメーションがジャンプではない
@@ -593,5 +581,4 @@ bool Player::IsEndLanding(void)
 	}
 
 	return false;
-
 }

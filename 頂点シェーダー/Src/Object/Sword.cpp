@@ -20,11 +20,14 @@ void Sword::Init()
     transform_.SetModel(ResourceManager::GetInstance().LoadModelDuplicate(
         ResourceManager::SRC::SWORD));
     transform_.scl = VScale(AsoUtility::VECTOR_ONE, 0.1f);
+    transform_.quaRotLocal = 
+        Quaternion::Euler({ AsoUtility::Deg2RadF(180.0f), 0.0f, 0.0f });
+    transform_.Update();
 }
 
 void Sword::Update()
 {
-
+    transform_.Update();
 }
 
 void Sword::Draw()
@@ -55,34 +58,25 @@ bool Sword::ComputeSwingPlane(VECTOR& outOrigin, VECTOR& outNormal) const
 
 const void Sword::SetFollowFrame(int& followModelId, const TCHAR* frameName)
 {
-    // 追従フレーム
     int frame = MV1SearchFrame(followModelId, frameName);
+    if (frame < 0) return; // 見つからない場合のガード
 
-    // フレームのワールド行列
-    MATRIX frameMat =
-        MV1GetFrameLocalWorldMatrix(followModelId, frame);
+    MATRIX frameMat = MV1GetFrameLocalWorldMatrix(followModelId, frame);
 
-    // 剣を握りに合わせるためのオフセット
-    MATRIX offset = MMult(
-        MGetRotY(DX_PI_F * 180.0f),
-        MGetTranslate(VGet(0.0f, 0.0f, 0.0f))
-    );
+    // スケール → ローカル回転 → 位置オフセット
+    MATRIX scaleMat = MGetScale(transform_.scl);
+    MATRIX rotMat = MGetRotY(DX_PI_F);
+    // ずらし
+    MATRIX transMat = MGetTranslate(VGet(0.0f, 0.0f, -3.0f));
 
-    // 剣のワールド行列
+    MATRIX offset = MMult(MMult(scaleMat, rotMat), transMat);
     MATRIX swordMat = MMult(offset, frameMat);
 
     MV1SetMatrix(transform_.modelId, swordMat);
 
-    // 剣モデル内でのローカル座標
+    // 切っ先の計算
     VECTOR localHilt = VGet(0.0f, 0.0f, 0.0f);
-
-    // 剣の長さ
-    float swordLength = 100.0f;
-
-    // 剣の先端が +Z 方向なら
-    VECTOR localTip = VGet(-swordLength, 0.0f, 0.0f);
-
-    // ローカル座標 → ワールド座標
+    VECTOR localTip = VGet(1000.0f, 0.0f, 0.0f);
     VECTOR hilt = VTransform(localHilt, swordMat);
     VECTOR tip = VTransform(localTip, swordMat);
 

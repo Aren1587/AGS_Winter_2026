@@ -21,7 +21,6 @@ ResourceManager& ResourceManager::GetInstance(void)
 
 void ResourceManager::Init(void)
 {
-
 	// 推奨しませんが、どうしても使いたい方は
 	using RES = Resource;
 	using RES_T = RES::TYPE;
@@ -142,7 +141,6 @@ void ResourceManager::Init(void)
 	// ゲート
 	res = std::make_unique<RES>(RES_T::MODEL, PATH_MDL + "Sword/Sword.mv1");
 	resourcesMap_.emplace(SRC::SWORD, std::move(res));
-
 }
 
 void ResourceManager::Release(void)
@@ -192,7 +190,6 @@ ResourceManager::ResourceManager(void)
 
 Resource& ResourceManager::_Load(SRC src)
 {
-
 	// ロード済みチェック
 	const auto& lPair = loadedMap_.find(src);
 	if (lPair != loadedMap_.end())
@@ -215,5 +212,4 @@ Resource& ResourceManager::_Load(SRC src)
 	loadedMap_.emplace(src, *rPair->second);
 
 	return *rPair->second;
-
 }

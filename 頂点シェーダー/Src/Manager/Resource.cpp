@@ -49,7 +49,6 @@ Resource::~Resource(void)
 
 void Resource::Load(void)
 {
-
 	switch (type_)
 	{
 	case Resource::TYPE::IMG:
@@ -79,12 +78,10 @@ void Resource::Load(void)
 		break;
 
 	}
-
 }
 
 void Resource::Release(void)
 {
-
 	switch (type_)
 	{
 	case Resource::TYPE::IMG:
@@ -119,12 +116,10 @@ void Resource::Release(void)
 		break;
 
 	}
-
 }
 
 void Resource::CopyHandle(int* imgs)
 {
-
 	if (handleIds_ == nullptr)
 	{
 		return;
@@ -135,5 +130,4 @@ void Resource::CopyHandle(int* imgs)
 	{
 		imgs[i] = handleIds_[i];
 	}
-
 }

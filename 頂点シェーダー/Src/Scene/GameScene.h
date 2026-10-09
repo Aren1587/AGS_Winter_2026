@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 #include "SceneBase.h"
 class Stage;
@@ -10,7 +11,6 @@ class PixelRenderer;
 
 class GameScene : public SceneBase
 {
-
 public:
 	
 	// ポストエフェクトモード
@@ -44,7 +44,7 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_;
-	std::unique_ptr<Enemy> moon_;
+	std::unique_ptr<Enemy> enemy_;
 
 	// ポストエフェクトモード
 	MODE mode_;
@@ -69,4 +69,5 @@ private:
 	std::unique_ptr<PixelRenderer> lensRenderer_;
 
 	bool alreadyCutThisSwing_ = false;
+
 };

@@ -18,19 +18,6 @@ class Player : public ActorBase
 
 public:
 
-	// スピード
-	static constexpr float SPEED_MOVE = 5.0f;
-	static constexpr float SPEED_RUN = 10.0f;
-
-	// 回転完了までの時間
-	static constexpr float TIME_ROT = 1.0f;
-
-	// ジャンプ力
-	static constexpr float POW_JUMP = 35.0f;
-
-	// ジャンプ受付時間
-	static constexpr float TIME_JUMP_IN = 0.5f;
-
 	// 状態
 	enum class STATE
 	{
@@ -128,6 +115,9 @@ private:
 	int imgShadow_;
 
 	bool isSlashing_ = false;
+
+	int hp_;
+	float energy_;
 
 	void InitAnimation(void);
 

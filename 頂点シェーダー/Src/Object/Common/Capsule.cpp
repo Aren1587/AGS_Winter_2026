@@ -22,7 +22,6 @@ Capsule::~Capsule(void)
 
 void Capsule::Draw(void)
 {
-
 	// 上の球体
 	VECTOR pos1 = GetPosTop();
 	DrawSphere3D(pos1, radius_, 5, COLOR, COLOR, false);
@@ -61,7 +60,6 @@ void Capsule::Draw(void)
 
 	// カプセルの中心
 	DrawSphere3D(GetCenter(), 5.0f, 10, COLOR, COLOR, true);
-
 }
 
 VECTOR Capsule::GetLocalPosTop(void) const

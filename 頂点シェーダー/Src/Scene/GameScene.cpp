@@ -32,13 +32,12 @@ GameScene::~GameScene(void)
 
 void GameScene::Init(void)
 {
-
 	// プレイヤー
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
-	moon_ = std::make_unique<Enemy>();
-	moon_->Init();
+	enemy_ = std::make_unique<Enemy>();
+	enemy_->Init();
 
 	// ステージ
 	stage_ = std::make_unique<Stage>(*player_);
@@ -81,12 +80,12 @@ void GameScene::Update(void)
 	stage_->Update();
 
 	player_->Update();
-	moon_->Update();
+	enemy_->Update();
 
 	if (player_->IsSlashing() && !alreadyCutThisSwing_)
 	{
 		VECTOR tip = player_->GetSword()->GetTip();
-		VECTOR center = moon_->GetTransform().pos;//moon_->GetCenter();
+		VECTOR center = enemy_->GetTransform().pos;//moon_->GetCenter();
 
 		VECTOR toTip = VSub(tip, center);
 
@@ -126,7 +125,7 @@ void GameScene::Update(void)
 			VECTOR origin, normal;
 			if (player_->GetSword()->ComputeSwingPlane(origin, normal))
 			{
-				moon_->Cut(origin, normal);
+				enemy_->Cut(origin, normal);
 				alreadyCutThisSwing_ = true;  // 1回の振りで何度も切らないようにする
 			}
 		}
@@ -148,7 +147,7 @@ void GameScene::Draw(void)
 	skyDome_->Draw();
 	stage_->Draw();
 	
-	moon_->Draw();
+	enemy_->Draw();
 	player_->Draw();
 
 	// ヘルプ
@@ -156,4 +155,6 @@ void GameScene::Draw(void)
 	DrawFormatString(840, 40, 0x000000, "カメラ　：矢印キー");
 	DrawFormatString(840, 60, 0x000000, "ダッシュ：右Shift");
 	DrawFormatString(840, 80, 0x000000, "ジャンプ：＼(バクスラ)");
+
+	
 }

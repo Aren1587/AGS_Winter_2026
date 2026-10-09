@@ -28,28 +28,7 @@ Metal::~Metal(void)
 void Metal::Init(void)
 {
 	// ÉÇÉfÉãÇÃäÓñ{èÓïÒ
-	
 	transform_.quaRot = Quaternion();
-
-	//// åé
-	//transform_.SetModel(
-	//	resMng_.LoadModelDuplicate(
-	//		ResourceManager::SRC::MOON)
-	//);
-	//transform_.scl = VScale(AsoUtility::VECTOR_ONE, 1.0f);
-
-	//// èÇ
-	//transform_.SetModel(
-	//	resMng_.LoadModelDuplicate(
-	//		ResourceManager::SRC::SHIELD)
-	//);
-	//transform_.scl = VScale(AsoUtility::VECTOR_ONE, 1.0f);
-	//transform_.quaRotLocal =
-	//	Quaternion::Euler(
-	//		AsoUtility::Deg2RadF(0.0f),
-	//		AsoUtility::Deg2RadF(30.0f),
-	//		0.0f
-	//	);
 
 	// ïÄ
 	transform_.SetModel(
@@ -64,9 +43,6 @@ void Metal::Init(void)
 			AsoUtility::Deg2RadF(0.0f),
 			0.0f
 		);
-
-
-
 
 	transform_.Update();
 

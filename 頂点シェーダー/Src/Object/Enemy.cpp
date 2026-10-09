@@ -1,6 +1,8 @@
 #include <memory>
 #include "../Application.h"
 #include "Common/AnimationController.h"
+#include "Common/Collider.h"
+#include "Common/Transform.h"
 #include "Enemy.h"
 
 Enemy::Enemy()
@@ -23,6 +25,8 @@ void Enemy::Init()
     //cutter_ = new MeshCutter();
     MV1SetPosition(transform_.modelId, transform_.pos);
     MV1SetupReferenceMesh(transform_.modelId, -1, true);
+
+    transform_.MakeCollider(Collider::TYPE::ENEMY);
 
     std::string path = Application::PATH_MODEL;
     animationController_ = std::make_unique<AnimationController>(transform_.modelId);
@@ -52,7 +56,9 @@ void Enemy::Cut(VECTOR origin, VECTOR normal)
 void Enemy::Update()
 {
     animationController_->Update();
+    transform_.pos.x += 1.0f;
     cutter_.Update();
+    transform_.Update();
 
     MV1RefreshReferenceMesh(transform_.modelId, -1, true);
 }

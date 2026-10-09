@@ -27,7 +27,6 @@ SceneManager& SceneManager::GetInstance(void)
 
 void SceneManager::Init(void)
 {
-
 	sceneId_ = SCENE_ID::TITLE;
 	waitSceneId_ = SCENE_ID::NONE;
 
@@ -52,12 +51,10 @@ void SceneManager::Init(void)
 
 	// 初期シーンの設定
 	DoChangeScene(SCENE_ID::GAME);
-
 }
 
 void SceneManager::Init3D(void)
 {
-
 	// 背景色設定
 	SetBackgroundColor(0, 139, 139);
 
@@ -75,19 +72,15 @@ void SceneManager::Init3D(void)
 	
 	// ライトの設定
 	ChangeLightTypeDir({ 0.3f, -0.7f, 0.8f });
-	//ChangeLightTypeDir({ 0.0f, 0.0f, 0.5f });
-
 
 	// フォグ設定
 	SetFogEnable(true);
 	SetFogColor(5, 5, 5);
 	SetFogStartEnd(10000.0f, 20000.0f);
-
 }
 
 void SceneManager::Update(void)
 {
-
 	if (scene_ == nullptr)
 	{
 		return;
@@ -114,12 +107,10 @@ void SceneManager::Update(void)
 
 	// カメラ更新
 	camera_->Update();
-
 }
 
 void SceneManager::Draw(void)
 {
-	
 	// 描画先グラフィック領域の指定
 	// (３Ｄ描画で使用するカメラの設定などがリセットされる)
 	SetDrawScreen(mainScreen_);
@@ -148,21 +139,17 @@ void SceneManager::Draw(void)
 	// 背面スクリーンにメインスクリーンを描画
 	SetDrawScreen(DX_SCREEN_BACK);
 	DrawGraph(0, 0, mainScreen_, true);
-
 }
 
 void SceneManager::Destroy(void)
 {
-
 	DeleteGraph(mainScreen_);
 
 	delete instance_;
-
 }
 
 void SceneManager::ChangeScene(SCENE_ID nextId)
 {
-
 	// フェード処理が終わってからシーンを変える場合もあるため、
 	// 遷移先シーンをメンバ変数に保持
 	waitSceneId_ = nextId;
@@ -170,7 +157,6 @@ void SceneManager::ChangeScene(SCENE_ID nextId)
 	// フェードアウト(暗転)を開始する
 	fader_->SetFade(Fader::STATE::FADE_OUT);
 	isSceneChanging_ = true;
-
 }
 
 SceneManager::SCENE_ID SceneManager::GetSceneID(void)
@@ -180,7 +166,6 @@ SceneManager::SCENE_ID SceneManager::GetSceneID(void)
 
 float SceneManager::GetDeltaTime(void) const
 {
-	//return 1.0f / 60.0f;
 	return deltaTime_;
 }
 
@@ -201,7 +186,6 @@ float SceneManager::GetTotalTime(void) const
 
 SceneManager::SceneManager(void)
 {
-
 	sceneId_ = SCENE_ID::NONE;
 	waitSceneId_ = SCENE_ID::NONE;
 
@@ -214,7 +198,6 @@ SceneManager::SceneManager(void)
 	deltaTime_ = 1.0f / 60.0f;
 
 	camera_ = nullptr;
-
 }
 
 void SceneManager::ResetDeltaTime(void)
@@ -225,7 +208,6 @@ void SceneManager::ResetDeltaTime(void)
 
 void SceneManager::DoChangeScene(SCENE_ID sceneId)
 {
-
 	// リソースの解放
 	ResourceManager::GetInstance().Release();
 
@@ -253,12 +235,10 @@ void SceneManager::DoChangeScene(SCENE_ID sceneId)
 	ResetDeltaTime();
 
 	waitSceneId_ = SCENE_ID::NONE;
-
 }
 
 void SceneManager::Fade(void)
 {
-
 	Fader::STATE fState = fader_->GetState();
 	switch (fState)
 	{
@@ -282,7 +262,6 @@ void SceneManager::Fade(void)
 		}
 		break;
 	}
-
 }
 
 
