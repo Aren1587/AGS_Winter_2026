@@ -40,6 +40,7 @@ public:
 		WATER,
 		GATE,
 		NOISE,
+		NEW_PLAYER,
 		SWORD,
 	};
 

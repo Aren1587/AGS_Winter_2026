@@ -1,10 +1,2 @@
-﻿  SceneManager.cpp
-  Gate.cpp
-  Metal.cpp
-  Player.cpp
-  Rim.cpp
-  Stage.cpp
-  WarpStar.cpp
-  Water.cpp
-  GameScene.cpp
+﻿  GameScene.cpp
   BaseProject.vcxproj -> C:\AGS_Winter_2027\頂点シェーダー\x64\Debug\BaseProject.exe

@@ -139,6 +139,10 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::NOISE, std::move(res));
 
 	// ÉQÅ[Ég
+	res = std::make_unique<RES>(RES_T::MODEL, PATH_MDL + "model.mv1");
+	resourcesMap_.emplace(SRC::NEW_PLAYER, std::move(res));
+
+	// ÉQÅ[Ég
 	res = std::make_unique<RES>(RES_T::MODEL, PATH_MDL + "Sword/Sword.mv1");
 	resourcesMap_.emplace(SRC::SWORD, std::move(res));
 }

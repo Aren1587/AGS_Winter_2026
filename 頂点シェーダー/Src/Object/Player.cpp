@@ -17,6 +17,9 @@ namespace
 	// 初期値
 	static constexpr int INIT_HP = 100;
 	static constexpr int INIT_ENERGY = 50;
+
+	// ジャンプボタン長押し限界
+	static constexpr float JUMP_BUTTON_HOLD_MAX = 5.0f;
 }
 
 #include <string>
@@ -67,6 +70,8 @@ void Player::Init(void)
 	// モデルの基本設定
 	transform_.SetModel(resMng_.LoadModelDuplicate(
 		ResourceManager::SRC::PLAYER));
+	//transform_.SetModel(resMng_.LoadModelDuplicate(
+	//	ResourceManager::SRC::NEW_PLAYER));
 	transform_.scl = AsoUtility::VECTOR_ONE;
 	transform_.pos = { 0.0f, -30.0f, 0.0f };
 	transform_.quaRot = Quaternion();
@@ -395,7 +400,7 @@ void Player::ProcessJump(void)
 
 		// ジャンプの入力受付時間をヘラス
 		stepJump_ += scnMng_.GetDeltaTime();
-		if (stepJump_ < TIME_JUMP_IN)
+		if (stepJump_ < JUMP_BUTTON_HOLD_MAX)
 		{
 			jumpPow_ = VScale(AsoUtility::DIR_U, POW_JUMP);
 		}
@@ -405,7 +410,7 @@ void Player::ProcessJump(void)
 	// ボタンを離したらジャンプ力に加算しない
 	if (!isHit)
 	{
-		stepJump_ = TIME_JUMP_IN;
+		stepJump_ = JUMP_BUTTON_HOLD_MAX;
 	}
 
 }

@@ -1,3 +1,8 @@
+namespace
+{
+	static constexpr int ENEMY_NUM = 2;
+}
+
 #include <DxLib.h>
 #include "../Application.h"
 #include "../Utility/AsoUtility.h"
@@ -18,6 +23,7 @@
 
 GameScene::GameScene(void)
 	:
+	postEffectScreen_(-1),
 	player_(nullptr),
 	skyDome_(nullptr),
 	stage_(nullptr),
@@ -36,8 +42,13 @@ void GameScene::Init(void)
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
-	enemy_ = std::make_unique<Enemy>();
-	enemy_->Init();
+	// 敵の作成
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		auto e = std::make_unique<Enemy>(*player_);
+		e->Init();
+		enemys_.emplace_back(std::move(e));
+	}
 
 	// ステージ
 	stage_ = std::make_unique<Stage>(*player_);
@@ -80,53 +91,60 @@ void GameScene::Update(void)
 	stage_->Update();
 
 	player_->Update();
-	enemy_->Update();
+	
+	for (const auto& enemy : enemys_)
+	{
+		enemy_->Update();
+	}
 
 	if (player_->IsSlashing() && !alreadyCutThisSwing_)
 	{
 		VECTOR tip = player_->GetSword()->GetTip();
-		VECTOR center = enemy_->GetTransform().pos;//moon_->GetCenter();
-
-		VECTOR toTip = VSub(tip, center);
-
-		float distance = VSize(toTip);
-		float radius = 100.0f;//moon_->GetRadius();
-
-		// 月の当たり判定を可視化
-		DrawSphere3D(
-			center,
-			radius,
-			16,
-			GetColor(255, 0, 0),
-			GetColor(255, 0, 0),
-			FALSE
-		);
-
-		// 月の中心 → 剣先を線で表示
-		DrawLine3D(
-			center,
-			tip,
-			GetColor(0, 255, 0)
-		);
-
-		// 剣先を小さい球で表示
-		DrawSphere3D(
-			tip,
-			10.0f,
-			8,
-			GetColor(0, 0, 255),
-			GetColor(0, 0, 255),
-			TRUE
-		);
-
-		// 判定
-		if (distance < radius)
+		for (const auto& enemy : enemys_)
 		{
-			VECTOR origin, normal;
-			if (player_->GetSword()->ComputeSwingPlane(origin, normal))
+			VECTOR center = enemy->GetTransform().pos;//moon_->GetCenter();
+
+			VECTOR toTip = VSub(tip, center);
+
+			float distance = VSize(toTip);
+			float radius = 100.0f;//moon_->GetRadius();
+
+			// 月の当たり判定を可視化
+			DrawSphere3D(
+				center,
+				radius,
+				16,
+				GetColor(255, 0, 0),
+				GetColor(255, 0, 0),
+				FALSE
+			);
+
+			// 月の中心 → 剣先を線で表示
+			DrawLine3D(
+				center,
+				tip,
+				GetColor(0, 255, 0)
+			);
+
+			// 剣先を小さい球で表示
+			DrawSphere3D(
+				tip,
+				10.0f,
+				8,
+				GetColor(0, 0, 255),
+				GetColor(0, 0, 255),
+				TRUE
+			);
+
+			// 判定
+			if (distance < radius)
 			{
-				enemy_->Cut(origin, normal);
-				alreadyCutThisSwing_ = true;  // 1回の振りで何度も切らないようにする
+				VECTOR origin, normal;
+				if (player_->GetSword()->ComputeSwingPlane(origin, normal))
+				{
+					enemy_->Cut(origin, normal);
+					alreadyCutThisSwing_ = true;  // 1回の振りで何度も切らないようにする
+				}
 			}
 		}
 	}
@@ -147,7 +165,10 @@ void GameScene::Draw(void)
 	skyDome_->Draw();
 	stage_->Draw();
 	
-	enemy_->Draw();
+	for (const auto& enemy : enemys_)
+	{
+		enemy_->Draw();
+	}
 	player_->Draw();
 
 	// ヘルプ
@@ -155,6 +176,4 @@ void GameScene::Draw(void)
 	DrawFormatString(840, 40, 0x000000, "カメラ　：矢印キー");
 	DrawFormatString(840, 60, 0x000000, "ダッシュ：右Shift");
 	DrawFormatString(840, 80, 0x000000, "ジャンプ：＼(バクスラ)");
-
-	
 }

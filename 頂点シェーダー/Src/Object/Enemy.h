@@ -4,12 +4,14 @@
 #include "../MeshCutter/MeshCutter.h"
 #include "Common/Transform.h"
 
+class Player;
 class AnimationController;
 
 class Enemy
 {
 public:
-    Enemy();
+
+    Enemy(Player& player);
     ~Enemy();
 
     void Init();
@@ -26,9 +28,24 @@ public:
     const Transform& GetTransform(void) const { return transform_; }
 
 private:
+
+    enum STATE
+    {
+        null,
+        one,
+        two,
+        ui
+    };
+
+    STATE state_;
+
+    void ChangeState(STATE state = null)const;
+
     static constexpr float GRAVITY = 0.3f;
 
     std::unique_ptr<AnimationController> animationController_;
+
+    Player& player_;
 
     std::vector<std::weak_ptr<Collider>> colliders_;
 
@@ -37,6 +54,9 @@ private:
     Transform transform_;
 
     bool isCut_;
+
+    void EnemyAI();
+    void EnemyMove();
 
     void MeshInit();
 };
