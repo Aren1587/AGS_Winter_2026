@@ -44,7 +44,6 @@ private:
 
 	// プレイヤー
 	std::unique_ptr<Player> player_;
-	std::unique_ptr<Enemy> enemy_;
 	std::vector<std::unique_ptr<Enemy>> enemys_;
 
 	// ポストエフェクトモード
