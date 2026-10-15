@@ -28,7 +28,6 @@ public:
     const Transform& GetTransform(void) const { return transform_; }
 
 private:
-
     enum STATE
     {
         null,
@@ -41,8 +40,6 @@ private:
 
     void ChangeState(STATE state = null)const;
 
-    static constexpr float GRAVITY = 0.3f;
-
     std::unique_ptr<AnimationController> animationController_;
 
     Player& player_;
@@ -54,6 +51,10 @@ private:
     Transform transform_;
 
     bool isCut_;
+
+    bool test = false;
+    float testTime = 0.0f;
+	const float limitTime = 3.0f;
 
     void EnemyAI();
     void EnemyMove();

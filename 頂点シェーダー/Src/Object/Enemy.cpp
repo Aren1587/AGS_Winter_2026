@@ -1,8 +1,3 @@
-namespace
-{
-    static constexpr float MOVE_SPEED = 1.0f;
-}
-
 #include <memory>
 #include "../Application.h"
 #include "Common/AnimationController.h"
@@ -12,8 +7,15 @@ namespace
 #include "Player.h"
 #include "Enemy.h"
 
+namespace
+{
+    constexpr float MOVE_SPEED = 1.0f;
+    constexpr float GRAVITY = 0.3f;
+}
+
 Enemy::Enemy(Player& player)
     :
+    state_(STATE::null),
     animationController_(nullptr),
     player_(player),
     isCut_(false)
@@ -52,13 +54,16 @@ void Enemy::EnemyAI()
 {
     auto rand = GetRand(100);
     
-    auto isRand = true;/*rand < 20;*/
+    //auto isRand = rand < 20;
 
-    if (!isRand)
+    if (rand < 50)
     {
+        test = false;
+		animationController_->Play(0);
         return;
     }
-    EnemyMove();
+    test = true;
+    animationController_->Play(1);
 }
 
 void Enemy::EnemyMove()
@@ -74,7 +79,7 @@ void Enemy::EnemyMove()
     transform_.pos = VAdd(transform_.pos, VScale(dir, MOVE_SPEED));
 
     // Œü‚«F–Ú•WŠp‚ð‹‚ß‚é
-    float targetAngle = atan2f(dir.x, dir.z);
+    float targetAngle = atan2f(-dir.x, -dir.z);
 
     // ‚±‚±‚Å transform_ ‚Ì‰ñ“]‚É”½‰f‚·‚éi‰º‹Lj
     transform_.quaRot = Quaternion::AngleAxis(targetAngle, AsoUtility::AXIS_Y);
@@ -102,7 +107,19 @@ void Enemy::Update()
 {
     animationController_->Update();
     cutter_.Update();
-    EnemyAI();
+
+	testTime += 1.0f / 60.0f;
+    if(limitTime < testTime)
+    {
+        testTime = 0.0f;
+        EnemyAI();
+	}
+
+    if (test)
+    {
+        EnemyMove();
+    }
+    
     transform_.Update();
 
     MV1RefreshReferenceMesh(transform_.modelId, -1, true);

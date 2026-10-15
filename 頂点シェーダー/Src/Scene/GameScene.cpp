@@ -1,8 +1,3 @@
-namespace
-{
-	static constexpr int ENEMY_NUM = 2;
-}
-
 #include <DxLib.h>
 #include "../Application.h"
 #include "../Utility/AsoUtility.h"
@@ -20,6 +15,11 @@ namespace
 #include "../Renderer/PixelMaterial.h"
 #include "../Renderer/PixelRenderer.h"
 #include "GameScene.h"
+
+namespace
+{
+	constexpr int ENEMY_NUM = 2;
+}
 
 GameScene::GameScene(void)
 	:
@@ -94,10 +94,10 @@ void GameScene::Update(void)
 	
 	for (const auto& enemy : enemys_)
 	{
-		enemy_->Update();
+		enemy->Update();
 	}
 
-	if (player_->IsSlashing() && !alreadyCutThisSwing_)
+	if (player_->IsSlashing() && !allReadyCutThisSwing_)
 	{
 		VECTOR tip = player_->GetSword()->GetTip();
 		for (const auto& enemy : enemys_)
@@ -142,16 +142,16 @@ void GameScene::Update(void)
 				VECTOR origin, normal;
 				if (player_->GetSword()->ComputeSwingPlane(origin, normal))
 				{
-					enemy_->Cut(origin, normal);
-					alreadyCutThisSwing_ = true;  // 1回の振りで何度も切らないようにする
+					enemy->Cut(origin, normal);
+					allReadyCutThisSwing_ = true;  // 1回の振りで何度も切らないようにする
 				}
 			}
 		}
 	}
-	alreadyCutThisSwing_ = false;  // 振り終わったらリセット
+	allReadyCutThisSwing_ = false;  // 振り終わったらリセット
 	if (!player_->IsSlashing())
 	{
-		alreadyCutThisSwing_ = false;  // 振り終わったらリセット
+		allReadyCutThisSwing_ = false;  // 振り終わったらリセット
 	}
 }
 
@@ -167,7 +167,7 @@ void GameScene::Draw(void)
 	
 	for (const auto& enemy : enemys_)
 	{
-		enemy_->Draw();
+		enemy->Draw();
 	}
 	player_->Draw();
 

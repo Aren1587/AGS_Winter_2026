@@ -1,5 +1,2 @@
-﻿  SceneManager.cpp
-  GameScene.cpp
-C:\AGS_Winter_2027\頂点シェーダー\Src\Scene\GameScene.cpp(97,3): error C2065: 'enemy_': 定義されていない識別子です。
-C:\AGS_Winter_2027\頂点シェーダー\Src\Scene\GameScene.cpp(145,6): error C2065: 'enemy_': 定義されていない識別子です。
-C:\AGS_Winter_2027\頂点シェーダー\Src\Scene\GameScene.cpp(170,3): error C2065: 'enemy_': 定義されていない識別子です。
+﻿  Enemy.cpp
+  BaseProject.vcxproj -> C:\AGS_Winter_2027\頂点シェーダー\x64\Debug\BaseProject.exe

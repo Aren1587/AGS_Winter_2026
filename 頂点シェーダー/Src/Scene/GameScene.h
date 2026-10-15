@@ -68,6 +68,6 @@ private:
 	std::unique_ptr<PixelMaterial> lensMaterial_;
 	std::unique_ptr<PixelRenderer> lensRenderer_;
 
-	bool alreadyCutThisSwing_ = false;
+	bool allReadyCutThisSwing_ = false;
 
 };

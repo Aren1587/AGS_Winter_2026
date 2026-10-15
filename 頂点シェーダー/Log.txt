@@ -1,146 +1,2623 @@
 ﻿0:ChangeWindowMode実行 
 1:ウインドウモードフラグが立てられました
-2:ＤＸライブラリの初期化処理開始
-3:	システムの情報を出力します
-3:		ＤＸライブラリ Ver3.24f
-5:		論理プロセッサの数 : 16
-6:		ＯＳ  Windows11 ( Build 26200  )
-107:		現時点のＣＰＵ動作速度：大体2.69GHz
-107:		ＭＭＸ命令を使用します
-108:		ＳＳＥ命令が使用可能です
-108:		ＳＳＥ２命令が使用可能です
-109:		ＣＰＵベンダ：GenuineIntel
-112:		ＣＰＵ名：12th Gen Intel(R) Core(TM) i7-12650H
-113:	ＣＯＭの初期化... 成功
-126:	非同期読み込み処理の初期化...成功
-128:	ファイルアクセス処理の初期化...成功
-129:	メモリ総量:32471.49MB  空きメモリ領域:16590.83MB 
-129:	タイマーの精度を検査します
-130:	精度結果 更新回数 マルチメディアタイマー：0  パフォーマンスカウンター：60
-131:	 パフォーマンスカウンターを使用します タイマー精度 : 10000.000000 KHz 
-132:	 
-133:	ソフトの二重起動検査... 二重起動はされていませんでした
-134:	ウインドウクラスを登録します... 登録に成功しました
-135:	ウインドウモード起動用のウインドウを作成します
-136:	ディスプレイ情報のセットアップ開始
+1:ＤＸライブラリの初期化処理開始
+1:	システムの情報を出力します
+1:		ＤＸライブラリ Ver3.24f
+1:		論理プロセッサの数 : 16
+1:		ＯＳ  Windows11 ( Build 26200  )
+109:		現時点のＣＰＵ動作速度：大体2.68GHz
+109:		ＭＭＸ命令を使用します
+110:		ＳＳＥ命令が使用可能です
+110:		ＳＳＥ２命令が使用可能です
+111:		ＣＰＵベンダ：GenuineIntel
+114:		ＣＰＵ名：12th Gen Intel(R) Core(TM) i7-12650H
+114:	ＣＯＭの初期化... 成功
+127:	非同期読み込み処理の初期化...成功
+129:	ファイルアクセス処理の初期化...成功
+131:	メモリ総量:32471.49MB  空きメモリ領域:14610.24MB 
+131:	タイマーの精度を検査します
+132:	精度結果 更新回数 マルチメディアタイマー：0  パフォーマンスカウンター：60
+132:	 パフォーマンスカウンターを使用します タイマー精度 : 10000.000000 KHz 
+134:	 
+134:	ソフトの二重起動検査... 二重起動はされていませんでした
+136:	ウインドウクラスを登録します... 登録に成功しました
+136:	ウインドウモード起動用のウインドウを作成します
+137:	ディスプレイ情報のセットアップ開始
 138:		モニターの数：1  ディスプレイデバイスの数：8
-139:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　144Hz  96x96dpi
+138:		No.0  モニター名：\\.\DISPLAY1　1920x1080　32bit　144Hz  96x96dpi
 144:	ディスプレイ情報のセットアップ完了
-144:	ウインドウ矩形 ( 432, 169 )-( 1472, 848 )
-147:	ウインドウの作成に成功しました
-148:	ウインドウを表示します
+145:	ウインドウ矩形 ( 432, 169 )-( 1472, 848 )
+148:	ウインドウの作成に成功しました
+150:	ウインドウを表示します
 171:	ＩＭＥを無効にしました
-173:	ウインドウスタイルをウインドウモード用に変更します... 完了
-199:	XInput DLL の読み込み中... 成功
-202:	DirectInput関係初期化処理
-204:		DirectInput8 の取得を試みます...成功
+172:	ウインドウスタイルをウインドウモード用に変更します... 完了
+200:	XInput DLL の読み込み中... 成功
+204:	DirectInput関係初期化処理
+205:		DirectInput8 の取得を試みます...成功
 283:			引き続き初期化処理... 初期化成功
-290:		ジョイパッドの初期化... 
-291:			XInput 対応コントローラーのチェックを開始します
-292:				XInput 対応コントローラー No.0 をチェック
-293:				XInput 対応コントローラー No.0 の接続は確認できませんでした
-294:				XInput 対応コントローラー No.1 をチェック
-295:				XInput 対応コントローラー No.1 の接続は確認できませんでした
-296:				XInput 対応コントローラー No.2 をチェック
-296:				XInput 対応コントローラー No.2 の接続は確認できませんでした
-297:				XInput 対応コントローラー No.3 をチェック
-298:				XInput 対応コントローラー No.3 の接続は確認できませんでした
-299:			XInput 対応コントローラーのチェック完了
-299:			DirectInput 対応ジョイパッドの列挙を開始します
-321:			DirectInput 対応ジョイパッドの列挙終了
-322:		ジョイパッドの初期化は正常に終了しました
-323:		マウスデバイスの初期化... 初期化成功
-324:		キーボードデバイスの初期化... 初期化成功
-327:	DirectInput 関連の初期化は正常に終了しました
-330:	WASAPI の初期化を行います
-336:		デバイス名 : スピーカー (Realtek(R) Audio)
-393:		デフォルト遅延時間 : 10.000 ms
-393:		最小遅延時間       : 3.000 ms
-394:		遅延時間           : 10.000 ms
-395:		チャンネル数  　   : 2 ch
-395:		量子化ビット深度   : 32 bit
-396:		有効ビット深度　   : 32 bit
-397:		サンプリングレート : 48000 Hz
-397:		データ形式         : 浮動小数点型
-909:		動作モード         : 共有モード
-911:	WASAPI の初期化は正常に終了しました
-914:	d3d11.dll の読み込み.... 成功
-917:	dxgi.dll の読み込み.... 成功
-920:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
-923:	IDXGIFactory2 を作成します.... 成功
-2211:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
-2214:	IDXGIAdapter を列挙
-2216:		Adapter No.0 Desc:NVIDIA GeForce RTX 4060 Laptop GPU  VRAM:7957MB
-2217:		Adapter No.1 Desc:Intel(R) UHD Graphics  VRAM:128MB
-2217:			Output Device No.0 Name:\\.\DISPLAY1 ( 0, 0 )-( 1920, 1080 )
-2219:		Adapter No.2 Desc:Microsoft Basic Render Driver  VRAM:0MB
-2219:	API D3D11CreateDevice のアドレスを取得します.... 成功
-2222:	IDXGIAdapter を取得します.... 成功
-2224:	IDXGIAdapter1 を取得します.... 成功
-2228:	IDXGIAdapter2 を取得します.... 成功
-2231:	IDXGIAdapter3 を取得します.... 成功
-2233:	IDXGIAdapter4 を取得します.... 成功
-2235:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
-2236:	ID3D11Device オブジェクトを取得します.... 成功
-2321:	IDXGIDevice1 を取得します.... 成功
-2325:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
-2326:	[ウインドウモード 1024x640 ( 448, 195 )-( 1472, 835 )]
-2328:	IDXGISwapChain2 を作成します.... 成功
-2332:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
-2332:	IDXGIOutput を取得します.... 成功
-2334:	Graphics Device:Intel(R) UHD Graphics
-2335:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-2336:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
-2337:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
-2338:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
-2339:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-2339:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-2340:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
-2341:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-2341:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
-2342:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-2343:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
-2344:	ＤＸＴ２テクスチャフォーマットは使えません
-2344:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
-2346:	ＤＸＴ４テクスチャフォーマットは使えません
-2346:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
-2347:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
-2348:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
-2349:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-2349:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-2350:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-2351:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-2351:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-2352:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-2352:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-2353:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-2354:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-2354:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-2355:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-2356:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
-2356:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
-2356:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
-2357:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
-2358:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
-2358:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
-2359:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
-2360:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
-2361:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
-2361:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
-2362:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
-2363:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
-2364:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
-2365:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
-2365:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
-2366:	同時にレンダリングできるバッファの数:8
-2366:	最大テクスチャサイズ　幅:16384 高さ:16384
-2367:	標準描画用の頂点バッファの作成.... 成功
-2368:	シェーダーコード関係の初期化.... 成功
-2389:	各種シェーダー用定数バッファの作成.... 成功
-2391:	各種 ID3D11InputLayout の作成.... 成功
-2404:	画像の単純転送処理の初期化... 成功
-2404:	深度バッファを作成します.... 成功
-2408:	フォントの初期化を行います
-2410:	フォントの初期化は正常に終了しました
-2448:	文字コードバッファの初期化を行います... 完了しました
-2456:ＤＸライブラリの初期化処理終了
+289:		ジョイパッドの初期化... 
+290:			XInput 対応コントローラーのチェックを開始します
+290:				XInput 対応コントローラー No.0 をチェック
+291:				XInput 対応コントローラー No.0 の接続は確認できませんでした
+292:				XInput 対応コントローラー No.1 をチェック
+293:				XInput 対応コントローラー No.1 の接続は確認できませんでした
+294:				XInput 対応コントローラー No.2 をチェック
+295:				XInput 対応コントローラー No.2 の接続は確認できませんでした
+295:				XInput 対応コントローラー No.3 をチェック
+296:				XInput 対応コントローラー No.3 の接続は確認できませんでした
+297:			XInput 対応コントローラーのチェック完了
+297:			DirectInput 対応ジョイパッドの列挙を開始します
+318:			DirectInput 対応ジョイパッドの列挙終了
+318:		ジョイパッドの初期化は正常に終了しました
+319:		マウスデバイスの初期化... 初期化成功
+320:		キーボードデバイスの初期化... 初期化成功
+324:	DirectInput 関連の初期化は正常に終了しました
+327:	WASAPI の初期化を行います
+332:		デバイス名 : スピーカー (Realtek(R) Audio)
+338:		デフォルト遅延時間 : 10.000 ms
+338:		最小遅延時間       : 3.000 ms
+339:		遅延時間           : 10.000 ms
+339:		チャンネル数  　   : 2 ch
+340:		量子化ビット深度   : 32 bit
+340:		有効ビット深度　   : 32 bit
+341:		サンプリングレート : 48000 Hz
+341:		データ形式         : 浮動小数点型
+541:		動作モード         : 共有モード
+542:	WASAPI の初期化は正常に終了しました
+548:	d3d11.dll の読み込み.... 成功
+551:	dxgi.dll の読み込み.... 成功
+554:	API CreateDXGIFactory2 のアドレスを取得します.... 成功
+556:	IDXGIFactory2 を作成します.... 成功
+572:	API CreateDXGIFactory6 のアドレスを取得します.... 成功
+574:	IDXGIAdapter を列挙
+575:		Adapter No.0 Desc:NVIDIA GeForce RTX 4060 Laptop GPU  VRAM:7956MB
+576:		Adapter No.1 Desc:Intel(R) UHD Graphics  VRAM:128MB
+576:			Output Device No.0 Name:\\.\DISPLAY1 ( 0, 0 )-( 1920, 1080 )
+577:		Adapter No.2 Desc:Microsoft Basic Render Driver  VRAM:0MB
+578:	API D3D11CreateDevice のアドレスを取得します.... 成功
+579:	IDXGIAdapter を取得します.... 成功
+580:	IDXGIAdapter1 を取得します.... 成功
+581:	IDXGIAdapter2 を取得します.... 成功
+582:	IDXGIAdapter3 を取得します.... 成功
+584:	IDXGIAdapter4 を取得します.... 成功
+586:	Direct3D 11 FeatureLevel 11_0 以上を対象とします
+586:	ID3D11Device オブジェクトを取得します.... 成功
+681:	IDXGIDevice1 を取得します.... 成功
+682:	IDXGIDevice1->SetMaximunFrameLatency( 1 ); を実行しました
+682:	[ウインドウモード 1024x640 ( 448, 195 )-( 1472, 835 )]
+683:	IDXGISwapChain2 を作成します.... 成功
+685:	IDXGIFactory2->CreateSwapChainForHwnd の戻り値：0x00000000
+686:	IDXGIOutput を取得します.... 成功
+687:	Graphics Device:Intel(R) UHD Graphics
+688:	画面のフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+688:	16bit Zバッファフォーマットは DXGI_FORMAT_D16_UNORM です
+689:	24bit Zバッファフォーマットは DXGI_FORMAT_D24_UNORM_S8_UINT です
+689:	32bit Zバッファフォーマットは DXGI_FORMAT_D32_FLOAT です
+690:	16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+690:	32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+691:	アルファ付き 16bit カラーフォーマットは DXGI_FORMAT_B4G4R4A4_UNORM です
+691:	アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+692:	アルファテスト用 16bit カラーフォーマットは DXGI_FORMAT_B5G5R5A1_UNORM です
+692:	アルファテスト用 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+693:	ＤＸＴ１テクスチャフォーマットは DXGI_FORMAT_BC1_UNORM です
+693:	ＤＸＴ２テクスチャフォーマットは使えません
+694:	ＤＸＴ３テクスチャフォーマットは DXGI_FORMAT_BC2_UNORM です
+695:	ＤＸＴ４テクスチャフォーマットは使えません
+695:	ＤＸＴ５テクスチャフォーマットは DXGI_FORMAT_BC3_UNORM です
+696:	BC7_UNORM テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM です
+696:	BC7_UNORM_SRGB テクスチャフォーマットは DXGI_FORMAT_BC7_UNORM_SRGB です
+696:	ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+697:	ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+698:	ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+698:	１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+699:	１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+699:	１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+700:	１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+700:	２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+701:	２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+701:	２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+702:	２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+702:	描画用 16bit カラーフォーマットは DXGI_FORMAT_B5G6R5_UNORM です
+703:	描画用 32bit カラーフォーマットは DXGI_FORMAT_B8G8R8X8_UNORM です
+703:	描画用アルファ付き 32bit カラーフォーマットは DXGI_FORMAT_R8G8B8A8_UNORM です
+704:	描画用 ABGR 整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_UNORM です
+705:	描画用 ABGR 浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16B16A16_FLOAT です
+705:	描画用 ABGR 浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32B32A32_FLOAT です
+706:	描画用１チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8_UNORM です
+707:	描画用１チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_UNORM です
+708:	描画用１チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16_FLOAT です
+708:	描画用１チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32_FLOAT です
+709:	描画用２チャンネル整数 8 ビット型カラーフォーマットは DXGI_FORMAT_R8G8_UNORM です
+709:	描画用２チャンネル整数 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_UNORM です
+710:	描画用２チャンネル浮動小数点 16 ビット型カラーフォーマットは DXGI_FORMAT_R16G16_FLOAT です
+711:	描画用２チャンネル浮動小数点 32 ビット型カラーフォーマットは DXGI_FORMAT_R32G32_FLOAT です
+711:	使用する機能レベル:D3D_FEATURE_LEVEL_11_1
+712:	同時にレンダリングできるバッファの数:8
+713:	最大テクスチャサイズ　幅:16384 高さ:16384
+714:	標準描画用の頂点バッファの作成.... 成功
+715:	シェーダーコード関係の初期化.... 成功
+735:	各種シェーダー用定数バッファの作成.... 成功
+737:	各種 ID3D11InputLayout の作成.... 成功
+749:	画像の単純転送処理の初期化... 成功
+750:	深度バッファを作成します.... 成功
+752:	フォントの初期化を行います
+754:	フォントの初期化は正常に終了しました
+792:	文字コードバッファの初期化を行います... 完了しました
+800:ＤＸライブラリの初期化処理終了
+1345:定数バッファ用の ID3D11Buffer の作成に失敗しました
+
+1358:定数バッファ用の ID3D11Buffer の作成に失敗しました
+
+1372:定数バッファ用の ID3D11Buffer の作成に失敗しました
+
+2998:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3061:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3069:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3076:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3083:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3089:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3095:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3102:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3109:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3116:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3122:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3129:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3136:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3143:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3150:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3156:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3164:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3170:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3177:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3185:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3192:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3198:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3205:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3213:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3219:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3226:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3234:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3240:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3246:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3254:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3261:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3268:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3275:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3283:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3289:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3296:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3303:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3310:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3316:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3324:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3330:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3338:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3345:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3352:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3358:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3365:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3372:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3379:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3386:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3394:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3400:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3406:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3414:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3421:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3428:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3435:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3442:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3449:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3456:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3462:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3469:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3476:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3483:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3490:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3497:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3504:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3511:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3518:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3526:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3533:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3539:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3546:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3553:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3560:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3567:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3574:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3581:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3588:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3594:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3602:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3608:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3615:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3621:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3629:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3636:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3642:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3649:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3656:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3664:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3671:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3677:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3684:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3692:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3698:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3705:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3713:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3719:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3726:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3733:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3740:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3746:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3754:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3761:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3768:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3775:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3782:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3789:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3795:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3803:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3809:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3816:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3824:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3830:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3837:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3844:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3851:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3858:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3865:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3872:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3879:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3886:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3893:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3899:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3906:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3914:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3920:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3928:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3934:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3942:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3948:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3955:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3963:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3969:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3976:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3983:ID3D11SamplerState の作成に失敗しました　箇所２
+
+3990:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4000:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4008:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4014:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4019:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4025:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4032:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4038:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4045:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4053:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4059:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4066:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4073:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4080:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4087:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4094:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4100:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4108:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4115:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4121:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4128:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4135:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4143:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4149:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4156:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4163:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4170:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4178:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4184:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4192:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4198:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4205:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4213:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4737:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4743:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4755:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4762:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4768:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4776:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4782:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4789:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4796:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4803:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4809:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4816:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4823:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4830:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4836:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4844:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4850:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4858:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4864:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4871:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4878:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4885:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4893:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4899:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4906:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4913:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4921:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4928:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4934:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4941:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4948:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4955:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4962:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4968:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4979:ID3D11SamplerState の作成に失敗しました　箇所２
+
+4997:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5003:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5011:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5018:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5025:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5032:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5040:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5050:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5058:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5066:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5075:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5081:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5087:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5095:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5101:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5108:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5115:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5121:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5129:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5136:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5142:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5150:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5157:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5163:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5171:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5184:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5191:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5198:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5205:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5212:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5219:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5226:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5233:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5240:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5247:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5254:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5260:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5267:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5274:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5280:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5288:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5295:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5302:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5309:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5316:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5323:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5330:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5347:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5352:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5358:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5365:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5388:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5393:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5400:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5407:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5413:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5420:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5426:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5451:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5469:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5475:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5483:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5501:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5511:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5516:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5527:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5532:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5541:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5548:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5552:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5559:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5566:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5572:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5580:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5587:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5594:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5600:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5608:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5614:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5622:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5628:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5636:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5642:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5650:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5656:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5663:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5670:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5676:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5685:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5691:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5698:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5704:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5712:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5719:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5725:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5733:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5740:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5747:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5754:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5761:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5768:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5774:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5781:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5788:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5795:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5802:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5809:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5816:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5824:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5830:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5838:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5844:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5851:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5858:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5865:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5871:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5878:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5885:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5892:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5899:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5906:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5914:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5920:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5927:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5935:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5941:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5948:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5955:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5961:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5967:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5975:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5983:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5989:ID3D11SamplerState の作成に失敗しました　箇所２
+
+5996:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6004:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6011:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6016:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6025:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6031:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6038:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6045:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6052:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6060:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6066:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6073:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6080:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6086:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6093:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6101:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6108:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6115:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6122:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6129:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6136:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6143:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6150:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6156:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6163:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6170:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6184:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6191:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6199:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6205:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6212:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6218:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6225:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6233:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6240:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6246:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6253:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6261:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6267:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6274:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6282:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6288:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6295:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6302:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6309:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6315:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6324:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6329:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6337:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6344:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6350:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6357:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6364:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6371:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6378:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6385:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6392:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6399:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6406:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6413:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6420:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6428:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6434:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6441:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6448:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6455:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6463:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6468:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6475:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6483:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6489:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6514:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6525:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6531:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6538:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6546:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6553:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6558:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6565:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6573:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6580:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6587:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6593:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6600:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6607:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6614:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6622:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6628:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6635:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6642:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6650:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6655:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6663:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6670:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6677:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6684:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6690:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6698:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6705:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6712:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6718:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6725:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6732:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6739:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6746:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6753:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6761:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6767:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6774:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6781:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6788:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6795:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6802:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6809:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6816:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6822:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6830:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6836:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6843:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6851:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6856:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6865:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6871:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6878:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6885:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6892:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6899:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6906:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6913:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6919:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6926:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6934:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6940:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6947:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6954:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6961:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6968:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6975:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6983:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6989:ID3D11SamplerState の作成に失敗しました　箇所２
+
+6996:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7004:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7010:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7016:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7024:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7031:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7038:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7044:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7052:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7060:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7066:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7073:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7080:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7087:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7093:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7100:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7108:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7115:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7122:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7128:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7135:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7142:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7149:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7155:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7163:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7169:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7177:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7184:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7191:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7198:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7204:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7212:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7218:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7225:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7233:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7239:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7246:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7254:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7260:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7266:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7274:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7281:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7288:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7295:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7302:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7308:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7315:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7323:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7329:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7336:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7343:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7350:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7358:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7364:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7371:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7378:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7386:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7392:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7399:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7406:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7414:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7420:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7426:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7433:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7441:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7447:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7454:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7461:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7468:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7475:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7482:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7489:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7496:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7503:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7510:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7516:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7524:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7531:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7538:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7545:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7551:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7559:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7566:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7572:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7580:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7587:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7593:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7601:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7608:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7614:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7628:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7633:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7642:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7649:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7656:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7663:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7669:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7676:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7684:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7691:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7698:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7705:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7711:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7718:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7725:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7732:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7740:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7746:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7753:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7760:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7767:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7773:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7781:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7788:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7795:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7802:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7809:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7816:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7822:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7830:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7837:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7843:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7850:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7856:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7864:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7870:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7878:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7885:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7892:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7899:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7905:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7913:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7920:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7926:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7933:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7941:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7948:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7955:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7961:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7968:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7975:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7982:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7990:ID3D11SamplerState の作成に失敗しました　箇所２
+
+7996:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8003:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8011:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8016:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8023:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8031:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8037:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8044:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8052:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8059:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8065:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8073:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8079:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8086:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8093:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8101:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8107:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8115:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8121:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8127:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8135:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8142:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8149:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8156:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8162:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8170:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8177:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8183:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8191:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8197:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8204:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8212:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8218:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8225:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8232:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8239:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8246:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8252:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8260:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8266:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8273:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8281:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8287:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8294:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8302:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8308:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8315:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8322:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8329:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8336:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8343:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8351:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8357:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8365:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8371:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8378:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8385:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8392:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8398:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8405:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8412:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8419:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8426:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8434:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8440:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8447:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8454:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8461:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8468:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8476:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8483:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8490:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8496:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8503:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8509:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8516:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8523:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8531:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8538:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8544:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8551:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8559:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8565:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8572:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8579:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8587:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8593:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8600:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8606:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8614:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8621:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8628:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8635:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8646:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8655:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8663:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8669:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8676:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8683:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8690:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8697:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8704:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8711:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8718:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8725:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8732:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8739:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8746:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8753:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8760:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8767:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8774:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8780:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8787:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8795:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8802:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8809:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8815:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8821:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8829:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8836:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8843:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8850:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8856:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8864:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8873:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8884:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8892:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8898:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8905:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8913:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8919:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8926:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8933:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8940:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8948:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8954:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8960:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8968:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8975:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8982:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8990:ID3D11SamplerState の作成に失敗しました　箇所２
+
+8996:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9003:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9010:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9016:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9024:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9030:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9037:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9045:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9052:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9059:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9065:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9072:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9079:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9086:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9094:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9100:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9106:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9114:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9121:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9127:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9134:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9142:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9149:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9155:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9163:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9170:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9177:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9183:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9190:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9198:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9204:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9211:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9218:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9225:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9233:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9238:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9246:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9253:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9260:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9267:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9274:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9281:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9288:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9294:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9302:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9308:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9315:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9323:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9329:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9336:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9343:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9350:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9357:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9364:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9372:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9378:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9385:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9391:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9399:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9406:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9412:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9419:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9426:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9434:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9440:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9446:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9455:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9461:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9469:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9475:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9482:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9489:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9496:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9503:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9510:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9516:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9524:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9530:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9538:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9545:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9551:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9558:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9565:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9572:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9578:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9586:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9593:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9600:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9606:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9614:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9620:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9628:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9635:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9641:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9648:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9655:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9662:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9670:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9676:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9682:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9691:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9697:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9704:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9711:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9718:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9725:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9731:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9739:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9745:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9753:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9760:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9768:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9774:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9780:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9786:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9795:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9801:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9808:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9815:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9822:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9829:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9835:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9843:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9850:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9856:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9864:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9870:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9877:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9885:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9892:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9898:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9905:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9913:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9920:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9926:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9933:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9940:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9948:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9954:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9961:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9968:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9975:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9982:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9989:ID3D11SamplerState の作成に失敗しました　箇所２
+
+9996:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10002:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10010:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10016:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10024:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10030:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10038:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10044:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10052:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10059:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10065:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10073:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10080:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10086:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10093:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10100:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10106:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10113:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10120:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10127:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10135:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10141:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10149:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10155:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10163:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10169:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10176:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10183:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10190:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10196:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10204:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10210:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10218:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10225:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10231:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10239:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10245:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10253:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10260:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10267:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10273:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10280:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10288:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10294:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10301:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10308:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10315:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10321:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10329:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10336:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10343:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10350:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10356:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10364:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10370:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10378:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10385:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10391:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10398:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10405:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10412:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10419:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10426:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10433:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10440:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10446:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10454:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10461:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10468:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10475:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10482:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10489:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10495:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10502:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10510:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10517:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10523:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10531:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10537:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10544:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10552:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10559:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10565:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10572:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10579:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10586:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10592:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10601:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10608:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10616:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10621:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10628:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10635:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10641:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10649:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10655:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10662:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10669:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10676:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10683:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10689:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10696:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10703:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10710:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10717:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10725:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10731:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10742:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10753:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10760:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10769:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10841:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10868:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10896:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10921:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10947:ID3D11SamplerState の作成に失敗しました　箇所２
+
+10974:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11001:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11026:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11053:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11079:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11105:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11132:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11159:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11185:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11212:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11240:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11266:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11293:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11319:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11346:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11373:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11400:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11426:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11453:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11480:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11506:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11531:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11555:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11581:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11608:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11633:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11660:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11686:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11712:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11736:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11762:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11786:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11821:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11850:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11879:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11908:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11936:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11964:ID3D11SamplerState の作成に失敗しました　箇所２
+
+11991:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12020:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12048:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12076:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12104:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12134:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12162:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12191:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12219:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12258:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12291:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12322:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12354:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12386:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12419:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12452:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12483:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12515:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12547:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12579:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12611:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12645:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12678:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12711:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12743:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12778:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12811:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12846:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12879:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12912:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12944:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12978:ID3D11SamplerState の作成に失敗しました　箇所２
+
+12998:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13018:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13036:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13057:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13077:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13098:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13116:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13136:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13156:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13177:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13197:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13218:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13237:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13258:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13280:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13300:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13321:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13341:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13360:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13380:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13399:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13420:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13440:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13475:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13509:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13542:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13577:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13613:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13648:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13685:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13720:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13756:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13795:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13834:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13871:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13925:ID3D11SamplerState の作成に失敗しました　箇所２
+
+13969:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14012:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14054:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14099:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14142:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14185:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14228:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14271:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14314:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14356:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14400:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14444:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14486:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14531:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14573:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14623:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14680:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14731:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14781:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14831:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14881:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14932:ID3D11SamplerState の作成に失敗しました　箇所２
+
+14983:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15031:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15082:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15135:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15209:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15270:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15329:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15392:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15459:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15522:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15584:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15645:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15708:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15768:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15830:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15890:ID3D11SamplerState の作成に失敗しました　箇所２
+
+15952:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16015:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16076:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16137:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16200:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16263:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16348:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16420:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16490:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16560:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16630:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16701:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16798:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16881:ID3D11SamplerState の作成に失敗しました　箇所２
+
+16963:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17044:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17125:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17207:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17316:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17410:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17459:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17509:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17559:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17609:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17660:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17710:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17760:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17810:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17859:ID3D11SamplerState の作成に失敗しました　箇所２
+
+17910:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18009:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18110:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18230:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18364:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18495:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18560:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18622:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18686:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18750:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18814:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18876:ID3D11SamplerState の作成に失敗しました　箇所２
+
+18940:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19005:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19069:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19133:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19198:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19262:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19326:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19390:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19453:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19516:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19580:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19643:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19708:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19771:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19835:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19898:ID3D11SamplerState の作成に失敗しました　箇所２
+
+19961:ID3D11SamplerState の作成に失敗しました　箇所２
+
+20025:ID3D11SamplerState の作成に失敗しました　箇所２
+
+20088:ID3D11SamplerState の作成に失敗しました　箇所２
+
+20150:ID3D11SamplerState の作成に失敗しました　箇所２
+
+20213:ID3D11SamplerState の作成に失敗しました　箇所２
+
+20354:ウインドウを閉じようとしています
+20365:ウインドウが破棄されようとしています
+20366:ソフトを終了する準備が整いました
+20403:フォントの初期化を行います
+20409:フォントの初期化は正常に終了しました
+20492:d3d11.dll の解放 1
+20493:dxgi.dll の解放 1
+20494:Direct3D11 のオブジェクト数を出力
+20494:Direct3D11 のオブジェクト合計数 : 0
+20498:DirectInput 関連の終了処理... 完了
+20502:サウンド関連の終了処理... 完了
+20506:ウィンドウ関連の終了処理... 完了
+20569:ＣＯＭを終了... 完了
+20569:
+20570:Alloc memory dump
+20571:	Total size:0(0.000kb)  Alloc num:0
+20571:

@@ -1,27 +1,3 @@
-namespace
-{
-	// スピード
-	static constexpr float SPEED_MOVE = 5.0f;
-	static constexpr float SPEED_RUN = 10.0f;
-
-	// 回転完了までの時間
-	static constexpr float TIME_ROT = 1.0f;
-
-	// ジャンプ力
-	static constexpr float POW_JUMP = 35.0f;
-
-	// 最大値
-	static constexpr int MAX_HP = 100;
-	static constexpr int MAX_ENERGY = 100;
-
-	// 初期値
-	static constexpr int INIT_HP = 100;
-	static constexpr int INIT_ENERGY = 50;
-
-	// ジャンプボタン長押し限界
-	static constexpr float JUMP_BUTTON_HOLD_MAX = 5.0f;
-}
-
 #include <string>
 #include "../Application.h"
 #include "../Utility/AsoUtility.h"
@@ -35,6 +11,36 @@ namespace
 #include "Sword.h"
 #include "Planet.h"
 #include "Player.h"
+
+namespace
+{
+	// スピード
+	constexpr float SPEED_MOVE = 5.0f;
+	constexpr float SPEED_RUN = 10.0f;
+
+	// 回転完了までの時間
+	constexpr float TIME_ROT = 1.0f;
+
+	// ジャンプ力
+	constexpr float POW_JUMP = 35.0f;
+
+	// 最大値
+	constexpr int MAX_HP = 100;
+	constexpr int MAX_ENERGY = 100;
+
+	// 初期値
+	constexpr int INIT_HP = 100;
+	constexpr int INIT_ENERGY = 50;
+
+	constexpr VECTOR INIT_POS = { 0.0f, -30.0f, 0.0f };
+	const VECTOR INIT_ROT = { 0.0f, AsoUtility::Deg2RadF(180.0f), 0.0f };
+
+	constexpr VECTOR INIT_POS_TOP = { 0.0f, 110.0f, 0.0f };
+	constexpr VECTOR INIT_POS_DOWN = { 0.0f, 30.0f, 0.0f };
+
+	// ジャンプボタン長押し限界
+	constexpr float JUMP_BUTTON_HOLD_MAX = 5.0f;
+}
 
 Player::Player(void)
 	:
@@ -73,10 +79,10 @@ void Player::Init(void)
 	//transform_.SetModel(resMng_.LoadModelDuplicate(
 	//	ResourceManager::SRC::NEW_PLAYER));
 	transform_.scl = AsoUtility::VECTOR_ONE;
-	transform_.pos = { 0.0f, -30.0f, 0.0f };
+	transform_.pos = INIT_POS;
 	transform_.quaRot = Quaternion();
 	transform_.quaRotLocal =
-		Quaternion::Euler({ 0.0f, AsoUtility::Deg2RadF(180.0f), 0.0f });
+		Quaternion::Euler(INIT_ROT);
 	transform_.Update();
 
 	// アニメーションの設定
@@ -84,8 +90,8 @@ void Player::Init(void)
 
 	// カプセルコライダ
 	capsule_ = std::make_unique<Capsule>(transform_);
-	capsule_->SetLocalPosTop({ 0.0f, 110.0f, 0.0f });
-	capsule_->SetLocalPosDown({ 0.0f, 30.0f, 0.0f });
+	capsule_->SetLocalPosTop(INIT_POS_TOP);
+	capsule_->SetLocalPosDown(INIT_POS_DOWN);
 	capsule_->SetRadius(20.0f);
 
 	// 丸影画像
