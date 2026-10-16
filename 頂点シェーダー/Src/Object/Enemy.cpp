@@ -4,6 +4,7 @@
 #include "Common/Collider.h"
 #include "Common/Transform.h"
 #include "../Utility/AsoUtility.h"
+#include "Common/Dxfileloader.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -29,7 +30,16 @@ Enemy::~Enemy()
 
 void Enemy::Init()
 {
-    transform_.modelId = MV1LoadModel("Data/Model/model.mv1");
+    std::vector<char> data;
+    if (LoadFileToBuffer(_T("data/test.bin"), data)) {
+        // 先頭4バイトを int として取り出す例
+        int value = 0;
+        if (data.size() >= sizeof(int)) {
+            memcpy(&value, data.data(), sizeof(int));
+        }
+    }
+
+    transform_.modelId = MV1LoadModel("Data/Model/LowChara.mv1");
     transform_.pos = { 100, 100, 600 };
     MV1SetScale(transform_.modelId, { 1.0f, 1.0f, 1.0f });
     //cutter_ = new MeshCutter();
@@ -40,10 +50,10 @@ void Enemy::Init()
 
     std::string path = Application::PATH_MODEL;
     animationController_ = std::make_unique<AnimationController>(transform_.modelId);
-    animationController_->Add(0, path + "SkinningTest.mv1", 50.0f);
-    animationController_->Add(1, path + "Running.mv1", 50.0f);
+    animationController_->Add(ANIM_TYPE::IDOL, path + "SkinningTest.mv1", 50.0f);
+    animationController_->Add(ANIM_TYPE::RUN, path + "Running.mv1", 50.0f);
 
-    animationController_->Play(0);
+    animationController_->Play(ANIM_TYPE::IDOL);
 }
 
 void Enemy::ChangeState(STATE state) const
@@ -53,17 +63,15 @@ void Enemy::ChangeState(STATE state) const
 void Enemy::EnemyAI()
 {
     auto rand = GetRand(100);
-    
-    //auto isRand = rand < 20;
 
     if (rand < 50)
     {
         test = false;
-		animationController_->Play(0);
+		animationController_->Play(ANIM_TYPE::IDOL);
         return;
     }
     test = true;
-    animationController_->Play(1);
+    animationController_->Play(ANIM_TYPE::RUN);
 }
 
 void Enemy::EnemyMove()

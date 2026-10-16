@@ -60,7 +60,7 @@ public:
 	// 衝突用カプセルの取得
 	const Capsule& GetCapsule(void) const;
 
-	bool IsSlashing() const { return isSlashing_; }
+	const bool IsSlashing() const { return isSlashing_; }
 	const std::unique_ptr<Sword>& GetSword() const { return sword_; }
 
 private:

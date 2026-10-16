@@ -39,7 +39,7 @@ void Gate::Init(void)
 		resMng_.LoadModelDuplicate(
 			ResourceManager::SRC::GATE)
 	);
-	transform_.scl = VScale({ 1.0f, 1.0f, 1.0f }, 1.0f);
+	transform_.scl = AsoUtility::VECTOR_ONE;//VScale({ 1.0f, 1.0f, 1.0f }, 1.0f);
 
 	transform_.Update();
 	ChangeState(STATE::IDLE);

@@ -23,7 +23,6 @@ namespace
 
 GameScene::GameScene(void)
 	:
-	postEffectScreen_(-1),
 	player_(nullptr),
 	skyDome_(nullptr),
 	stage_(nullptr),
@@ -33,7 +32,7 @@ GameScene::GameScene(void)
 
 GameScene::~GameScene(void)
 {
-	DeleteGraph(postEffectScreen_);
+	//DeleteGraph(postEffectScreen_);
 }
 
 void GameScene::Init(void)
@@ -91,6 +90,8 @@ void GameScene::Update(void)
 	stage_->Update();
 
 	player_->Update();
+
+	hppos -= 0.5f;
 	
 	for (const auto& enemy : enemys_)
 	{
@@ -148,7 +149,7 @@ void GameScene::Update(void)
 			}
 		}
 	}
-	allReadyCutThisSwing_ = false;  // 振り終わったらリセット
+
 	if (!player_->IsSlashing())
 	{
 		allReadyCutThisSwing_ = false;  // 振り終わったらリセット
@@ -170,6 +171,14 @@ void GameScene::Draw(void)
 		enemy->Draw();
 	}
 	player_->Draw();
+
+	DrawUI();
+}
+
+void GameScene::DrawUI(void)
+{
+	DrawBoxAA(10, 5, maxHpPos,	15, GetColor(255, 255, 255), TRUE);
+	DrawBoxAA(10, 5, hppos,		15, GetColor(160, 0, 0), TRUE);
 
 	// ヘルプ
 	DrawFormatString(840, 20, 0x000000, "移動　　：WASD");

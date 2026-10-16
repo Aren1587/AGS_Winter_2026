@@ -28,11 +28,16 @@ public:
     const Transform& GetTransform(void) const { return transform_; }
 
 private:
+	enum ANIM_TYPE
+    {
+        IDOL,
+        RUN,
+    };
+
     enum STATE
     {
         null,
         one,
-        two,
         ui
     };
 

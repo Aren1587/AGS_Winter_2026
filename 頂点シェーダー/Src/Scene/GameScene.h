@@ -33,6 +33,7 @@ public:
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;
+	void DrawUI(void);
 
 private:
 
@@ -49,25 +50,8 @@ private:
 	// ポストエフェクトモード
 	MODE mode_;
 
-	// ポストエフェクト用スクリーン
-	int postEffectScreen_;
-	
-	// ポストエフェクト用(モノクロ)
-	std::unique_ptr<PixelMaterial> monoMaterial_;
-	std::unique_ptr<PixelRenderer> monoRenderer_;
-
-	// ポストエフェクト用(走査線)
-	std::unique_ptr<PixelMaterial> scanMaterial_;
-	std::unique_ptr<PixelRenderer> scanRenderer_;
-
-	// ポストエフェクト用(ビネット)
-	std::unique_ptr<PixelMaterial> vineMaterial_;
-	std::unique_ptr<PixelRenderer> vineRenderer_;
-
-	// ポストエフェクト用(レンズの歪み)
-	std::unique_ptr<PixelMaterial> lensMaterial_;
-	std::unique_ptr<PixelRenderer> lensRenderer_;
-
 	bool allReadyCutThisSwing_ = false;
 
+	const float maxHpPos = 400.0f;
+	float hppos = maxHpPos;
 };

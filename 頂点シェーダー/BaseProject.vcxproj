@@ -59,6 +59,7 @@
   <ItemGroup>
     <ClInclude Include="Src\MeshCutter\MeshCut.h" />
     <ClInclude Include="Src\MeshCutter\MeshCutter.h" />
+    <ClInclude Include="Src\Object\Common\Dxfileloader.h" />
     <ClInclude Include="Src\Object\Gate.h" />
     <ClInclude Include="Src\Object\Enemy.h" />
     <ClInclude Include="Src\Object\Rim.h" />
