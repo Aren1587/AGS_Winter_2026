@@ -61,6 +61,8 @@ private:
     float testTime = 0.0f;
 	const float limitTime = 3.0f;
 
+    float rotSpeed = 180.0f;
+
     void EnemyAI();
     void EnemyMove();
 

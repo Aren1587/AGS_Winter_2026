@@ -52,6 +52,5 @@ private:
 
 	bool allReadyCutThisSwing_ = false;
 
-	const float maxHpPos = 400.0f;
-	float hppos = maxHpPos;
+	float hpPos;
 };

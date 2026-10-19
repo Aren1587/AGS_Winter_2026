@@ -637,7 +637,6 @@ namespace MeshCut
                 triangle[
                     (loneIndex + 2) % 3];
 
-
             int ab =
                 GetIntersection(a, b);
 
@@ -702,7 +701,6 @@ namespace MeshCut
                     ab);
             }
         }
-
 
         // --------------------------------------------------------
         // 切断面を作る

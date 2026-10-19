@@ -65,8 +65,7 @@ const void Sword::SetFollowFrame(int& followModelId, const TCHAR* frameName)
 
     // スケール → ローカル回転 → 位置オフセット
     MATRIX scaleMat = MGetScale(transform_.scl);
-    MATRIX rotMat = MGetRotY(DX_PI_F);
-    // ずらし
+    MATRIX rotMat = transform_.quaRotLocal.ToMatrix(); // Quaternionの行列変換関数に合わせてください
     MATRIX transMat = MGetTranslate(VGet(0.0f, 0.0f, -3.0f));
 
     MATRIX offset = MMult(MMult(scaleMat, rotMat), transMat);

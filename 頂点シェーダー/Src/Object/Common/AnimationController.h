@@ -41,6 +41,8 @@ public:
 	// 再生中のアニメーション
 	int GetPlayType(void) const;
 
+	const float GetTime(void) const;
+
 	// 再生終了
 	bool IsEnd(void) const;
 

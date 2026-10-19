@@ -18,7 +18,9 @@
 
 namespace
 {
-	constexpr int ENEMY_NUM = 2;
+	constexpr int ENEMY_NUM = 1;
+
+	const float MAX_HP_POS = 400.0f;
 }
 
 GameScene::GameScene(void)
@@ -26,7 +28,8 @@ GameScene::GameScene(void)
 	player_(nullptr),
 	skyDome_(nullptr),
 	stage_(nullptr),
-	mode_(MODE::MAIN)
+	mode_(MODE::MAIN),
+	hpPos(MAX_HP_POS)
 {
 }
 
@@ -91,13 +94,14 @@ void GameScene::Update(void)
 
 	player_->Update();
 
-	hppos -= 0.5f;
+	hpPos -= 0.5f;
 	
 	for (const auto& enemy : enemys_)
 	{
 		enemy->Update();
 	}
 
+	// HIT時の斬る処理
 	if (player_->IsSlashing() && !allReadyCutThisSwing_)
 	{
 		VECTOR tip = player_->GetSword()->GetTip();
@@ -177,8 +181,8 @@ void GameScene::Draw(void)
 
 void GameScene::DrawUI(void)
 {
-	DrawBoxAA(10, 5, maxHpPos,	15, GetColor(255, 255, 255), TRUE);
-	DrawBoxAA(10, 5, hppos,		15, GetColor(160, 0, 0), TRUE);
+	DrawBoxAA(10, 5, MAX_HP_POS,	15, GetColor(255, 255, 255), TRUE);
+	DrawBoxAA(10, 5, hpPos,			15, GetColor(160, 0, 0), TRUE);
 
 	// ヘルプ
 	DrawFormatString(840, 20, 0x000000, "移動　　：WASD");

@@ -40,7 +40,8 @@ public:
 		WARP_PAUSE,
 		FLY,
 		FALLING,
-		VICTORY
+		VICTORY,
+		ATTACK,
 	};
 
 	// コンストラクタ
@@ -99,6 +100,7 @@ private:
 
 	// ジャンプ判定
 	bool isJump_;
+	bool isAttack_;
 
 	// ジャンプの入力受付時間
 	float stepJump_;
@@ -119,6 +121,8 @@ private:
 	int hp_;
 	float energy_;
 
+	float attackTimer_ = 0.0f;
+
 	void InitAnimation(void);
 
 	// 状態遷移
@@ -136,6 +140,7 @@ private:
 	// 操作
 	void ProcessMove(void);
 	void ProcessJump(void);
+	void Attack(void);
 
 	// 回転
 	void SetGoalRotate(double rotRad);

@@ -40,6 +40,8 @@ namespace
 
 	// ジャンプボタン長押し限界
 	constexpr float JUMP_BUTTON_HOLD_MAX = 5.0f;
+
+	constexpr float ATTACK_TIME = 30.0f;
 }
 
 Player::Player(void)
@@ -55,6 +57,7 @@ Player::Player(void)
 	stepRotTime_(0.0f),
 	jumpPow_(AsoUtility::VECTOR_ZERO),
 	isJump_(false),
+	isAttack_(false),
 	stepJump_(0.0f),
 	gravHitPosDown_(AsoUtility::VECTOR_ZERO),
 	gravHitPosUp_(AsoUtility::VECTOR_ZERO),
@@ -121,9 +124,7 @@ void Player::Update(void)
 	// アニメーション再生
 	animationController_->Update();
 
-	sword_->SetFollowFrame(transform_.modelId, "mixamorig:LeftHandMiddle1");
-
-	isSlashing_ = true;
+	sword_->SetFollowFrame(transform_.modelId, "mixamorig:RightHandMiddle1");
 }
 
 void Player::Draw(void)
@@ -164,6 +165,7 @@ void Player::InitAnimation(void)
 	animationController_->Add((int)ANIM_TYPE::FLY, path + "Flying.mv1", 60.0f);
 	animationController_->Add((int)ANIM_TYPE::FALLING, path + "Falling.mv1", 80.0f);
 	animationController_->Add((int)ANIM_TYPE::VICTORY, path + "Victory.mv1", 60.0f);
+	animationController_->Add((int)ANIM_TYPE::ATTACK, path + "Stable Sword Inward Slash.mv1", 60.0f);
 
 	animationController_->Play((int)ANIM_TYPE::IDLE);
 }
@@ -198,6 +200,8 @@ void Player::UpdatePlay(void)
 
 	// ジャンプ処理
 	ProcessJump();
+
+	Attack();
 
 	// 移動方向に応じた回転
 	Rotate();
@@ -234,9 +238,8 @@ void Player::DrawShadow(void)
 	SetTextureAddressMode(DX_TEXADDRESS_CLAMP);
 
 	// 影を落とすモデルの数だけ繰り返し
-	for (const auto c : colliders_)
+	for (const auto& c : colliders_)
 	{
-
 		// チェックするモデルは、jが0の時はステージモデル、1以上の場合はコリジョンモデル
 		ModelHandle = c.lock()->modelId_;
 
@@ -361,7 +364,7 @@ void Player::ProcessMove(void)
 		// 回転処理
 		SetGoalRotate(rotRad);
 
-		if (!isJump_ && IsEndLanding())
+		if (!isAttack_ && !isJump_ && IsEndLanding())
 		{
 			// アニメーション
 			if (ins.IsNew(KEY_INPUT_RSHIFT))
@@ -377,7 +380,7 @@ void Player::ProcessMove(void)
 	}
 	else
 	{
-		if (!isJump_ && IsEndLanding())
+		if (!isAttack_ && !isJump_ && IsEndLanding())
 		{
 			animationController_->Play((int)ANIM_TYPE::IDLE);
 		}
@@ -422,6 +425,33 @@ void Player::ProcessJump(void)
 		stepJump_ = JUMP_BUTTON_HOLD_MAX;
 	}
 
+}
+
+void Player::Attack(void)
+{
+	if(InputManager::GetInstance().IsTrgDown(KEY_INPUT_E))
+	{
+		animationController_->Play((int)ANIM_TYPE::ATTACK, false);
+		isAttack_ = true;
+	}
+
+	if (animationController_->IsEnd())
+	{
+		isAttack_ = false;
+		isSlashing_ = false;
+	}
+
+	if (!isAttack_) return;
+
+	attackTimer_ = animationController_->GetTime();
+
+	if (!isSlashing_)
+	{
+		if (attackTimer_ >= ATTACK_TIME)
+		{
+			isSlashing_ = true;
+		}
+	}
 }
 
 void Player::SetGoalRotate(double rotRad)
@@ -483,7 +513,7 @@ void Player::CollisionGravity(void)
 	gravHitPosUp_ = VAdd(movedPos_, VScale(dirUpGravity, gravityPow));
 	gravHitPosUp_ = VAdd(gravHitPosUp_, VScale(dirUpGravity, checkPow * 2.0f));
 	gravHitPosDown_ = VAdd(movedPos_, VScale(dirGravity, checkPow));
-	for (const auto c : colliders_)
+	for (const auto& c : colliders_)
 	{
 
 		// 地面との衝突
@@ -523,7 +553,7 @@ void Player::CollisionCapsule(void)
 	Capsule cap = Capsule(*capsule_, trans);
 
 	// カプセルとの衝突判定
-	for (const auto c : colliders_)
+	for (const auto& c : colliders_)
 	{
 		auto hits = MV1CollCheck_Capsule(
 			c.lock()->modelId_, -1,
@@ -583,7 +613,8 @@ bool Player::IsEndLanding(void)
 	bool ret = true;
 
 	// アニメーションがジャンプではない
-	if (animationController_->GetPlayType() != (int)ANIM_TYPE::JUMP)
+	if (animationController_->GetPlayType() != (int)ANIM_TYPE::JUMP ||
+		animationController_->GetPlayType() != (int)ANIM_TYPE::ATTACK)
 	{
 		return ret;
 	}

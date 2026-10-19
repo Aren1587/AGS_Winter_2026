@@ -39,8 +39,8 @@ void Enemy::Init()
         }
     }
 
-    transform_.modelId = MV1LoadModel("Data/Model/LowChara.mv1");
-    transform_.pos = { 100, 100, 600 };
+    transform_.modelId = MV1LoadModel("Data/Model/model.mv1");
+    transform_.pos = { 100, 10, 600 };
     MV1SetScale(transform_.modelId, { 1.0f, 1.0f, 1.0f });
     //cutter_ = new MeshCutter();
     MV1SetPosition(transform_.modelId, transform_.pos);
@@ -127,6 +127,14 @@ void Enemy::Update()
     {
         EnemyMove();
     }
+
+    rotSpeed += 1.0f;
+
+    transform_.quaRot = Quaternion::Euler(
+        0.0f,
+        AsoUtility::Deg2RadF(rotSpeed),
+        0.0f
+    );
     
     transform_.Update();
 

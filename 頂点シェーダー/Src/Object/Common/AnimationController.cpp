@@ -266,6 +266,11 @@ int AnimationController::GetPlayType(void) const
 	return playType_;
 }
 
+const float AnimationController::GetTime(void) const
+{
+	return cur_.anim.step;
+}
+
 bool AnimationController::IsEnd(void) const
 {
 
