@@ -12,6 +12,12 @@ namespace
 {
     constexpr float MOVE_SPEED = 1.0f;
     constexpr float GRAVITY = 0.3f;
+
+    constexpr int RANDAM_MAX = 100;
+
+    constexpr VECTOR INIT_POS = { 100, -10, 600 };
+
+    constexpr float LIMIT_TIME = 3.0f;
 }
 
 Enemy::Enemy(Player& player)
@@ -40,8 +46,8 @@ void Enemy::Init()
     }
 
     transform_.modelId = MV1LoadModel("Data/Model/model.mv1");
-    transform_.pos = { 100, 10, 600 };
-    MV1SetScale(transform_.modelId, { 1.0f, 1.0f, 1.0f });
+    transform_.pos = INIT_POS;
+    MV1SetScale(transform_.modelId, AsoUtility::VECTOR_ONE);
     //cutter_ = new MeshCutter();
     MV1SetPosition(transform_.modelId, transform_.pos);
     MV1SetupReferenceMesh(transform_.modelId, -1, true);
@@ -62,7 +68,7 @@ void Enemy::ChangeState(STATE state) const
 
 void Enemy::EnemyAI()
 {
-    auto rand = GetRand(100);
+    auto rand = GetRand(RANDAM_MAX);
 
     if (rand < 50)
     {
@@ -117,7 +123,7 @@ void Enemy::Update()
     cutter_.Update();
 
 	testTime += 1.0f / 60.0f;
-    if(limitTime < testTime)
+    if(LIMIT_TIME < testTime)
     {
         testTime = 0.0f;
         EnemyAI();

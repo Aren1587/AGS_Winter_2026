@@ -33,7 +33,7 @@ public:
 	void Init(void) override;
 	void Update(void) override;
 	void Draw(void) override;
-	void DrawUI(void);
+	void DrawUI(void)const;
 
 private:
 
@@ -53,4 +53,5 @@ private:
 	bool allReadyCutThisSwing_ = false;
 
 	float hpPos;
+	float gagePos;
 };

@@ -20,7 +20,7 @@ namespace
 {
 	constexpr int ENEMY_NUM = 1;
 
-	const float MAX_HP_POS = 400.0f;
+	constexpr float MAX_GAGE_POS = 150.0f;
 }
 
 GameScene::GameScene(void)
@@ -29,7 +29,8 @@ GameScene::GameScene(void)
 	skyDome_(nullptr),
 	stage_(nullptr),
 	mode_(MODE::MAIN),
-	hpPos(MAX_HP_POS)
+	hpPos(MAX_GAGE_POS),
+	gagePos(MAX_GAGE_POS)
 {
 }
 
@@ -179,14 +180,17 @@ void GameScene::Draw(void)
 	DrawUI();
 }
 
-void GameScene::DrawUI(void)
+void GameScene::DrawUI(void)const
 {
-	DrawBoxAA(10, 5, MAX_HP_POS,	15, GetColor(255, 255, 255), TRUE);
+	DrawBoxAA(10, 5, MAX_GAGE_POS,	15, GetColor(255, 255, 255), TRUE);
 	DrawBoxAA(10, 5, hpPos,			15, GetColor(160, 0, 0), TRUE);
 
+	DrawBoxAA(10, 20, MAX_GAGE_POS,	30, GetColor(230, 230, 230), TRUE);
+	DrawBoxAA(10, 20, hpPos,		30, GetColor(160, 160, 0), TRUE);
+
 	// ヘルプ
-	DrawFormatString(840, 20, 0x000000, "移動　　：WASD");
-	DrawFormatString(840, 40, 0x000000, "カメラ　：矢印キー");
-	DrawFormatString(840, 60, 0x000000, "ダッシュ：右Shift");
-	DrawFormatString(840, 80, 0x000000, "ジャンプ：＼(バクスラ)");
+	DrawFormatString(840, 20, 0x000000, "移動　　 ： WASD");
+	DrawFormatString(840, 40, 0x000000, "カメラ　 ： 矢印キー");
+	DrawFormatString(840, 60, 0x000000, "ダッシュ ： 右Shift");
+	DrawFormatString(840, 80, 0x000000, "ジャンプ ： ＼(バクスラ)");
 }

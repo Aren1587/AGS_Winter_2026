@@ -8,8 +8,18 @@
 #include "Player.h"
 #include "Rim.h"
 
-Rim::Rim(
-	Player& player, const Transform& transform) : player_(player)
+Rim::Rim(Player& player, const Transform& transform) 
+	: 
+	state_(STATE::NONE),
+	player_(player),
+	vertexMaterial_(nullptr),
+	vertexRenderer_(nullptr),
+	shader_(-1),
+	constBufFloat4Size_(0),
+	constBuf_(0),
+	shaderVS_(-1),
+	constBufFloat4SizeVS_(0),
+	constBufVS_(0)
 {
 	transform_ = transform;
 
@@ -37,9 +47,6 @@ void Rim::Init(void)
 			ResourceManager::SRC::MOON)
 	);
 	transform_.scl = VScale(AsoUtility::VECTOR_ONE, 1.0f);
-
-
-
 
 	transform_.Update();
 

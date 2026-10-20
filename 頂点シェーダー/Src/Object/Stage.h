@@ -52,8 +52,6 @@ public:
 	// 対象ステージを取得
 	std::weak_ptr<Planet> GetPlanet(NAME type);
 
-	std::vector<std::unique_ptr<WarpStar>>& GetWarpStar(void) { return warpStars_; }
-
 private:
 
 	// シングルトン参照
@@ -68,21 +66,6 @@ private:
 	// 惑星
 	std::map<NAME, std::shared_ptr<Planet>> planets_;
 
-	// ワープスター
-	std::vector<std::unique_ptr<WarpStar>> warpStars_;
-
-	// メタル
-	std::vector<std::unique_ptr<Metal>> metal_;
-
-	// Rim
-	std::vector<std::unique_ptr<Rim>> rim_;
-
-	// 水
-	std::vector<std::unique_ptr<Water>> water_;
-
-	// ゲート
-	std::vector<std::unique_ptr<Gate>> gate_;
-
 	// 空のPlanet
 	std::shared_ptr<Planet> nullPlanet = nullptr;
 
@@ -90,18 +73,4 @@ private:
 
 	// 最初の惑星
 	void MakeMainStage(void);
-
-	// ワープスター
-	void MakeWarpStar(void);
-
-	// メタル
-	void MakeMetal(void);
-
-	// Rim
-	void MakeRim(void);
-
-	// 水
-	void MakeWater(void);
-
-	void MakeGate(void);
 };

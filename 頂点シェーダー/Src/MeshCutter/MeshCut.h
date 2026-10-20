@@ -321,7 +321,7 @@ namespace MeshCut
 
             for (const auto& face : faces)
             {
-                std::array<int, 3> newFace;
+                std::array<int, 3> newFace{};
 
                 for (int i = 0;
                     i < 3;
@@ -436,7 +436,7 @@ namespace MeshCut
         auto LerpColor =
             [](COLOR_U8 a, COLOR_U8 b, float t)
             {
-                COLOR_U8 c;
+                COLOR_U8 c{};
 
                 c.r = (unsigned char)(a.r + (b.r - a.r) * t);
                 c.g = (unsigned char)(a.g + (b.g - a.g) * t);
@@ -631,11 +631,11 @@ namespace MeshCut
 
             int b =
                 triangle[
-                    (loneIndex + 1) % 3];
+                    (static_cast<std::array<int, 3Ui64>::size_type>(loneIndex) + 1) % 3];
 
             int c =
                 triangle[
-                    (loneIndex + 2) % 3];
+                    (static_cast<std::array<int, 3Ui64>::size_type>(loneIndex) + 2) % 3];
 
             int ab =
                 GetIntersection(a, b);
@@ -765,7 +765,7 @@ namespace MeshCut
                                 a += colors[index].a;
                             }
 
-                            COLOR_U8 avg;
+                            COLOR_U8 avg{};
 
                             avg.r = (unsigned char)(r / (int)loop.size());
                             avg.g = (unsigned char)(g / (int)loop.size());

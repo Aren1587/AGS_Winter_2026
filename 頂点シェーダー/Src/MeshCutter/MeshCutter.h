@@ -22,9 +22,10 @@
 //      cutter.Update();
 //      cutter.Draw();
 //
-//  重力・床・独自の色や光は、すべて既定では「前と同じ見た目」になるように
-//  なっている。何も呼ばなければ、重力なしで破片が飛び散って自然に止まる、
-//  今までどおりの挙動になる。プロジェクトごとに必要な設定だけ呼べばよい。
+//  破片は回転する。切った瞬間に切断面から離れる向きの回転が付き、
+//  床に着いたあとは重心が支えの外にあれば重力で倒れる。
+//  回転が不要なら SetRotationEnabled(false) で従来どおりの
+//  平行移動だけの挙動になる。
 //
 //  画面をドラッグして切る操作を作りたい場合は、静的関数
 //  ComputePlaneFromDrag() が使える(main.cpp を参照)。
@@ -34,18 +35,23 @@ class MeshCutter
 public:
 
     // 切断された破片
+    //
+    // mesh.verts は「破片の重心を原点としたローカル座標」で持つ。
+    // ワールド座標の頂点は  VAdd(VTransform(v, rot), pos)  で求める。
     struct Piece
     {
         MeshCut::Mesh mesh;
 
-        VECTOR pos;
+        VECTOR pos;      // 重心のワールド位置
         VECTOR vel;
 
-        int color;
+        MATRIX rot;      // ローカル → ワールドの回転
+        VECTOR angVel;   // 角速度 (軸 × ラジアン/フレーム)
 
-        // mesh.verts の中の最小 Y 座標。
-        // 床との当たり判定に使う (SetMesh / Reset / Cut のたびに更新される)
-        float minY;
+        // 重心から最も遠い頂点までの距離の2乗 (倒れる計算の簡易慣性として使う)
+        float radius2;
+
+        int color;
     };
 
 public:
@@ -79,7 +85,7 @@ public:
 
 
     // ============================================================
-    // 更新 (重力・床判定・移動をまとめて行う)
+    // 更新 (重力・回転・床判定・移動をまとめて行う)
     //
     // deltaTime : 1フレーム分の時間。60fps 固定で毎フレーム1回呼ぶだけなら
     //             既定の 1.0f のままでよい
@@ -105,6 +111,7 @@ public:
 
     // ============================================================
     // 破片一覧 (自前の描画・当たり判定をしたいときに使う)
+    //   頂点のワールド座標は Piece のコメントを参照
     // ============================================================
 
     const std::vector<Piece>& GetPieces() const;
@@ -134,6 +141,30 @@ public:
 
 
     // ============================================================
+    // 回転の設定
+    // ============================================================
+
+    // 破片の回転・倒れる挙動を使うか (既定 true)。
+    // false にすると、回転なしの平行移動だけになる
+    void SetRotationEnabled(
+        bool enabled);
+
+    // 切った瞬間に破片へ与える回転の強さ (ラジアン/フレーム。既定 0.05)。
+    // 0 なら初期回転なし(床に着いたあとの倒れ込みだけが残る)
+    void SetSpin(
+        float spin);
+
+    // 床に着いている間の回転の減衰率 (既定 0.9。小さいほど早く止まる)
+    void SetAngularFriction(
+        float friction);
+
+    // 床との接触とみなす高さの幅。
+    // 0 以下なら元メッシュの半径の 2% を自動で使う (既定 0)
+    void SetContactEps(
+        float eps);
+
+
+    // ============================================================
     // 重力・床の設定
     //   何も呼ばなければ重力・床とも無効のまま
     // ============================================================
@@ -145,13 +176,13 @@ public:
     // 重力の ON/OFF だけを切り替える。
     //   OFF にしても SetGravity で設定した値は覚えたままなので、
     //   再び ON にすれば同じ強さの重力に戻る。
-    //   OFF にした瞬間、全破片の速度を 0 にして空中で静止させる。
+    //   OFF にした瞬間、全破片の速度と角速度を 0 にして空中で静止させる。
     void SetGravityEnabled(
         bool enabled);
 
     bool IsGravityEnabled() const;
 
-    // 空中・地上を問わず毎フレームかかる速度の減衰率。
+    // 空中・地上を問わず毎フレームかかる速度・角速度の減衰率。
     // 1.0 なら減衰なし (既定 1.0)。
     // 重力を使わずに「切った破片が飛び散って自然に止まる」挙動にしたいときは
     // 0.9 前後を指定するとよい
@@ -215,7 +246,7 @@ public:
 
 private:
 
-    // 元のメッシュ
+    // 元のメッシュ (ワールド座標のまま)
     MeshCut::Mesh originalMesh_;
 
     // 元メッシュのバウンディングボックス (SetMesh のたびに更新)
@@ -233,6 +264,12 @@ private:
 
     // 切断面にフタをするか
     bool capEnabled_ = true;
+
+    // 回転
+    bool rotationEnabled_ = true;
+    float spin_ = 0.05f;
+    float angularFriction_ = 0.9f;
+    float contactEps_ = 0.0f;     // 0 以下なら半径の 2% を自動で使う
 
     // 重力・床
     float gravityValue_ = 0.0f;   // SetGravity で設定した値 (ON/OFF に関わらず覚えておく)
@@ -256,14 +293,24 @@ private:
         { 90, 200, 200}
     };
 
-    // mesh の中で最も低い Y 座標を求める
-    static float ComputeMinY(
-        const MeshCut::Mesh& mesh);
-
-    // mesh と速度から Piece を1個組み立てる (色番号は自動で割り当てる)
+    // mesh (ワールド座標) と速度から Piece を1個組み立てる。
+    // 頂点を重心基準のローカル座標へ直し、pos に重心を入れる。
+    // color が負なら色番号を自動で割り当て、0 以上ならその色を引き継ぐ
     Piece MakePiece(
         MeshCut::Mesh&& mesh,
-        VECTOR vel);
+        VECTOR vel,
+        VECTOR angVel,
+        int color = -1);
+
+    // 床に着いている破片に、重力による倒れ込みの回転を加える
+    void ApplyTipping(
+        Piece& piece,
+        float lowest,
+        float gravity,
+        float deltaTime) const;
+
+    // 回転行列の誤差を取り除く (毎フレーム回し続けると崩れるため)
+    static void Orthonormalize(MATRIX& m);
 
     // 破片1個描画
     void DrawPiece(const Piece& piece);
