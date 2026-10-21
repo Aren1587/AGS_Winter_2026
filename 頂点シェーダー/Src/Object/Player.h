@@ -15,8 +15,13 @@ class Sword;
 
 class Player : public ActorBase
 {
-
 public:
+
+	struct Status
+	{
+		int hp_;
+		float energy_;
+	};
 
 	// 状態
 	enum class STATE
@@ -44,6 +49,10 @@ public:
 		ATTACK,
 	};
 
+	// 最大値
+	static constexpr int MAX_HP = 100;
+	static constexpr int MAX_ENERGY = 100;
+
 	// コンストラクタ
 	Player(void);
 
@@ -63,6 +72,7 @@ public:
 
 	const bool IsSlashing() const { return isSlashing_; }
 	const std::unique_ptr<Sword>& GetSword() const { return sword_; }
+	const Status& GetStatus() const { return status_; }
 
 private:
 
@@ -118,8 +128,7 @@ private:
 
 	bool isSlashing_ = false;
 
-	int hp_;
-	float energy_;
+	Status status_;
 
 	float attackTimer_ = 0.0f;
 
@@ -141,6 +150,7 @@ private:
 	void ProcessMove(void);
 	void ProcessJump(void);
 	void Attack(void);
+	void SlashAttackMode(void);
 
 	// 回転
 	void SetGoalRotate(double rotRad);
@@ -156,5 +166,7 @@ private:
 
 	// 着地モーション終了
 	bool IsEndLanding(void);
+
+	void SlashEffect(void);
 
 };

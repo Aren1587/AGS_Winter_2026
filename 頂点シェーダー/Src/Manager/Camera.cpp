@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <math.h>
 #include <DxLib.h>
 #include <EffekseerForDXLib.h>
@@ -14,6 +15,8 @@ Camera::Camera(void)
 	pos_ = AsoUtility::VECTOR_ZERO;
 	targetPos_ = AsoUtility::VECTOR_ZERO;
 	followTransform_ = nullptr;
+	isShoulder_ = false;
+	shoulderRate_ = 0.0f;
 }
 
 Camera::~Camera(void)
@@ -134,27 +137,40 @@ void Camera::SetDefault(void)
 
 void Camera::SyncFollow(void)
 {
+	// 肩越しブレンド率の更新
+	float goal = isShoulder_ ? 1.0f : 0.0f;
+	if (shoulderRate_ < goal)
+	{
+		shoulderRate_ = (std::min)(shoulderRate_ + SHOULDER_BLEND_SPEED, goal);
+	}
+	else if (shoulderRate_ > goal)
+	{
+		shoulderRate_ = (std::max)(shoulderRate_ - SHOULDER_BLEND_SPEED, goal);
+	}
+
+	// 通常と肩越しの相対座標を補間
+	auto lerpVec = [](const VECTOR& a, const VECTOR& b, float t) {
+		return VAdd(a, VScale(VSub(b, a), t));
+		};
+	VECTOR f2c = lerpVec(LOCAL_F2C_POS, SHOULDER_F2C_POS, shoulderRate_);
+	VECTOR f2t = lerpVec(LOCAL_F2T_POS, SHOULDER_F2T_POS, shoulderRate_);
+
 	// 同期先の位置
 	VECTOR pos = followTransform_->pos;
 
-	// 重力の方向制御に従う
-	// 正面から設定されたY軸分、回転させる
 	rotOutX_ = Quaternion::AngleAxis(angles_.y, AsoUtility::AXIS_Y);
-
-	// 正面から設定されたX軸分、回転させる
 	rot_ = rotOutX_.Mult(Quaternion::AngleAxis(angles_.x, AsoUtility::AXIS_X));
 
 	VECTOR localPos;
 
-	// 注視点(通常重力でいうところのY値を追従対象と同じにする)
-	localPos = rotOutX_.PosAxis(LOCAL_F2T_POS);
+	// 注視点
+	localPos = rotOutX_.PosAxis(f2t);
 	targetPos_ = VAdd(pos, localPos);
 
 	// カメラ位置
-	localPos = rot_.PosAxis(LOCAL_F2C_POS);
+	localPos = rot_.PosAxis(f2c);
 	pos_ = VAdd(pos, localPos);
 
-	// カメラの上方向
 	cameraUp_ = AsoUtility::DIR_U;
 }
 

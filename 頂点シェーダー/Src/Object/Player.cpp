@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 #include "../Application.h"
 #include "../Utility/AsoUtility.h"
@@ -62,15 +63,14 @@ Player::Player(void)
 	gravHitPosDown_(AsoUtility::VECTOR_ZERO),
 	gravHitPosUp_(AsoUtility::VECTOR_ZERO),
 	imgShadow_(-1),
-	capsule_(nullptr),
-	hp_(INIT_HP),
-	energy_(INIT_ENERGY)
+	capsule_(nullptr)
 {
+	status_.hp_ = INIT_HP;
+	status_.energy_ = INIT_ENERGY;
 
 	// 状態管理
 	stateChanges_.emplace(STATE::NONE, std::bind(&Player::ChangeStateNone, this));
 	stateChanges_.emplace(STATE::PLAY, std::bind(&Player::ChangeStatePlay, this));
-
 }
 
 Player::~Player(void)
@@ -125,6 +125,8 @@ void Player::Update(void)
 	animationController_->Update();
 
 	sword_->SetFollowFrame(transform_.modelId, "mixamorig:RightHandMiddle1");
+
+	//status_.hp_ -= 1;
 }
 
 void Player::Draw(void)
@@ -201,7 +203,11 @@ void Player::UpdatePlay(void)
 	// ジャンプ処理
 	ProcessJump();
 
+	// 攻撃
 	Attack();
+
+	// 斬撃モード(肩越しカメラ)
+	SlashAttackMode();
 
 	// 移動方向に応じた回転
 	Rotate();
@@ -442,6 +448,9 @@ void Player::Attack(void)
 	}
 
 	if (!isAttack_) return;
+	// ↓攻撃している
+
+	SlashEffect();
 
 	attackTimer_ = animationController_->GetTime();
 
@@ -452,6 +461,13 @@ void Player::Attack(void)
 			isSlashing_ = true;
 		}
 	}
+}
+
+void Player::SlashAttackMode(void)
+{
+	// Qキーを押している間、肩越しカメラ
+	bool isSlashMode = InputManager::GetInstance().IsNew(KEY_INPUT_Q);
+	mainCamera.SetShoulder(isSlashMode);
 }
 
 void Player::SetGoalRotate(double rotRad)
@@ -625,4 +641,9 @@ bool Player::IsEndLanding(void)
 	}
 
 	return false;
+}
+
+void Player::SlashEffect(void)
+{
+
 }

@@ -50,8 +50,5 @@ private:
 	// ポストエフェクトモード
 	MODE mode_;
 
-	bool allReadyCutThisSwing_ = false;
-
-	float hpPos;
-	float gagePos;
+	bool alreadyCutThisSwing_ = false;
 };

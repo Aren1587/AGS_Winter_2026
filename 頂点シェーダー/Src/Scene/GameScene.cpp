@@ -1,4 +1,4 @@
-#include <DxLib.h>
+ï»¿#include <DxLib.h>
 #include "../Application.h"
 #include "../Utility/AsoUtility.h"
 #include "../Manager/SceneManager.h"
@@ -28,9 +28,7 @@ GameScene::GameScene(void)
 	player_(nullptr),
 	skyDome_(nullptr),
 	stage_(nullptr),
-	mode_(MODE::MAIN),
-	hpPos(MAX_GAGE_POS),
-	gagePos(MAX_GAGE_POS)
+	mode_(MODE::MAIN)
 {
 }
 
@@ -41,11 +39,11 @@ GameScene::~GameScene(void)
 
 void GameScene::Init(void)
 {
-	// ƒvƒŒƒCƒ„[
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
-	// “G‚Ìì¬
+	// æ•µã®ä½œæˆ
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		auto e = std::make_unique<Enemy>(*player_);
@@ -53,14 +51,14 @@ void GameScene::Init(void)
 		enemys_.emplace_back(std::move(e));
 	}
 
-	// ƒXƒe[ƒW
+	// ã‚¹ãƒ†ãƒ¼ã‚¸
 	stage_ = std::make_unique<Stage>(*player_);
 	stage_->Init();
 
-	// ƒXƒe[ƒW‚Ì‰Šúİ’è
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã®åˆæœŸè¨­å®š
 	stage_->ChangeStage(Stage::NAME::MAIN_PLANET);
 
-	// ƒXƒJƒCƒh[ƒ€
+	// ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ 
 	skyDome_ = std::make_unique<SkyDome>(player_->GetTransform());
 	skyDome_->Init();
 
@@ -70,14 +68,14 @@ void GameScene::Init(void)
 
 void GameScene::Update(void)
 {
-	// ƒV[ƒ“‘JˆÚ
+	// ã‚·ãƒ¼ãƒ³é·ç§»
 	InputManager& ins = InputManager::GetInstance();
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE);
 	}
 
-	// ƒ‚[ƒhØ‘Ö
+	// ãƒ¢ãƒ¼ãƒ‰åˆ‡æ›¿
 	if (ins.IsTrgDown(KEY_INPUT_BACKSLASH))
 	{
 		int tmp = (int)mode_;
@@ -94,16 +92,14 @@ void GameScene::Update(void)
 	stage_->Update();
 
 	player_->Update();
-
-	hpPos -= 0.5f;
 	
 	for (const auto& enemy : enemys_)
 	{
 		enemy->Update();
 	}
 
-	// HIT‚Ìa‚éˆ—
-	if (player_->IsSlashing() && !allReadyCutThisSwing_)
+	// HITæ™‚ã®æ–¬ã‚‹å‡¦ç†
+	if (player_->IsSlashing() && !alreadyCutThisSwing_)
 	{
 		VECTOR tip = player_->GetSword()->GetTip();
 		for (const auto& enemy : enemys_)
@@ -115,7 +111,7 @@ void GameScene::Update(void)
 			float distance = VSize(toTip);
 			float radius = 100.0f;//moon_->GetRadius();
 
-			// Œ‚Ì“–‚½‚è”»’è‚ğ‰Â‹‰»
+			// æœˆã®å½“ãŸã‚Šåˆ¤å®šã‚’å¯è¦–åŒ–
 			DrawSphere3D(
 				center,
 				radius,
@@ -125,14 +121,14 @@ void GameScene::Update(void)
 				FALSE
 			);
 
-			// Œ‚Ì’†S ¨ Œ•æ‚ğü‚Å•\¦
+			// æœˆã®ä¸­å¿ƒ â†’ å‰£å…ˆã‚’ç·šã§è¡¨ç¤º
 			DrawLine3D(
 				center,
 				tip,
 				GetColor(0, 255, 0)
 			);
 
-			// Œ•æ‚ğ¬‚³‚¢‹…‚Å•\¦
+			// å‰£å…ˆã‚’å°ã•ã„çƒã§è¡¨ç¤º
 			DrawSphere3D(
 				tip,
 				10.0f,
@@ -142,14 +138,14 @@ void GameScene::Update(void)
 				TRUE
 			);
 
-			// ”»’è
+			// åˆ¤å®š
 			if (distance < radius)
 			{
 				VECTOR origin, normal;
 				if (player_->GetSword()->ComputeSwingPlane(origin, normal))
 				{
 					enemy->Cut(origin, normal);
-					allReadyCutThisSwing_ = true;  // 1‰ñ‚ÌU‚è‚Å‰½“x‚àØ‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+					alreadyCutThisSwing_ = true;  // 1å›ã®æŒ¯ã‚Šã§ä½•åº¦ã‚‚åˆ‡ã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 				}
 			}
 		}
@@ -157,7 +153,7 @@ void GameScene::Update(void)
 
 	if (!player_->IsSlashing())
 	{
-		allReadyCutThisSwing_ = false;  // U‚èI‚í‚Á‚½‚çƒŠƒZƒbƒg
+		alreadyCutThisSwing_ = false;  // æŒ¯ã‚Šçµ‚ã‚ã£ãŸã‚‰ãƒªã‚»ãƒƒãƒˆ
 	}
 }
 
@@ -166,8 +162,7 @@ void GameScene::Draw(void)
 	SetUseZBuffer3D(TRUE);
 	SetWriteZBuffer3D(TRUE);
 
-	int mainScreen = SceneManager::GetInstance().GetMainScreen();
-	// ”wŒi
+	// èƒŒæ™¯
 	skyDome_->Draw();
 	stage_->Draw();
 	
@@ -182,15 +177,26 @@ void GameScene::Draw(void)
 
 void GameScene::DrawUI(void)const
 {
-	DrawBoxAA(10, 5, MAX_GAGE_POS,	15, GetColor(255, 255, 255), TRUE);
-	DrawBoxAA(10, 5, hpPos,			15, GetColor(160, 0, 0), TRUE);
+	const float gageX = 10.0f;
+	const auto backColor = GetColor(255, 255, 255);
+	const auto hpColor = GetColor(160, 0, 0);
+	const auto energyColor = GetColor(160, 160, 0);
 
-	DrawBoxAA(10, 20, MAX_GAGE_POS,	30, GetColor(230, 230, 230), TRUE);
-	DrawBoxAA(10, 20, hpPos,		30, GetColor(160, 160, 0), TRUE);
+	const auto& status = player_->GetStatus();
 
-	// ƒwƒ‹ƒv
-	DrawFormatString(840, 20, 0x000000, "ˆÚ“®@@ F WASD");
-	DrawFormatString(840, 40, 0x000000, "ƒJƒƒ‰@ F –îˆóƒL[");
-	DrawFormatString(840, 60, 0x000000, "ƒ_ƒbƒVƒ… F ‰EShift");
-	DrawFormatString(840, 80, 0x000000, "ƒWƒƒƒ“ƒv F _(ƒoƒNƒXƒ‰)");
+	float hp_rate = (float)status.hp_ / Player::MAX_HP;                 // 0.0ã€œ1.0
+	hp_rate = std::clamp(hp_rate, 0.0f, 1.0f);
+	DrawBoxAA(gageX, 5, gageX + MAX_GAGE_POS,	15, backColor, TRUE);
+	DrawBoxAA(gageX, 5, gageX + MAX_GAGE_POS * hp_rate, 15, hpColor, TRUE);
+
+	float energy_rate = (float)status.energy_ / Player::MAX_ENERGY;                 // 0.0ã€œ1.0
+	energy_rate = std::clamp(energy_rate, 0.0f, 1.0f);
+	DrawBoxAA(gageX, 20, gageX + MAX_GAGE_POS,	30, backColor, TRUE);
+	DrawBoxAA(gageX, 20, gageX + MAX_GAGE_POS * energy_rate, 30, energyColor, TRUE);
+
+	// ãƒ˜ãƒ«ãƒ—
+	DrawFormatString(840, 20, 0x000000, "ç§»å‹•ã€€ã€€ ï¼š WASD");
+	DrawFormatString(840, 40, 0x000000, "ã‚«ãƒ¡ãƒ©ã€€ ï¼š çŸ¢å°ã‚­ãƒ¼");
+	DrawFormatString(840, 60, 0x000000, "ãƒ€ãƒƒã‚·ãƒ¥ ï¼š å³Shift");
+	DrawFormatString(840, 80, 0x000000, "ã‚¸ãƒ£ãƒ³ãƒ— ï¼š ï¼¼(ãƒã‚¯ã‚¹ãƒ©)");
 }

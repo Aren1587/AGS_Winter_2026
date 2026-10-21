@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <DxLib.h>
 #include "../Common/Quaternion.h"
 class Transform;
@@ -8,29 +8,38 @@ class Camera
 
 public:
 
-	// �J�����X�s�[�h(�x)
+	// カメラスピード(度)
 	static constexpr float SPEED = 1.0f;
 
-	// �J�����N���b�v�FNEAR
+	// カメラクリップ：NEAR
 	static constexpr float CAMERA_NEAR = 10.0f;
 
-	// �J�����N���b�v�FNEAR
+	// カメラクリップ：NEAR
 	static constexpr float CAMERA_FAR = 30000.0f;
 
-	// �J�����̏������W
+	// カメラの初期座標
 	static constexpr VECTOR DEFAULT_CAMERA_POS = { 0.0f, 100.0f, -500.0f };
 
-	// �Ǐ]�ʒu����J�����ʒu�܂ł̑��΍��W
+	// 追従位置からカメラ位置までの相対座標
 	static constexpr VECTOR LOCAL_F2C_POS = { 0.0f, 50.0f, -400.0f };
 
-	// �Ǐ]�ʒu���璍���_�܂ł̑��΍��W
+	// 追従位置から注視点までの相対座標
 	static constexpr VECTOR LOCAL_F2T_POS = { 0.0f, 0.0f, 500.0f };
 
-	// �J������X��]����x�p
+	// カメラのX回転上限度角
 	static constexpr float LIMIT_X_UP_RAD = 40.0f * (DX_PI_F / 180.0f);
 	static constexpr float LIMIT_X_DW_RAD = 15.0f * (DX_PI_F / 180.0f);
+
+	// 肩越し時の追従位置からカメラ位置までの相対座標(右に寄せて近づける)
+	static constexpr VECTOR SHOULDER_F2C_POS = { 80.0f, 90.0f, -180.0f };
+
+	// 肩越し時の追従位置から注視点までの相対座標(右に寄せる)
+	static constexpr VECTOR SHOULDER_F2T_POS = { 80.0f, 40.0f, 500.0f };
+
+	// 肩越しへの切り替え速度(1フレームあたりのブレンド量)
+	static constexpr float SHOULDER_BLEND_SPEED = 0.15f;
 	
-	// �J�������[�h
+	// カメラモード
 	enum class MODE
 	{
 		NONE,
@@ -47,62 +56,71 @@ public:
 	void SetBeforeDraw(void);
 	void Draw(void);
 
-	// �J�����ʒu
+	// カメラ位置
 	VECTOR GetPos(void) const;
-	// �J�����̑���p�x
+	// カメラの操作角度
 	VECTOR GetAngles(void) const;
-	// �J�����̒����_
+	// カメラの注視点
 	VECTOR GetTargetPos(void) const;
 
-	// �J�����p�x
+	// カメラ角度
 	Quaternion GetQuaRot(void) const;
-	// X��]�𔲂����J�����p�x
+	// X回転を抜いたカメラ角度
 	Quaternion GetQuaRotOutX(void) const;
-	// �J�����̑O������
+	// カメラの前方方向
 	VECTOR GetForward(void) const;
 
-	// �J�������[�h�̕ύX
+	// カメラモードの変更
 	void ChangeMode(MODE mode);
 
-	// �Ǐ]�Ώۂ̐ݒ�
+	// 追従対象の設定
 	void SetFollow(const Transform* follow);
+
+	// 肩越しカメラのON/OFF
+	void SetShoulder(bool isShoulder) { isShoulder_ = isShoulder; }
 
 private:
 
-	// �J�������Ǐ]�ΏۂƂ���Transform
+	// カメラが追従対象とするTransform
 	const Transform* followTransform_;
 
-	// �J�������[�h
+	// カメラモード
 	MODE mode_;
 
-	// �J�����̈ʒu
+	// カメラの位置
 	VECTOR pos_;
 
-	// �J�����p�x(rad)
+	// カメラ角度(rad)
 	VECTOR angles_;
 
-	// X����]�������p�x
+	// X軸回転が無い角度
 	Quaternion rotOutX_;
 
-	// �J�����p�x
+	// カメラ角度
 	Quaternion rot_;
 
-	// �����_
+	// 注視点
 	VECTOR targetPos_;
 
-	// �J�����̏����
+	// カメラの上方向
 	VECTOR cameraUp_;
 
-	// �J�����������ʒu�ɖ߂�
+	// 肩越しカメラ中か
+	bool isShoulder_;
+
+	// 肩越しブレンド率(0.0f:通常 〜 1.0f:肩越し)
+	float shoulderRate_;
+
+	// カメラを初期位置に戻す
 	void SetDefault(void);
 
-	// �Ǐ]�ΏۂƂ̈ʒu���������
+	// 追従対象との位置同期を取る
 	void SyncFollow(void);
 
-	// �J��������
+	// カメラ操作
 	void ProcessRot(void);
 
-	// ���[�h�ʍX�V�X�e�b�v
+	// モード別更新ステップ
 	void SetBeforeDrawFixedPoint(void);
 	void SetBeforeDrawFollow(void);
 	void SetBeforeDrawSelfShot(void);
