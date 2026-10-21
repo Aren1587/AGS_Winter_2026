@@ -170,9 +170,9 @@ void GameScene::Draw(void)
 	{
 		enemy->Draw();
 	}
-	player_->Draw();
 
 	DrawUI();
+	player_->Draw();
 }
 
 void GameScene::DrawUI(void)const

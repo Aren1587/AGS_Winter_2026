@@ -43,6 +43,11 @@ namespace
 	constexpr float JUMP_BUTTON_HOLD_MAX = 5.0f;
 
 	constexpr float ATTACK_TIME = 30.0f;
+
+	constexpr float LINE_LENGTH = 1200.0f;     // ラインの長さ(画面サイズより長めに)
+	constexpr float MOUSE_DEAD_ZONE = 3.0f;    // 角度を更新する最小マウス移動量
+	constexpr int   LINE_COLOR_CORE = 0xE0FFFF; // 中心の白っぽい青
+	constexpr int   LINE_COLOR_GLOW = 0x1E90FF; // 外側の青
 }
 
 Player::Player(void)
@@ -138,6 +143,8 @@ void Player::Draw(void)
 
 	// 丸影描画
 	DrawShadow();
+
+	DrawSlashLine();
 }
 
 void Player::AddCollider(std::weak_ptr<Collider> collider)
@@ -468,6 +475,58 @@ void Player::SlashAttackMode(void)
 	// Qキーを押している間、肩越しカメラ
 	bool isSlashMode = InputManager::GetInstance().IsNew(KEY_INPUT_Q);
 	mainCamera.SetShoulder(isSlashMode);
+
+	// モード開始時にマウスを中央へ戻して基準を作る
+	if (isSlashMode && !isBladeMode_)
+	{
+		SetMouseDispFlag(FALSE);
+		SetMousePoint(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2);
+	}
+	if (!isSlashMode && isBladeMode_)
+	{
+		SetMouseDispFlag(TRUE);
+	}
+	isBladeMode_ = isSlashMode;
+
+	if (isBladeMode_)
+	{
+		UpdateSlashLine();
+	}
+}
+
+void Player::UpdateSlashLine(void)
+{
+	// マウスが中央からどれだけ動いたか=入力方向
+	int cx = Application::SCREEN_SIZE_X / 2;
+	int cy = Application::SCREEN_SIZE_Y / 2;
+	int mx, my;
+	GetMousePoint(&mx, &my);
+	float dx = static_cast<float>(mx - cx);
+	float dy = static_cast<float>(my - cy);
+	SetMousePoint(cx, cy);
+
+	// 動いた方向にラインを向ける(小さな揺れは無視)
+	if (dx * dx + dy * dy > MOUSE_DEAD_ZONE * MOUSE_DEAD_ZONE)
+	{
+		slashLineAngle_ = atan2f(dy, dx);
+	}
+}
+
+void Player::DrawSlashLine(void)
+{
+	if (!isBladeMode_) return;
+
+	float cx = Application::SCREEN_SIZE_X / 2.0f;
+	float cy = Application::SCREEN_SIZE_Y / 2.0f;
+	float vx = cosf(slashLineAngle_) * LINE_LENGTH * 0.5f;
+	float vy = sinf(slashLineAngle_) * LINE_LENGTH * 0.5f;
+
+	// 加算合成で発光っぽく:太い青 → 細い白の順に重ねる
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
+	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_GLOW, 10.0f);
+	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_GLOW, 5.0f);
+	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_CORE, 2.0f);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void Player::SetGoalRotate(double rotRad)

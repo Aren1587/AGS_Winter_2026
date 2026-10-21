@@ -132,6 +132,9 @@ private:
 
 	float attackTimer_ = 0.0f;
 
+	bool  isBladeMode_ = false;     // 斬撃モード中か
+	float slashLineAngle_ = 0.0f;   // 画面上のライン角度(rad)
+
 	void InitAnimation(void);
 
 	// 状態遷移
@@ -142,9 +145,11 @@ private:
 	// 更新ステップ
 	void UpdateNone(void);
 	void UpdatePlay(void);
-	
+	void UpdateSlashLine(void);
+
 	// 描画系
 	void DrawShadow(void);
+	void DrawSlashLine(void);
 
 	// 操作
 	void ProcessMove(void);
