@@ -48,6 +48,9 @@ namespace
 	constexpr float MOUSE_DEAD_ZONE = 3.0f;    // 角度を更新する最小マウス移動量
 	constexpr int   LINE_COLOR_CORE = 0xE0FFFF; // 中心の白っぽい青
 	constexpr int   LINE_COLOR_GLOW = 0x1E90FF; // 外側の青
+
+	// 元の斬りアニメが画面上で何度(rad)に見えるか。実機で合わせる
+	constexpr float ATTACK_BASE_ANGLE = 0.0f;
 }
 
 Player::Player(void)
@@ -99,6 +102,8 @@ void Player::Init(void)
 	// アニメーションの設定
 	InitAnimation();
 
+	spineFrame_ = MV1SearchFrame(transform_.modelId, "mixamorig:Spine1");
+
 	// カプセルコライダ
 	capsule_ = std::make_unique<Capsule>(transform_);
 	capsule_->SetLocalPosTop(INIT_POS_TOP);
@@ -128,6 +133,8 @@ void Player::Update(void)
 
 	// アニメーション再生
 	animationController_->Update();
+
+	ApplySlashLineToBody();
 
 	sword_->SetFollowFrame(transform_.modelId, "mixamorig:RightHandMiddle1");
 
@@ -442,16 +449,21 @@ void Player::ProcessJump(void)
 
 void Player::Attack(void)
 {
-	if(InputManager::GetInstance().IsTrgDown(KEY_INPUT_E))
+	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_E))
 	{
 		animationController_->Play((int)ANIM_TYPE::ATTACK, false);
 		isAttack_ = true;
+
+		// 斬撃モード中ならラインの角度を固定して使う
+		lineAttack_ = isBladeMode_;
+		attackLineAngle_ = slashLineAngle_;
 	}
 
 	if (animationController_->IsEnd())
 	{
 		isAttack_ = false;
 		isSlashing_ = false;
+		lineAttack_ = false;
 	}
 
 	if (!isAttack_) return;
@@ -468,6 +480,36 @@ void Player::Attack(void)
 			isSlashing_ = true;
 		}
 	}
+}
+
+void Player::ApplySlashLineToBody(void)
+{
+	if (spineFrame_ < 0) return;
+
+	// 攻撃中だけ補正を効かせ、出入りは滑らかにする
+	float target = lineAttack_ ? 1.0f : 0.0f;
+	lineBlend_ += (target - lineBlend_) * 0.2f;
+
+	MV1ResetFrameUserLocalMatrix(transform_.modelId, spineFrame_);
+	if (lineBlend_ < 0.01f) return;
+
+	// ラインは向きの区別がないので -90°~90° に畳む
+	float a = slashLineAngle_;
+	if (a > DX_PI_F * 0.5f)       a -= DX_PI_F;
+	else if (a < -DX_PI_F * 0.5f) a += DX_PI_F;
+
+	float roll = (a - ATTACK_BASE_ANGLE) * lineBlend_;
+
+	// 画面に垂直な軸(カメラ前方向)まわりの回転をワールドで作り、
+	// 親フレームのローカル空間へ変換する
+	MATRIX rotW = MGetRotAxis(GetCameraFrontVector(), roll);
+
+	int parent = MV1GetFrameParent(transform_.modelId, spineFrame_);
+	MATRIX pw = MV1GetFrameLocalWorldMatrix(transform_.modelId, parent);
+	pw.m[3][0] = pw.m[3][1] = pw.m[3][2] = 0.0f;   // 平行移動は除く
+
+	MATRIX user = MMult(MMult(pw, rotW), MInverse(pw));
+	MV1SetFrameUserLocalMatrix(transform_.modelId, spineFrame_, user);
 }
 
 void Player::SlashAttackMode(void)

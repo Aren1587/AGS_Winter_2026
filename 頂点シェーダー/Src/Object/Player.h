@@ -135,6 +135,13 @@ private:
 	bool  isBladeMode_ = false;     // 斬撃モード中か
 	float slashLineAngle_ = 0.0f;   // 画面上のライン角度(rad)
 
+	int   spineFrame_ = -1;
+	float attackLineAngle_ = 0.0f;  // 攻撃開始時に確定したライン角度
+	bool  lineAttack_ = false;      // ラインに沿った攻撃中か
+	float lineBlend_ = 0.0f;        // 補正の強さ(0~1)
+
+	void ApplySlashLineToBody(void);
+
 	void InitAnimation(void);
 
 	// 状態遷移
