@@ -76,6 +76,8 @@ public:
 	const std::unique_ptr<Sword>& GetSword() const { return sword_; }
 	const Status& GetStatus() const { return status_; }
 
+	bool IsLineAttack() const { return lineAttack_; }
+	bool GetSlashPlane(VECTOR& outOrigin, VECTOR& outNormal) const;
 private:
 
 	struct TrailPoint

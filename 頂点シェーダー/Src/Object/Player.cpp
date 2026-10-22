@@ -6,6 +6,7 @@
 #include "../Manager/SceneManager.h"
 #include "../Manager/ResourceManager.h"
 #include "../Manager/Camera.h"
+#include "../MeshCutter/MeshCutter.h"
 #include "Common/AnimationController.h"
 #include "Common/Capsule.h"
 #include "Common/Collider.h"
@@ -177,6 +178,23 @@ void Player::ClearCollider(void)
 const Capsule& Player::GetCapsule(void) const
 {
 	return *capsule_;
+}
+
+bool Player::GetSlashPlane(VECTOR& outOrigin, VECTOR& outNormal) const
+{
+	// 攻撃中は開始時に確定した角度を使う
+	float a = lineAttack_ ? attackLineAngle_ : slashLineAngle_;
+
+	float cx = Application::SCREEN_SIZE_X / 2.0f;
+	float cy = Application::SCREEN_SIZE_Y / 2.0f;
+	float vx = cosf(a) * LINE_LENGTH * 0.5f;
+	float vy = sinf(a) * LINE_LENGTH * 0.5f;
+
+	// DrawSlashLine と同じ両端の座標をそのまま使う
+	return MeshCutter::ComputePlaneFromDrag(
+		(int)(cx - vx), (int)(cy - vy),
+		(int)(cx + vx), (int)(cy + vy),
+		outOrigin, outNormal);
 }
 
 void Player::InitAnimation(void)
@@ -454,7 +472,8 @@ void Player::ProcessJump(void)
 
 void Player::Attack(void)
 {
-	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_E))
+	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_E) ||
+		InputManager::GetInstance().IsClickMouseLeft())
 	{
 		animationController_->Play((int)ANIM_TYPE::ATTACK, false);
 		isAttack_ = true;
@@ -500,11 +519,11 @@ void Player::ApplySlashLineToBody(void)
 	if (lineBlend_ < 0.01f) return;
 
 	// ラインは向きの区別がないので -90°~90° に畳む
-	float a = slashLineAngle_;
+	float a = attackLineAngle_;
 	if (a > DX_PI_F * 0.5f)       a -= DX_PI_F;
 	else if (a < -DX_PI_F * 0.5f) a += DX_PI_F;
 
-	float roll = (a - ATTACK_BASE_ANGLE) * lineBlend_;
+	float roll = -(a - ATTACK_BASE_ANGLE) * lineBlend_;
 
 	// 画面に垂直な軸(カメラ前方向)まわりの回転をワールドで作り、
 	// 親フレームのローカル空間へ変換する

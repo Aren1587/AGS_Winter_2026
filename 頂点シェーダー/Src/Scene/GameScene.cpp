@@ -22,6 +22,10 @@ namespace
 	constexpr int ENEMY_NUM = 5;
 
 	constexpr float MAX_GAGE_POS = 150.0f;
+
+	constexpr float LINE_HIT_RANGE = 3000.0f;
+
+	constexpr float BODY_HEIGHT = 80.0f;   // 要調整
 }
 
 GameScene::GameScene(void)
@@ -122,62 +126,60 @@ void GameScene::Update(void)
 	// HIT時の斬る処理
 	if (player_->IsSlashing() && !alreadyCutThisSwing_)
 	{
+		// ラインモードなら、ラインから切断面を作る
+		VECTOR lineOrigin = VGet(0, 0, 0), lineNormal = VGet(0, 0, 0);
+		const bool useLine =
+			player_->IsLineAttack() &&
+			player_->GetSlashPlane(lineOrigin, lineNormal);
+
 		VECTOR tip = player_->GetSword()->GetTip();
+		VECTOR camFront = GetCameraFrontVector();
+		VECTOR playerPos = player_->GetTransform().pos;
+
 		for (const auto& enemy : enemys_)
 		{
 			VECTOR center = enemy->GetTransform().pos;
-
-			VECTOR toTip = VSub(tip, center);
-
-			float distance = VSize(toTip);
+			center.y += BODY_HEIGHT;
 			float radius = 100.0f;
 
-			// 当たり判定を可視化
-			DrawSphere3D(
-				center,
-				radius,
-				16,
-				GetColor(255, 0, 0),
-				GetColor(255, 0, 0),
-				FALSE
-			);
+			VECTOR origin, normal;
+			bool hit = false;
 
-			// 敵の中心 → 剣先を線で表示
-			DrawLine3D(
-				center,
-				tip,
-				GetColor(0, 255, 0)
-			);
-
-			// 剣先を小さい球で表示
-			DrawSphere3D(
-				tip,
-				10.0f,
-				8,
-				GetColor(0, 0, 255),
-				GetColor(0, 0, 255),
-				TRUE
-			);
-
-			// 判定
-			if (distance < radius)
+			if (useLine)
 			{
-				VECTOR origin, normal;
-				if (player_->GetSword()->ComputeSwingPlane(origin, normal))
-				{
-					enemy->Cut(origin, normal);
-					alreadyCutThisSwing_ = true;
+				// 敵の中心が切断面から radius 以内で、カメラの前方かつ射程内
+				VECTOR toCenter = VSub(center, lineOrigin);
+				float planeDist = fabsf(VDot(toCenter, lineNormal));
+				bool inFront = VDot(toCenter, camFront) > 0.0f;
+				bool inRange = VSize(VSub(center, playerPos)) < LINE_HIT_RANGE;
 
-					// 演出の中心 = 敵の中心を切断平面へ射影した点
-					VECTOR toCenter = VSub(center, origin);
-					VECTOR onPlane = VSub(center, VScale(normal, VDot(toCenter, normal)));
-
-					VECTOR bladeDir = VSub(player_->GetSword()->GetTip(),
-						player_->GetSword()->GetHilt());
-					cutEffect_->Start(onPlane, normal, bladeDir);
-					hitStopFrame_ = 6;   // 約0.1秒
-				}
+				hit = planeDist < radius && inFront && inRange;
+				origin = lineOrigin;
+				normal = lineNormal;
 			}
+			else
+			{
+				// 通常攻撃は今までどおり剣の軌跡
+				hit = VSize(VSub(tip, center)) < radius &&
+					player_->GetSword()->ComputeSwingPlane(origin, normal);
+			}
+
+			if (!hit) continue;
+
+			enemy->Cut(origin, normal);
+			alreadyCutThisSwing_ = true;
+
+			// 演出の中心 = 敵の中心を切断平面へ射影した点
+			VECTOR toCenter = VSub(center, origin);
+			VECTOR onPlane = VSub(center, VScale(normal, VDot(toCenter, normal)));
+
+			// 演出の向き: ラインモードならライン方向、通常なら刃の向き
+			VECTOR bladeDir = useLine
+				? VNorm(VCross(normal, camFront))
+				: VSub(tip, player_->GetSword()->GetHilt());
+
+			cutEffect_->Start(onPlane, normal, bladeDir);
+			hitStopFrame_ = 6;
 		}
 	}
 
