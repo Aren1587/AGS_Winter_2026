@@ -51,6 +51,10 @@ namespace
 
 	// 元の斬りアニメが画面上で何度(rad)に見えるか。実機で合わせる
 	constexpr float ATTACK_BASE_ANGLE = 0.0f;
+
+	constexpr float TRAIL_LIFE = 0.25f;        // 残像が消えるまでの時間(秒)
+	constexpr size_t TRAIL_MAX_POINTS = 40;    // 記録する点の上限
+	constexpr float TRAIL_ROOT_RATE = 0.3f;    // 手→切っ先の何割の位置を根元にするか(小さいほど幅が広い)
 }
 
 Player::Player(void)
@@ -137,6 +141,7 @@ void Player::Update(void)
 	ApplySlashLineToBody();
 
 	sword_->SetFollowFrame(transform_.modelId, "mixamorig:RightHandMiddle1");
+	UpdateSlashTrail();
 
 	//status_.hp_ -= 1;
 }
@@ -146,6 +151,7 @@ void Player::Draw(void)
 	// モデルの描画
 	MV1DrawModel(transform_.modelId);
 	sword_->Draw();
+	DrawSlashTrail();
 	DrawSphere3D(GetSword()->GetTip(), 10, 12, 0xffff00, 0xffff00, true);
 
 	// 丸影描画
@@ -182,6 +188,7 @@ void Player::InitAnimation(void)
 	animationController_->Add((int)ANIM_TYPE::FALLING, path + "Falling.mv1", 80.0f);
 	animationController_->Add((int)ANIM_TYPE::VICTORY, path + "Victory.mv1", 60.0f);
 	animationController_->Add((int)ANIM_TYPE::ATTACK, path + "Stable Sword Inward Slash.mv1", 60.0f);
+	animationController_->Add((int)ANIM_TYPE::FAST_ATTACK, path + "StableSwordInwardSlash.mv1", 60.0f);
 
 	animationController_->Play((int)ANIM_TYPE::IDLE);
 }
@@ -417,12 +424,6 @@ void Player::ProcessJump(void)
 
 		if (!isJump_)
 		{
-			// 制御無しジャンプ
-			//mAnimationController->Play((int)ANIM_TYPE::JUMP);
-			// ループしないジャンプ
-			//mAnimationController->Play((int)ANIM_TYPE::JUMP, false);
-			// 切り取りアニメーション
-			//mAnimationController->Play((int)ANIM_TYPE::JUMP, false, 13.0f, 24.0f);
 			// 無理やりアニメーション
 			animationController_->Play((int)ANIM_TYPE::JUMP, true, 13.0f, 25.0f);
 			animationController_->SetEndLoop(23.0f, 25.0f, 5.0f);
@@ -552,6 +553,71 @@ void Player::UpdateSlashLine(void)
 	{
 		slashLineAngle_ = atan2f(dy, dx);
 	}
+}
+
+void Player::UpdateSlashTrail(void)
+{
+	float dt = scnMng_.GetDeltaTime();
+
+	// 経過時間を進めて、寿命切れを古い順に消す
+	for (auto& p : slashTrail_) p.age += dt;
+	while (!slashTrail_.empty() && slashTrail_.front().age > TRAIL_LIFE)
+	{
+		slashTrail_.pop_front();
+	}
+
+	// 斬っている間だけ新しい点を記録する
+	if (isSlashing_)
+	{
+		VECTOR hilt = GetSword()->GetHilt();
+		VECTOR tip = GetSword()->GetTip();
+		VECTOR base = VAdd(hilt, VScale(VSub(tip, hilt), TRAIL_ROOT_RATE));
+
+		slashTrail_.push_back({ base, tip, 0.0f });
+		if (slashTrail_.size() > TRAIL_MAX_POINTS) slashTrail_.pop_front();
+	}
+}
+
+void Player::DrawSlashTrail(void)
+{
+	if (slashTrail_.size() < 2) return;
+
+	std::vector<VERTEX3D> vtx;
+	vtx.reserve(slashTrail_.size() * 2);
+
+	for (const auto& p : slashTrail_)
+	{
+		// 1.0(新しい)→0.0(古い)。二乗で消え際を急にする
+		float t = 1.0f - p.age / TRAIL_LIFE;
+		t = std::clamp(t, 0.0f, 1.0f);
+		t *= t;
+
+		// 切っ先は白っぽく、根元側は青く。加算ブレンドなので色の強さで消す
+		VERTEX3D v = {};
+		v.norm = VGet(0.0f, 0.0f, -1.0f);
+		v.spc = GetColorU8(0, 0, 0, 0);
+
+		v.pos = p.tip;
+		v.dif = GetColorU8((int)(224 * t), (int)(255 * t), (int)(255 * t), 30);
+		vtx.push_back(v);
+
+		v.pos = p.base;
+		v.dif = GetColorU8((int)(30 * t), (int)(144 * t), (int)(255 * t), 30);
+		vtx.push_back(v);
+	}
+
+	SetUseLighting(FALSE);
+	SetUseBackCulling(DX_CULLING_NONE);   // 裏からも見えるように
+	SetWriteZBuffer3D(FALSE);             // 後ろのものを隠さない
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
+
+	DrawPrimitive3D(vtx.data(), (int)vtx.size(),
+		DX_PRIMTYPE_TRIANGLESTRIP, DX_NONE_GRAPH, FALSE);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	SetWriteZBuffer3D(TRUE);
+	SetUseBackCulling(DX_CULLING_LEFT);
+	SetUseLighting(TRUE);
 }
 
 void Player::DrawSlashLine(void)

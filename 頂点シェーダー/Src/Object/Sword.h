@@ -22,6 +22,7 @@ public:
     bool ComputeSwingPlane(VECTOR& outOrigin, VECTOR& outNormal) const;
 
     VECTOR GetTip() const { return tip_; }
+    VECTOR GetHilt() const { return hilt_; }
 
     const Transform& GetTransform(void) const { return transform_; }
 

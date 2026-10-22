@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <functional>
+#include <deque>
 #include <DxLib.h>
 
 #include "ActorBase.h"
@@ -47,6 +48,7 @@ public:
 		FALLING,
 		VICTORY,
 		ATTACK,
+		FAST_ATTACK,
 	};
 
 	// 最大値
@@ -75,6 +77,14 @@ public:
 	const Status& GetStatus() const { return status_; }
 
 private:
+
+	struct TrailPoint
+	{
+		VECTOR base;   // 刃の根元寄りの点
+		VECTOR tip;    // 切っ先
+		float  age;    // 経過時間(秒)
+	};
+	std::deque<TrailPoint> slashTrail_;
 
 	// アニメーション
 	std::unique_ptr<AnimationController> animationController_;
@@ -153,10 +163,12 @@ private:
 	void UpdateNone(void);
 	void UpdatePlay(void);
 	void UpdateSlashLine(void);
+	void UpdateSlashTrail(void);
 
 	// 描画系
 	void DrawShadow(void);
 	void DrawSlashLine(void);
+	void DrawSlashTrail(void);
 
 	// 操作
 	void ProcessMove(void);
