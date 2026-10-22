@@ -12,13 +12,14 @@
 #include "../Object/Planet.h"
 #include "../Object/Enemy.h"
 #include "../Object/Sword.h"
+#include "../Object/CutEffect.h"
 #include "../Renderer/PixelMaterial.h"
 #include "../Renderer/PixelRenderer.h"
 #include "GameScene.h"
 
 namespace
 {
-	constexpr int ENEMY_NUM = 1;
+	constexpr int ENEMY_NUM = 5;
 
 	constexpr float MAX_GAGE_POS = 150.0f;
 }
@@ -62,6 +63,8 @@ void GameScene::Init(void)
 	skyDome_ = std::make_unique<SkyDome>(player_->GetTransform());
 	skyDome_->Init();
 
+	cutEffect_ = std::make_unique<CutEffect>();
+
 	mainCamera.SetFollow(&player_->GetTransform());
 	mainCamera.ChangeMode(Camera::MODE::FOLLOW);
 }
@@ -87,15 +90,33 @@ void GameScene::Update(void)
 		mode_ = (MODE)tmp;
 	}
 
-	skyDome_->Update();
-
-	stage_->Update();
-
-	player_->Update();
-	
-	for (const auto& enemy : enemys_)
+	// ヒットストップ中はプレイヤーと敵を止める(演出だけ進める)
+	if (hitStopFrame_ > 0)
 	{
-		enemy->Update();
+		hitStopFrame_--;
+		cutEffect_->Update();
+		return;
+	}
+
+	// 肩越しの度合いに合わせて、プレイヤー以外の時間を遅くする
+	constexpr float SLOW_SCALE = 0.2f;
+	const float worldTimeScale =
+		1.0f + (SLOW_SCALE - 1.0f) * mainCamera.GetShoulderRate();
+
+	// プレイヤーは常に等速
+	player_->Update();
+
+	// それ以外はスケール分だけ進める
+	worldTimeAccum_ += worldTimeScale;
+	while (worldTimeAccum_ >= 1.0f)
+	{
+		worldTimeAccum_ -= 1.0f;
+		skyDome_->Update();
+		stage_->Update();
+		for (const auto& enemy : enemys_)
+		{
+			enemy->Update();
+		}
 	}
 
 	// HIT時の斬る処理
@@ -104,14 +125,14 @@ void GameScene::Update(void)
 		VECTOR tip = player_->GetSword()->GetTip();
 		for (const auto& enemy : enemys_)
 		{
-			VECTOR center = enemy->GetTransform().pos;//moon_->GetCenter();
+			VECTOR center = enemy->GetTransform().pos;
 
 			VECTOR toTip = VSub(tip, center);
 
 			float distance = VSize(toTip);
-			float radius = 100.0f;//moon_->GetRadius();
+			float radius = 100.0f;
 
-			// 月の当たり判定を可視化
+			// 当たり判定を可視化
 			DrawSphere3D(
 				center,
 				radius,
@@ -121,7 +142,7 @@ void GameScene::Update(void)
 				FALSE
 			);
 
-			// 月の中心 → 剣先を線で表示
+			// 敵の中心 → 剣先を線で表示
 			DrawLine3D(
 				center,
 				tip,
@@ -145,7 +166,16 @@ void GameScene::Update(void)
 				if (player_->GetSword()->ComputeSwingPlane(origin, normal))
 				{
 					enemy->Cut(origin, normal);
-					alreadyCutThisSwing_ = true;  // 1回の振りで何度も切らないようにする
+					alreadyCutThisSwing_ = true;
+
+					// 演出の中心 = 敵の中心を切断平面へ射影した点
+					VECTOR toCenter = VSub(center, origin);
+					VECTOR onPlane = VSub(center, VScale(normal, VDot(toCenter, normal)));
+
+					VECTOR bladeDir = VSub(player_->GetSword()->GetTip(),
+						player_->GetSword()->GetHilt());
+					cutEffect_->Start(onPlane, normal, bladeDir);
+					hitStopFrame_ = 6;   // 約0.1秒
 				}
 			}
 		}
@@ -155,6 +185,7 @@ void GameScene::Update(void)
 	{
 		alreadyCutThisSwing_ = false;  // 振り終わったらリセット
 	}
+	cutEffect_->Update();
 }
 
 void GameScene::Draw(void)
@@ -171,8 +202,12 @@ void GameScene::Draw(void)
 		enemy->Draw();
 	}
 
+	cutEffect_->Draw();
+
 	DrawUI();
 	player_->Draw();
+
+	cutEffect_->DrawScreen();
 }
 
 void GameScene::DrawUI(void)const

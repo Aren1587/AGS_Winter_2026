@@ -70,6 +70,9 @@ public:
 	// カメラの前方方向
 	VECTOR GetForward(void) const;
 
+	// 肩越しブレンド率(0.0f:通常 〜 1.0f:肩越し)
+	float GetShoulderRate(void) const { return shoulderRate_; }
+
 	// カメラモードの変更
 	void ChangeMode(MODE mode);
 

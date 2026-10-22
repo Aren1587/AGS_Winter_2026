@@ -42,7 +42,11 @@ namespace
 	// ジャンプボタン長押し限界
 	constexpr float JUMP_BUTTON_HOLD_MAX = 5.0f;
 
+	// アニメーションの攻撃開始時間
 	constexpr float ATTACK_TIME = 30.0f;
+
+	// アニメーションの攻撃終了時間
+	constexpr float ATTACK_END_TIME = 40.0f;
 
 	constexpr float LINE_LENGTH = 1200.0f;     // ラインの長さ(画面サイズより長めに)
 	constexpr float MOUSE_DEAD_ZONE = 3.0f;    // 角度を更新する最小マウス移動量
@@ -470,9 +474,9 @@ void Player::Attack(void)
 	if (!isAttack_) return;
 	// ↓攻撃している
 
-	SlashEffect();
-
 	attackTimer_ = animationController_->GetTime();
+
+	bool attackEnd = attackTimer_ >= ATTACK_END_TIME;
 
 	if (!isSlashing_)
 	{
@@ -481,6 +485,7 @@ void Player::Attack(void)
 			isSlashing_ = true;
 		}
 	}
+	
 }
 
 void Player::ApplySlashLineToBody(void)
@@ -630,7 +635,7 @@ void Player::DrawSlashLine(void)
 	float vy = sinf(slashLineAngle_) * LINE_LENGTH * 0.5f;
 
 	// 加算合成で発光っぽく:太い青 → 細い白の順に重ねる
-	SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 50);
 	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_GLOW, 10.0f);
 	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_GLOW, 5.0f);
 	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_CORE, 2.0f);
@@ -808,9 +813,4 @@ bool Player::IsEndLanding(void)
 	}
 
 	return false;
-}
-
-void Player::SlashEffect(void)
-{
-
 }

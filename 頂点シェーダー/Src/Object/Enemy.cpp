@@ -133,14 +133,6 @@ void Enemy::Update()
     {
         EnemyMove();
     }
-
-    rotSpeed += 1.0f;
-
-    transform_.quaRot = Quaternion::Euler(
-        0.0f,
-        AsoUtility::Deg2RadF(rotSpeed),
-        0.0f
-    );
     
     transform_.Update();
 

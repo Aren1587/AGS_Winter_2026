@@ -326,7 +326,6 @@ void MeshCutter::Orthonormalize(
     m.m[2][0] = z.x;  m.m[2][1] = z.y;  m.m[2][2] = z.z;
 }
 
-
 // ================================================================
 // 描画
 // ================================================================
@@ -335,21 +334,20 @@ void MeshCutter::Draw()
 {
     for (const auto& piece : pieces_)
         DrawPiece(piece);
+
+    // 他の描画に影響しないよう単位行列に戻す
+    MATRIX identity = MGetIdent();
+    SetTransformToWorld(&identity);
 }
 
-
-// ================================================================
-// 破片1個描画
-// ================================================================
-
-void MeshCutter::DrawPiece(const Piece& piece)
+void MeshCutter::BuildDrawCache(
+    Piece& piece) const
 {
     const auto& m = piece.mesh;
-    bool hasColor = !m.colors.empty();
+    const bool hasColor = !m.colors.empty();
     const auto& fb = palette_[0];
 
-    // 頂点法線(Mesh に無ければ面法線を頂点に足して作る)
-    // ローカル座標で求めて、あとで回転だけ掛ける
+    // 頂点法線 (面法線を頂点に足して作る。ローカル座標のまま)
     std::vector<VECTOR> normals(m.verts.size(), VGet(0, 0, 0));
     for (const auto& f : m.faces)
     {
@@ -363,26 +361,66 @@ void MeshCutter::DrawPiece(const Piece& piece)
     for (size_t i = 0; i < vs.size(); i++)
     {
         VERTEX3D& v = vs[i];
-        v.pos = VAdd(VTransform(m.verts[i], piece.rot), piece.pos);
+        v.pos = m.verts[i];                            // ローカル座標のまま
 
-        VECTOR n = VSize(normals[i]) > 0 ? VNorm(normals[i]) : VGet(0, 1, 0);
-        v.norm = VTransformSR(n, piece.rot);
+        v.norm = VSize(normals[i]) > 0 ? VNorm(normals[i]) : VGet(0, 1, 0);
 
         v.u = m.u[i];  v.v = m.v[i];
         v.su = v.sv = 0.0f;
         v.dif = hasColor ? GetColorU8(m.colors[i].r, m.colors[i].g, m.colors[i].b, 255)
             : GetColorU8(fb[0], fb[1], fb[2], 255);
-        v.spc = GetColorU8(0, 0, 0, 0);   // ハイライトなし
+        v.spc = GetColorU8(0, 0, 0, 0);                // ハイライトなし
     }
 
-    std::vector<unsigned short> idx;
-    idx.reserve(m.faces.size() * 3);
-    for (const auto& f : m.faces)
-        for (int k = 0; k < 3; k++)
-            idx.push_back((unsigned short)f[k]);
+    piece.drawVerts.clear();
+    piece.drawIdx.clear();
 
-    DrawPolygonIndexed3D(vs.data(), (int)vs.size(), idx.data(),
-        (int)m.faces.size(), m.textureHandle, TRUE);
+    if (vs.size() <= 65535)
+    {
+        // 通常: 頂点 + インデックス
+        piece.drawVerts = std::move(vs);
+
+        piece.drawIdx.reserve(m.faces.size() * 3);
+        for (const auto& f : m.faces)
+            for (int k = 0; k < 3; k++)
+                piece.drawIdx.push_back(static_cast<unsigned short>(f[k]));
+    }
+    else
+    {
+        // 頂点が多すぎてインデックスが ushort に収まらない場合は三角形リストに展開
+        piece.drawVerts.reserve(m.faces.size() * 3);
+        for (const auto& f : m.faces)
+            for (int k = 0; k < 3; k++)
+                piece.drawVerts.push_back(vs[f[k]]);
+    }
+}
+
+// ================================================================
+// 破片1個描画
+// ================================================================
+
+void MeshCutter::DrawPiece(const Piece& piece)
+{
+    if (piece.drawVerts.empty())
+        return;
+
+    // ローカル → ワールド (VTransform(v, rot) + pos と同じ変換)
+    MATRIX world = MMult(piece.rot, MGetTranslate(piece.pos));
+    SetTransformToWorld(&world);
+
+    if (!piece.drawIdx.empty())
+    {
+        DrawPolygonIndexed3D(
+            piece.drawVerts.data(), (int)piece.drawVerts.size(),
+            piece.drawIdx.data(), (int)(piece.drawIdx.size() / 3),
+            piece.mesh.textureHandle, TRUE);
+    }
+    else
+    {
+        DrawPolygon3D(
+            piece.drawVerts.data(), (int)(piece.drawVerts.size() / 3),
+            piece.mesh.textureHandle, TRUE);
+    }
 }
 
 
@@ -569,8 +607,13 @@ void MeshCutter::SetLight(
 void MeshCutter::SetPalette(
     const std::vector<std::array<int, 3>>& palette)
 {
-    if (!palette.empty())
-        palette_ = palette;
+    if (palette.empty())
+        return;
+
+    palette_ = palette;
+
+    for (auto& piece : pieces_)
+        BuildDrawCache(piece);
 }
 
 
@@ -651,6 +694,8 @@ MeshCutter::Piece MeshCutter::MakePiece(
     piece.angVel = angVel;
     piece.radius2 = r2;
     piece.color = color >= 0 ? color : colorCounter_++;
+
+    BuildDrawCache(piece);
 
     return piece;
 }

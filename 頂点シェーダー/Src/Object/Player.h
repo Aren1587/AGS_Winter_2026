@@ -190,7 +190,4 @@ private:
 
 	// 着地モーション終了
 	bool IsEndLanding(void);
-
-	void SlashEffect(void);
-
 };

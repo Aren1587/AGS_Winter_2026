@@ -8,6 +8,7 @@ class Player;
 class Enemy;
 class PixelMaterial;
 class PixelRenderer;
+class CutEffect;
 
 class GameScene : public SceneBase
 {
@@ -47,8 +48,14 @@ private:
 	std::unique_ptr<Player> player_;
 	std::vector<std::unique_ptr<Enemy>> enemys_;
 
+	std::unique_ptr<CutEffect> cutEffect_;
+	int hitStopFrame_ = 0;
+
 	// ポストエフェクトモード
 	MODE mode_;
 
 	bool alreadyCutThisSwing_ = false;
+
+	float worldTimeScale_ = 1.0f;   // 現在のスケール(滑らかに変化させる)
+	float worldTimeAccum_ = 0.0f;   // プレイヤー以外の時間の貯金
 };

@@ -42,16 +42,22 @@ public:
     {
         MeshCut::Mesh mesh;
 
-        VECTOR pos;      // 重心のワールド位置
+        VECTOR pos;
         VECTOR vel;
 
-        MATRIX rot;      // ローカル → ワールドの回転
-        VECTOR angVel;   // 角速度 (軸 × ラジアン/フレーム)
+        MATRIX rot;
+        VECTOR angVel;
 
-        // 重心から最も遠い頂点までの距離の2乗 (倒れる計算の簡易慣性として使う)
         float radius2;
 
         int color;
+
+        // 描画用キャッシュ (MakePiece / SetPalette で作る。毎フレームは作り直さない)
+        //   頂点はローカル座標のまま持ち、描画時にワールド行列で動かす。
+        //   drawIdx が空のときは drawVerts が三角形リスト
+        //   (頂点数が 65535 を超える破片用)
+        std::vector<VERTEX3D> drawVerts;
+        std::vector<unsigned short> drawIdx;
     };
 
 public:
@@ -311,6 +317,10 @@ private:
 
     // 回転行列の誤差を取り除く (毎フレーム回し続けると崩れるため)
     static void Orthonormalize(MATRIX& m);
+
+    // 描画用キャッシュ (drawVerts / drawIdx) を mesh から作る
+    void BuildDrawCache(
+        Piece& piece) const;
 
     // 破片1個描画
     void DrawPiece(const Piece& piece);
