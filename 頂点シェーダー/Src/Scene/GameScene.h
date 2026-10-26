@@ -56,6 +56,5 @@ private:
 
 	bool alreadyCutThisSwing_ = false;
 
-	float worldTimeScale_ = 1.0f;   // 現在のスケール(滑らかに変化させる)
 	float worldTimeAccum_ = 0.0f;   // プレイヤー以外の時間の貯金
 };

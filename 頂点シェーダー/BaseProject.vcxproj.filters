@@ -168,7 +168,7 @@
     <ClCompile Include="Src\Object\CutEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Scene\GameClear.cpp">
+    <ClCompile Include="Src\Scene\PauseScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -290,7 +290,7 @@
     <ClInclude Include="Src\Object\CutEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Scene\GameClear.h">
+    <ClInclude Include="Src\Scene\PauseScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

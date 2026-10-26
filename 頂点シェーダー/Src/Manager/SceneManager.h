@@ -20,7 +20,7 @@ public:
 		NONE,
 		TITLE,
 		GAME,
-		CLEAR,
+		PAUSE,
 	};
 	
 	// インスタンスの生成
