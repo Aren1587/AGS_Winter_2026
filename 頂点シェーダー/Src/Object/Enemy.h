@@ -14,7 +14,7 @@ public:
     Enemy(Player& player);
     ~Enemy();
 
-    void Init();
+    void Init(const VECTOR& vec);
 
     // 平面(origin, normal)はワールド座標。Sword 側で計算したものを渡す
     void Cut(VECTOR origin, VECTOR normal);
@@ -25,6 +25,7 @@ public:
 
     VECTOR GetCenter() const { return cutter_.GetCenter(); }
     float GetRadius() const { return cutter_.GetRadius(); }
+    float GetIsCut() const { return isCut_; }
     const Transform& GetTransform(void) const { return transform_; }
 
 private:

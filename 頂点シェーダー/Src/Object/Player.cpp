@@ -180,23 +180,6 @@ const Capsule& Player::GetCapsule(void) const
 	return *capsule_;
 }
 
-bool Player::GetSlashPlane(VECTOR& outOrigin, VECTOR& outNormal) const
-{
-	// 攻撃中は開始時に確定した角度を使う
-	float a = lineAttack_ ? attackLineAngle_ : slashLineAngle_;
-
-	float cx = Application::SCREEN_SIZE_X / 2.0f;
-	float cy = Application::SCREEN_SIZE_Y / 2.0f;
-	float vx = cosf(a) * LINE_LENGTH * 0.5f;
-	float vy = sinf(a) * LINE_LENGTH * 0.5f;
-
-	// DrawSlashLine と同じ両端の座標をそのまま使う
-	return MeshCutter::ComputePlaneFromDrag(
-		(int)(cx - vx), (int)(cy - vy),
-		(int)(cx + vx), (int)(cy + vy),
-		outOrigin, outNormal);
-}
-
 void Player::InitAnimation(void)
 {
 	std::string path = Application::PATH_MODEL + "Player/";
@@ -488,6 +471,7 @@ void Player::Attack(void)
 		isAttack_ = false;
 		isSlashing_ = false;
 		lineAttack_ = false;
+		hasSlashPlane_ = false;
 	}
 
 	if (!isAttack_) return;
@@ -505,6 +489,30 @@ void Player::Attack(void)
 		}
 	}
 	
+}
+
+bool Player::BuildSlashPlane(float a, VECTOR& o, VECTOR& n) const
+{
+	float cx = Application::SCREEN_SIZE_X / 2.0f;
+	float cy = Application::SCREEN_SIZE_Y / 2.0f;
+	float vx = cosf(a) * LINE_LENGTH * 0.5f;
+	float vy = sinf(a) * LINE_LENGTH * 0.5f;
+	return MeshCutter::ComputePlaneFromDrag(
+		(int)(cx - vx), (int)(cy - vy),
+		(int)(cx + vx), (int)(cy + vy), o, n);
+}
+
+bool Player::GetSlashPlane(VECTOR& outOrigin, VECTOR& outNormal) const
+{
+	if (lineAttack_)
+	{
+		// 攻撃中はクリック時に確定した平面をそのまま返す
+		if (!hasSlashPlane_) return false;
+		outOrigin = slashPlaneOrigin_;
+		outNormal = slashPlaneNormal_;
+		return true;
+	}
+	return BuildSlashPlane(slashLineAngle_, outOrigin, outNormal);
 }
 
 void Player::ApplySlashLineToBody(void)

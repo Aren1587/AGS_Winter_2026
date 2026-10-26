@@ -48,6 +48,7 @@
     <ClCompile Include="Src\Object\SkyDome.cpp" />
     <ClCompile Include="Src\Object\Stage.cpp" />
     <ClCompile Include="Src\Object\WarpStar.cpp" />
+    <ClCompile Include="Src\Scene\GameClear.cpp" />
     <ClCompile Include="Src\Scene\GameScene.cpp" />
     <ClCompile Include="Src\Scene\SceneBase.cpp" />
     <ClCompile Include="Src\Scene\TitleScene.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="Src\Object\SkyDome.h" />
     <ClInclude Include="Src\Object\Stage.h" />
     <ClInclude Include="Src\Object\WarpStar.h" />
+    <ClInclude Include="Src\Scene\GameClear.h" />
     <ClInclude Include="Src\Scene\GameScene.h" />
     <ClInclude Include="Src\Scene\SceneBase.h" />
     <ClInclude Include="Src\Scene\TitleScene.h" />
@@ -364,6 +366,7 @@
       <AdditionalIncludeDirectories>$(DXLIB_DIR)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -5,6 +5,7 @@
 #include "../Common/Fader.h"
 #include "../Scene/TitleScene.h"
 #include "../Scene/GameScene.h"
+#include "../Scene/GameClear.h"
 #include "Camera.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
@@ -50,7 +51,7 @@ void SceneManager::Init(void)
 	Init3D();
 
 	// èâä˙ÉVÅ[ÉìÇÃê›íË
-	DoChangeScene(SCENE_ID::GAME);
+	DoChangeScene(SCENE_ID::TITLE);
 }
 
 void SceneManager::Init3D(void)
@@ -227,6 +228,9 @@ void SceneManager::DoChangeScene(SCENE_ID sceneId)
 		break;
 	case SCENE_ID::GAME:
 		scene_ = std::make_unique<GameScene>();
+		break;
+	case SCENE_ID::CLEAR:
+		scene_ = std::make_unique<GameClear>();
 		break;
 	}
 

@@ -152,6 +152,11 @@ private:
 	bool  lineAttack_ = false;      // ƒ‰ƒCƒ“‚É‰ˆ‚Á‚½UŒ‚’†‚©
 	float lineBlend_ = 0.0f;        // •â³‚Ì‹­‚³(0~1)
 
+	bool   hasSlashPlane_ = false;
+	VECTOR slashPlaneOrigin_ = VGet(0, 0, 0);
+	VECTOR slashPlaneNormal_ = VGet(0, 0, 0);
+	bool BuildSlashPlane(float angle, VECTOR& o, VECTOR& n) const;
+
 	void ApplySlashLineToBody(void);
 
 	void InitAnimation(void);

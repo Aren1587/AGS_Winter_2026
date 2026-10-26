@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\BaseProject.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\Data\Shader\LensDistortion.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\Data\Shader\Monotone.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\GatePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\GateVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\MetalModelPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\MetalModelVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\PixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\Data\Shader\ScanLine.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\RimShaderPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\RimShaderVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\StandardShaderPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\Data\Shader\Vignette.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\StandardShaderVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\VertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\WaterPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\アレン\Documents\AGS_Winter_2026\頂点シェーダー\x64\Release\WaterVS.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

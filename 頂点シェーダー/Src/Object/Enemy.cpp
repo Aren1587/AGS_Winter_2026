@@ -34,19 +34,11 @@ Enemy::~Enemy()
     Release();
 }
 
-void Enemy::Init()
+void Enemy::Init(const VECTOR& vec)
 {
-    std::vector<char> data;
-    if (LoadFileToBuffer(_T("data/test.bin"), data)) {
-        // 先頭4バイトを int として取り出す例
-        int value = 0;
-        if (data.size() >= sizeof(int)) {
-            memcpy(&value, data.data(), sizeof(int));
-        }
-    }
 
     transform_.modelId = MV1LoadModel("Data/Model/model.mv1");
-    transform_.pos = INIT_POS;
+    transform_.pos = vec;
     MV1SetScale(transform_.modelId, AsoUtility::VECTOR_ONE);
     //cutter_ = new MeshCutter();
     MV1SetPosition(transform_.modelId, transform_.pos);
@@ -149,7 +141,9 @@ void Enemy::Draw()
     {
         MV1DrawModel(transform_.modelId);
     }
-    DrawSphere3D({ 100,100,600 }, 10, 12, 0xffffff, 0xffffff, true);
+    auto pos = transform_.pos;
+    pos.y += 80;
+    DrawSphere3D(pos, 10, 12, 0xffffff, 0xffffff, true);
 }
 
 void Enemy::Release()

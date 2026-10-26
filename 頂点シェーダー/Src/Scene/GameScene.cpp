@@ -26,6 +26,11 @@ namespace
 	constexpr float LINE_HIT_RANGE = 3000.0f;
 
 	constexpr float BODY_HEIGHT = 80.0f;   // 要調整
+
+	constexpr float LINE_HIT_RADIUS = 50.0f;
+
+	constexpr VECTOR ENEMY_START_POS = { -400.0f, -10.0f, 600.0f };
+	constexpr float  ENEMY_SPACING = 200.0f;
 }
 
 GameScene::GameScene(void)
@@ -52,7 +57,11 @@ void GameScene::Init(void)
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		auto e = std::make_unique<Enemy>(*player_);
-		e->Init();
+
+		VECTOR pos = ENEMY_START_POS;
+		pos.x += ENEMY_SPACING * i;
+
+		e->Init(pos);
 		enemys_.emplace_back(std::move(e));
 	}
 
@@ -80,6 +89,21 @@ void GameScene::Update(void)
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE);
+	}
+
+	bool isEnd = true;
+	for (const auto& enemy : enemys_)
+	{
+		if (!enemy->GetIsCut())
+		{
+			isEnd = false;
+			break;
+		}
+	}
+
+	if (isEnd)
+	{
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::CLEAR);
 	}
 
 	// モード切替
@@ -153,7 +177,7 @@ void GameScene::Update(void)
 				bool inFront = VDot(toCenter, camFront) > 0.0f;
 				bool inRange = VSize(VSub(center, playerPos)) < LINE_HIT_RANGE;
 
-				hit = planeDist < radius && inFront && inRange;
+				hit = planeDist < LINE_HIT_RADIUS && inFront && inRange;
 				origin = lineOrigin;
 				normal = lineNormal;
 			}
@@ -202,6 +226,7 @@ void GameScene::Draw(void)
 	for (const auto& enemy : enemys_)
 	{
 		enemy->Draw();
+
 	}
 
 	cutEffect_->Draw();
