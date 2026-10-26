@@ -20,6 +20,7 @@ public:
 		NONE,
 		TITLE,
 		GAME,
+		CLEAR,
 		PAUSE,
 	};
 	
