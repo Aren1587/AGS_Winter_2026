@@ -73,7 +73,6 @@ void TitleScene::Init(void)
 
 void TitleScene::Update(void)
 {
-
 	// ƒV[ƒ“‘JˆÚ
 	InputManager& ins = InputManager::GetInstance();
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
@@ -90,7 +89,6 @@ void TitleScene::Update(void)
 	animationController_->Update();
 
 	skyDome_->Update();
-
 }
 
 void TitleScene::Draw(void)

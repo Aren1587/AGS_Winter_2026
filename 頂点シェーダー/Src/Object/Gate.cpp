@@ -84,13 +84,6 @@ void Gate::Update(void)
 void Gate::Draw(void)
 {
 	// •`‰æ
-	//MV1DrawModel(transform_.modelId);
-
-	/*auto dir = GetLightDirection();
-	vertexMaterial_->SetConstBufPS(0, { dir.x, dir.y, dir.z, 0.0f });
-
-	auto cameraPos = GetCameraPosition();
-	vertexMaterial_->SetConstBufPS(1, { cameraPos.x, cameraPos.y, cameraPos.z, time_ });*/
 	vertexRenderer_->Draw();
 }
 
