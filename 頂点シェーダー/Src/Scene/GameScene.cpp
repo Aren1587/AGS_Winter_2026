@@ -191,6 +191,7 @@ void GameScene::Update(void)
 			if (!hit) continue;
 
 			enemy->Cut(origin, normal);
+			player_->HitProcess();
 			alreadyCutThisSwing_ = true;
 
 			// 演出の中心 = 敵の中心を切断平面へ射影した点

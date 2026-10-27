@@ -42,6 +42,7 @@ public:
 		NOISE,
 		NEW_PLAYER,
 		SWORD,
+		LOCKON,
 	};
 
 	// 明示的にインステンスを生成する

@@ -82,7 +82,7 @@ void TitleScene::Update(void)
 
 	// 惑星の回転
 	movePlanet_.quaRot = movePlanet_.quaRot.Mult(
-		Quaternion::Euler(0.0f, 0.0f, AsoUtility::Deg2RadF(-1.0f)));
+		Quaternion::Euler(AsoUtility::DIR_B));
 	movePlanet_.Update();
 
 	// キャラアニメーション

@@ -34,6 +34,9 @@ namespace
 	constexpr int INIT_HP = 100;
 	constexpr int INIT_ENERGY = 50;
 
+	// 減少速度
+	constexpr float ENERGY_MINUS_NUM = 8.0f;
+
 	constexpr VECTOR INIT_POS = { 0.0f, -30.0f, 0.0f };
 	const VECTOR INIT_ROT = { 0.0f, AsoUtility::Deg2RadF(180.0f), 0.0f };
 
@@ -488,7 +491,6 @@ void Player::Attack(void)
 			isSlashing_ = true;
 		}
 	}
-	
 }
 
 bool Player::BuildSlashPlane(float a, VECTOR& o, VECTOR& n) const
@@ -513,6 +515,11 @@ bool Player::GetSlashPlane(VECTOR& outOrigin, VECTOR& outNormal) const
 		return true;
 	}
 	return BuildSlashPlane(slashLineAngle_, outOrigin, outNormal);
+}
+
+void Player::HitProcess()
+{
+	status_.energy_ = MAX_ENERGY;
 }
 
 void Player::ApplySlashLineToBody(void)
@@ -548,17 +555,19 @@ void Player::ApplySlashLineToBody(void)
 void Player::SlashAttackMode(void)
 {
 	// Qキーを押している間、肩越しカメラ
-	bool isSlashMode = InputManager::GetInstance().IsNew(KEY_INPUT_Q);
+	bool isSlashMode = InputManager::GetInstance().IsNew(KEY_INPUT_Q) && status_.energy_ > 0;
 	mainCamera.SetShoulder(isSlashMode);
 
 	// モード開始時にマウスを中央へ戻して基準を作る
 	if (isSlashMode && !isBladeMode_)
 	{
+		// 斬撃モードに入る
 		SetMouseDispFlag(FALSE);
 		SetMousePoint(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2);
 	}
 	if (!isSlashMode && isBladeMode_)
 	{
+		// 斬撃モード終了
 		SetMouseDispFlag(TRUE);
 	}
 	isBladeMode_ = isSlashMode;
@@ -571,6 +580,9 @@ void Player::SlashAttackMode(void)
 
 void Player::UpdateSlashLine(void)
 {
+	// ここに来るとエナジーゲージを減少させる
+	status_.energy_ -= ENERGY_MINUS_NUM * (1.0f / 60.0f);
+
 	// マウスが中央からどれだけ動いたか=入力方向
 	int cx = Application::SCREEN_SIZE_X / 2;
 	int cy = Application::SCREEN_SIZE_Y / 2;
@@ -730,7 +742,6 @@ void Player::CollisionGravity(void)
 	gravHitPosDown_ = VAdd(movedPos_, VScale(dirGravity, checkPow));
 	for (const auto& c : colliders_)
 	{
-
 		// 地面との衝突
 		auto hit = MV1CollCheck_Line(
 			c.lock()->modelId_, -1, gravHitPosUp_, gravHitPosDown_);

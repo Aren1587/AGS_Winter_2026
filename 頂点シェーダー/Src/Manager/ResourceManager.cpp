@@ -145,6 +145,10 @@ void ResourceManager::Init(void)
 	// ÉQÅ[Ég
 	res = std::make_unique<RES>(RES_T::MODEL, PATH_MDL + "Sword/Sword.mv1");
 	resourcesMap_.emplace(SRC::SWORD, std::move(res));
+
+	// ÉQÅ[Ég
+	res = std::make_unique<RES>(RES_T::IMG, PATH_IMG + "gun_syoujun_scope.png");
+	resourcesMap_.emplace(SRC::LOCKON, std::move(res));
 }
 
 void ResourceManager::Release(void)

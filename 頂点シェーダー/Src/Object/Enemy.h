@@ -33,6 +33,7 @@ private:
     {
         IDOL,
         RUN,
+        ATTACK,
     };
 
     enum STATE
@@ -58,13 +59,20 @@ private:
 
     bool isCut_;
 
-    bool test = false;
-    float testTime = 0.0f;
+    bool test;
+    float testTime;
 
-    float rotSpeed = 180.0f;
+    float rotSpeed;
+
+    int coreFrame_;
+
 
     void EnemyAI();
     void EnemyMove();
 
     void MeshInit();
+
+    // 索敵範囲の可視化(デバッグ用)
+    void DrawDetectRange() const;
+    bool IsDetectPlayer() const;
 };

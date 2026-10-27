@@ -78,6 +78,9 @@ public:
 
 	bool IsLineAttack() const { return lineAttack_; }
 	bool GetSlashPlane(VECTOR& outOrigin, VECTOR& outNormal) const;
+
+	// “G‚É“–‚½‚Á‚½‚Ìˆ—
+	void HitProcess();
 private:
 
 	struct TrailPoint
