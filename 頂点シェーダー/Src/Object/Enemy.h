@@ -66,7 +66,6 @@ private:
 
     int coreFrame_;
 
-
     void EnemyAI();
     void EnemyMove();
 

@@ -10,7 +10,7 @@
 
 namespace
 {
-    constexpr float MOVE_SPEED = 5.0f;
+    constexpr float MOVE_SPEED = 3.0f;
     constexpr float GRAVITY = 0.3f;
 
     constexpr int RANDAM_MAX = 100;
@@ -63,6 +63,7 @@ void Enemy::Init(const VECTOR& vec)
     animationController_->Add(ANIM_TYPE::ATTACK, path + "Punching.mv1", 50.0f);
 
     animationController_->Play(ANIM_TYPE::IDOL);
+
 }
 
 void Enemy::Update()
@@ -70,6 +71,7 @@ void Enemy::Update()
     animationController_->Update();
     cutter_.Update();
 
+    if (isCut_) return;
     auto corePos = ConvWorldPosToScreenPos(MV1GetFramePosition(transform_.modelId, coreFrame_));
 
     testTime += 1.0f / 60.0f;
