@@ -39,6 +39,8 @@ void Application::Init(void)
 	// DxLib‚Ì‰Šú‰»
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
 	isInitFail_ = false;
+
+	SetWaitVSyncFlag(FALSE);
 	if (DxLib_Init() == -1)
 	{
 		isInitFail_ = true;
@@ -75,8 +77,37 @@ void Application::Run(void)
 
 		sceneManager.Draw();
 
+		DrawFormatString(10, 10, GetColor(255, 255, 0), "FPS: %.1f", GetFPS());
+
 		ScreenFlip();
 
+		// 60fps ‚ÉŒÅ’è‚·‚é
+
+		static LONGLONG nextFrame = GetNowHiPerformanceCount();
+
+		constexpr LONGLONG FRAME_US = 1000000 / 60;
+
+		nextFrame += FRAME_US;
+
+		const LONGLONG now = GetNowHiPerformanceCount();
+
+		if (now > nextFrame + FRAME_US * 3)
+		{
+			nextFrame = now;
+
+		}
+
+		LONGLONG remain = nextFrame - GetNowHiPerformanceCount();
+
+		if (remain > 2000)
+		{
+			Sleep(static_cast<DWORD>((remain - 2000) / 1000));
+		}
+
+		while (GetNowHiPerformanceCount() < nextFrame)
+		{
+
+		}
 	}
 
 }

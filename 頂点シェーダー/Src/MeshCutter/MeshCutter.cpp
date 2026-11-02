@@ -151,8 +151,10 @@ void MeshCutter::Cut(
         //  速度・角速度・色は引き継ぐ)
         if (positive.faces.empty() || negative.faces.empty())
         {
-            next.push_back(MakePiece(
-                std::move(piece.mesh), piece.vel, piece.angVel, piece.color));
+            Piece kept = MakePiece(
+                std::move(piece.mesh), piece.vel, piece.angVel, piece.color);
+            kept.age = piece.age;                 // ← 追加
+            next.push_back(std::move(kept));
             continue;
         }
 
@@ -175,6 +177,8 @@ void MeshCutter::Update(
 
     for (auto& piece : pieces_)
     {
+        piece.age += deltaTime;
+
         // 重力
         piece.vel.y -= gravity * deltaTime;
 
@@ -230,6 +234,14 @@ void MeshCutter::Update(
         // 重心が支えの外にあれば倒れる
         if (rotationEnabled_ && gravity > 0.0f)
             ApplyTipping(piece, lowest, gravity, deltaTime);
+    }
+
+    if (lifetime_ > 0.0f)
+    {
+        pieces_.erase(
+            std::remove_if(pieces_.begin(), pieces_.end(),
+                [this](const Piece& p) { return p.age >= lifetime_; }),
+            pieces_.end());
     }
 }
 
@@ -404,6 +416,16 @@ void MeshCutter::DrawPiece(const Piece& piece)
     if (piece.drawVerts.empty())
         return;
 
+    // フェード (寿命の最後の fadeTime_ の間だけ半透明にする)
+    int alpha = 255;
+    if (lifetime_ > 0.0f && fadeTime_ > 0.0f)
+    {
+        const float remain = lifetime_ - piece.age;
+        if (remain < fadeTime_)
+            alpha = static_cast<int>(255.0f * std::fmax(remain, 0.0f) / fadeTime_);
+    }
+    if (alpha < 255) SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+
     // ローカル → ワールド (VTransform(v, rot) + pos と同じ変換)
     MATRIX world = MMult(piece.rot, MGetTranslate(piece.pos));
     SetTransformToWorld(&world);
@@ -421,6 +443,8 @@ void MeshCutter::DrawPiece(const Piece& piece)
             piece.drawVerts.data(), (int)(piece.drawVerts.size() / 3),
             piece.mesh.textureHandle, TRUE);
     }
+
+    if (alpha < 255) SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);   // 描画の最後で戻す
 }
 
 
@@ -699,3 +723,6 @@ MeshCutter::Piece MeshCutter::MakePiece(
 
     return piece;
 }
+
+void MeshCutter::SetLifetime(float frames) { lifetime_ = frames; }
+void MeshCutter::SetFadeTime(float frames) { fadeTime_ = frames; }

@@ -357,6 +357,10 @@ void Player::ProcessMove(void)
 
 	VECTOR dir = AsoUtility::VECTOR_ZERO;
 
+	// 接続しているゲームパッド1の情報取得
+	InputManager::JOYPAD_IN_STATE padState =
+		InputManager::GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
+
 	// カメラ方向に前進したい
 	if (ins.IsNew(KEY_INPUT_W))
 	{
@@ -391,7 +395,7 @@ void Player::ProcessMove(void)
 		speed_ = SPEED_MOVE;
 		if (ins.IsNew(KEY_INPUT_RSHIFT))
 		{
-			speed_ = SPEED_RUN;
+			speed_ = SPEED_RUN * SceneManager::GetInstance().GetDeltaTime();;
 		}
 		moveDir_ = dir;
 		movePow_ = VScale(dir, speed_);

@@ -22,6 +22,9 @@ namespace
     constexpr float DETECT_RANGE = 300.0f;   // çıìGîºåa
     constexpr int   DETECT_SEGMENTS = 64;    // â~ÇÃï™äÑêî
     constexpr float DETECT_DRAW_OFFSET_Y = 1.0f; // ínñ Ç∆ÇÃÇﬂÇËçûÇ›ñhé~
+
+    constexpr float PIECE_LIFETIME = 15000.0f;   // 5ïb
+    constexpr float PIECE_FADE = 150.0f;    // ç≈å„ÇÃ1ïbÇ≈îñÇ≠Ç»ÇÈ
 }
 
 Enemy::Enemy(Player& player)
@@ -133,6 +136,8 @@ void Enemy::MeshInit()
     cutter_.SetMesh(MeshCut::FromMV1(transform_.modelId));
     cutter_.SetGravity(GRAVITY);
     cutter_.SetFloorFromMesh();
+    cutter_.SetLifetime(PIECE_LIFETIME);
+    cutter_.SetLifetime(PIECE_FADE);
 }
 
 bool Enemy::IsDetectPlayer() const
