@@ -64,12 +64,10 @@ public:
     };
 
     // 破片が消えるまでの時間 (60fps なら 60 で1秒)。0 以下なら消えない (既定 0)
-    void SetLifetime(
-        float frames);
+    void SetLifetime(float frames);
 
     // 消える直前に半透明にしていく時間 (既定 60)。0 ならいきなり消える
-    void SetFadeTime(
-        float frames);
+    void SetFadeTime(float frames);
 
     // メッシュを設定 (以後はこの状態が「元の形」になる)
     void SetMesh(const MeshCut::Mesh& mesh);
@@ -83,46 +81,22 @@ public:
     // origin : 切断平面上の点
     // normal : 切断平面の法線
     // ============================================================
+    void Cut(VECTOR origin, VECTOR normal);
 
-    void Cut(
-        VECTOR origin,
-        VECTOR normal);
-
-
-    // ============================================================
     // 押し出し速度を指定して切断
-    // ============================================================
+    void Cut(VECTOR origin, VECTOR normal, float pushSpeed);
 
-    void Cut(
-        VECTOR origin,
-        VECTOR normal,
-        float pushSpeed);
-
-
-    // ============================================================
     // 更新 (重力・回転・床判定・移動をまとめて行う)
-    //
-    // deltaTime : 1フレーム分の時間。60fps 固定で毎フレーム1回呼ぶだけなら
-    //             既定の 1.0f のままでよい
-    // ============================================================
+    void Update(float deltaTime = 1.0f);
 
-    void Update(
-        float deltaTime = 1.0f);
-
-
-    // ============================================================
     // 描画 (既定の見た目。色や光を変えたい場合は SetLight / SetPalette を使う)
-    // ============================================================
-
     void Draw();
-
 
     // ============================================================
     // 破片数
     // ============================================================
 
     int GetPieceCount() const;
-
 
     // ============================================================
     // 破片一覧 (自前の描画・当たり判定をしたいときに使う)
@@ -132,7 +106,6 @@ public:
     const std::vector<Piece>& GetPieces() const;
     std::vector<Piece>& GetPieces();
 
-
     // ============================================================
     // 元メッシュのバウンディングボックスから求めた中心・半径
     //   カメラの位置決めなど、呼び出し側の初期化にそのまま使える
@@ -141,19 +114,15 @@ public:
     VECTOR GetCenter() const;
     float GetRadius() const;
 
-
     // ============================================================
     // 切断時の設定
     // ============================================================
 
     // 押し出し速度 (Cut(origin, normal) の2引数版が使う既定値)
-    void SetPushSpeed(
-        float speed);
+    void SetPushSpeed(float speed);
 
     // 切断面にフタをするか (既定 true)
-    void SetCapEnabled(
-        bool enabled);
-
+    void SetCapEnabled(bool enabled);
 
     // ============================================================
     // 回転の設定
@@ -161,23 +130,18 @@ public:
 
     // 破片の回転・倒れる挙動を使うか (既定 true)。
     // false にすると、回転なしの平行移動だけになる
-    void SetRotationEnabled(
-        bool enabled);
+    void SetRotationEnabled(bool enabled);
 
     // 切った瞬間に破片へ与える回転の強さ (ラジアン/フレーム。既定 0.05)。
     // 0 なら初期回転なし(床に着いたあとの倒れ込みだけが残る)
-    void SetSpin(
-        float spin);
+    void SetSpin(float spin);
 
     // 床に着いている間の回転の減衰率 (既定 0.9。小さいほど早く止まる)
-    void SetAngularFriction(
-        float friction);
+    void SetAngularFriction(float friction);
 
     // 床との接触とみなす高さの幅。
     // 0 以下なら元メッシュの半径の 2% を自動で使う (既定 0)
-    void SetContactEps(
-        float eps);
-
+    void SetContactEps(float eps);
 
     // ============================================================
     // 重力・床の設定
@@ -185,15 +149,13 @@ public:
     // ============================================================
 
     // 1フレームあたりの重力加速度。0 なら重力なし (既定 0)
-    void SetGravity(
-        float gravity);
+    void SetGravity(float gravity);
 
     // 重力の ON/OFF だけを切り替える。
     //   OFF にしても SetGravity で設定した値は覚えたままなので、
     //   再び ON にすれば同じ強さの重力に戻る。
     //   OFF にした瞬間、全破片の速度と角速度を 0 にして空中で静止させる。
-    void SetGravityEnabled(
-        bool enabled);
+    void SetGravityEnabled(bool enabled);
 
     bool IsGravityEnabled() const;
 
@@ -201,12 +163,10 @@ public:
     // 1.0 なら減衰なし (既定 1.0)。
     // 重力を使わずに「切った破片が飛び散って自然に止まる」挙動にしたいときは
     // 0.9 前後を指定するとよい
-    void SetDamping(
-        float damping);
+    void SetDamping(float damping);
 
     // 床を有効にして高さを指定する
-    void SetFloor(
-        float floorY);
+    void SetFloor(float floorY);
 
     // 床を有効にして、元メッシュの一番低い場所を高さにする
     void SetFloorFromMesh();
@@ -215,29 +175,23 @@ public:
     void DisableFloor();
 
     // 床に着いたときの跳ね返り (0=跳ねない ? 1=完全に跳ね返す。既定 0.3)
-    void SetBounce(
-        float bounce);
+    void SetBounce(float bounce);
 
     // 床に着いている間の横方向の減速 (既定 0.85)
-    void SetFriction(
-        float friction);
-
+    void SetFriction(float friction);
 
     // ============================================================
     // 描画の見た目を変える
     // ============================================================
 
     // 光の向き (既定は (0.4, 0.8, -0.5) を正規化したもの)
-    void SetLight(
-        VECTOR light);
+    void SetLight(VECTOR light);
 
     // 破片の色のフォールバック。
     // MeshCut::Mesh が色情報 (MV1 の元のテクスチャ・マテリアルの色) を持っている
     // 場合はそれが優先して使われ、これは色情報を持たないメッシュ (立方体などの
     // テスト用図形) にだけ使われる。palette の最初の要素が使われる。
-    void SetPalette(
-        const std::vector<std::array<int, 3>>& palette);
-
+    void SetPalette(const std::vector<std::array<int, 3>>& palette);
 
     // ============================================================
     // ドラッグした線 (画面座標2点) から切断平面を作る
@@ -257,7 +211,6 @@ public:
         int endY,
         VECTOR& outOrigin,
         VECTOR& outNormal);
-
 
 private:
 
@@ -311,30 +264,20 @@ private:
     // mesh (ワールド座標) と速度から Piece を1個組み立てる。
     // 頂点を重心基準のローカル座標へ直し、pos に重心を入れる。
     // color が負なら色番号を自動で割り当て、0 以上ならその色を引き継ぐ
-    Piece MakePiece(
-        MeshCut::Mesh&& mesh,
-        VECTOR vel,
-        VECTOR angVel,
-        int color = -1);
+    Piece MakePiece(MeshCut::Mesh&& mesh, VECTOR vel, VECTOR angVel, int color = -1);
 
     // 床に着いている破片に、重力による倒れ込みの回転を加える
-    void ApplyTipping(
-        Piece& piece,
-        float lowest,
-        float gravity,
-        float deltaTime) const;
+    void ApplyTipping(Piece& piece, float lowest, float gravity, float deltaTime) const;
 
     // 回転行列の誤差を取り除く (毎フレーム回し続けると崩れるため)
     static void Orthonormalize(MATRIX& m);
 
     // 描画用キャッシュ (drawVerts / drawIdx) を mesh から作る
-    void BuildDrawCache(
-        Piece& piece) const;
+    void BuildDrawCache(Piece& piece) const;
 
     // 破片1個描画
     void DrawPiece(const Piece& piece);
 
-private:
     // 寿命
     float lifetime_ = 0.0f;
     float fadeTime_ = 60.0f;

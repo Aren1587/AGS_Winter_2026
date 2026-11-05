@@ -393,9 +393,9 @@ void Player::ProcessMove(void)
 
 		// 移動処理
 		speed_ = SPEED_MOVE;
-		if (ins.IsNew(KEY_INPUT_RSHIFT))
+		if (ins.IsNew(KEY_INPUT_LSHIFT))
 		{
-			speed_ = SPEED_RUN * SceneManager::GetInstance().GetDeltaTime();;
+			speed_ = SPEED_RUN;
 		}
 		moveDir_ = dir;
 		movePow_ = VScale(dir, speed_);
@@ -406,7 +406,7 @@ void Player::ProcessMove(void)
 		if (!isAttack_ && !isJump_ && IsEndLanding())
 		{
 			// アニメーション
-			if (ins.IsNew(KEY_INPUT_RSHIFT))
+			if (ins.IsNew(KEY_INPUT_LSHIFT))
 			{
 				animationController_->Play((int)ANIM_TYPE::FAST_RUN);
 			}

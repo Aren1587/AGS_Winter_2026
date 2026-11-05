@@ -55,7 +55,7 @@ void Enemy::Init(const VECTOR& vec)
     MV1SetPosition(transform_.modelId, transform_.pos);
     MV1SetupReferenceMesh(transform_.modelId, -1, true);
 
-    coreFrame_ = MV1SearchFrame(transform_.modelId, "mixamorig:Spine");
+    coreFrame_ = MV1SearchFrame(transform_.modelId, "mixamorig:Spine1");
 
     transform_.MakeCollider(Collider::TYPE::ENEMY);
 
@@ -75,7 +75,6 @@ void Enemy::Update()
     cutter_.Update();
 
     if (isCut_) return;
-    auto corePos = ConvWorldPosToScreenPos(MV1GetFramePosition(transform_.modelId, coreFrame_));
 
     testTime += 1.0f / 60.0f;
     if (LIMIT_TIME < testTime)
@@ -88,6 +87,8 @@ void Enemy::Update()
     {
         EnemyMove();
     }
+
+    corePos_ = MV1GetFramePosition(transform_.modelId, coreFrame_);
 
     transform_.Update();
 
@@ -194,9 +195,7 @@ void Enemy::Draw()
         DrawDetectRange();
     }
 
-    auto pos = transform_.pos;
-    pos.y += 80;
-    DrawSphere3D(pos, 10, 12, 0xffffff, 0xffffff, true);
+    DrawSphere3D(corePos_, 10, 12, 0xffffff, 0xffffff, true);
 }
 
 void Enemy::Release()

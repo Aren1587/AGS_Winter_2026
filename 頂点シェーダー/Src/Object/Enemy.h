@@ -27,6 +27,7 @@ public:
     float GetRadius() const { return cutter_.GetRadius(); }
     float GetIsCut() const { return isCut_; }
     const Transform& GetTransform(void) const { return transform_; }
+    const VECTOR GetCorePos() const { return corePos_; }
 
 private:
 	enum ANIM_TYPE
@@ -65,6 +66,7 @@ private:
     float rotSpeed;
 
     int coreFrame_;
+    VECTOR corePos_;
 
     void EnemyAI();
     void EnemyMove();

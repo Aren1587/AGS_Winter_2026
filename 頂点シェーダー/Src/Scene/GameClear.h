@@ -2,15 +2,10 @@
 
 #include "SceneBase.h"
 
-class SceneManager;
-
 class GameClear : public SceneBase
 {
 public:
-	// コンストラクタ
 	GameClear(void);
-
-	// デストラクタ
 	~GameClear(void);
 
 	void Init(void) override;
@@ -18,7 +13,6 @@ public:
 	void Draw(void) override;
 
 private:
-	// 画像
-	int imgTitle_;
-
+	// クリア画像(今は未使用)
+	//int imgClear_;
 };

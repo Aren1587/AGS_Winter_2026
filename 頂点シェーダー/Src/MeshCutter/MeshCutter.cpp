@@ -10,9 +10,7 @@ namespace
     // 外積を使う重力トルクの計算と同じ向きの規約にそろえるため、
     // MGetRotAxis には頼らず自前で組み立てる。
     // (行ベクトル規約: 行 i = 基底ベクトル e_i を回した結果)
-    MATRIX MakeAxisRotation(
-        VECTOR axis,
-        float angle)
+    MATRIX MakeAxisRotation(VECTOR axis, float angle)
     {
         const float c = std::cos(angle);
         const float s = std::sin(angle);
@@ -38,13 +36,11 @@ namespace
     }
 }
 
-
 // ================================================================
 // メッシュを設定
 // ================================================================
 
-void MeshCutter::SetMesh(
-    const MeshCut::Mesh& mesh)
+void MeshCutter::SetMesh(const MeshCut::Mesh& mesh)
 {
     originalMesh_ = mesh;
 
@@ -69,10 +65,8 @@ void MeshCutter::SetMesh(
 
     colorCounter_ = 0;
 
-    pieces_.push_back(
-        MakePiece(MeshCut::Mesh(mesh), VGet(0, 0, 0), VGet(0, 0, 0)));
+    pieces_.push_back(MakePiece(MeshCut::Mesh(mesh), VGet(0, 0, 0), VGet(0, 0, 0)));
 }
-
 
 // ================================================================
 // 元の状態に戻す
@@ -84,34 +78,23 @@ void MeshCutter::Reset()
 
     colorCounter_ = 0;
 
-    pieces_.push_back(
-        MakePiece(MeshCut::Mesh(originalMesh_), VGet(0, 0, 0), VGet(0, 0, 0)));
+    pieces_.push_back(MakePiece(MeshCut::Mesh(originalMesh_), VGet(0, 0, 0), VGet(0, 0, 0)));
 }
-
 
 // ================================================================
 // 切断 (押し出し速度は pushSpeed_ を使う)
 // ================================================================
 
-void MeshCutter::Cut(
-    VECTOR origin,
-    VECTOR normal)
+void MeshCutter::Cut(VECTOR origin, VECTOR normal)
 {
-    Cut(
-        origin,
-        normal,
-        pushSpeed_);
+    Cut(origin, normal, pushSpeed_);
 }
-
 
 // ================================================================
 // 切断
 // ================================================================
 
-void MeshCutter::Cut(
-    VECTOR origin,
-    VECTOR normal,
-    float pushSpeed)
+void MeshCutter::Cut(VECTOR origin, VECTOR normal, float pushSpeed)
 {
     if (VSize(normal) < 1e-6f)
         return;
@@ -138,21 +121,14 @@ void MeshCutter::Cut(
         MeshCut::Mesh positive;
         MeshCut::Mesh negative;
 
-        MeshCut::Cut(
-            piece.mesh,
-            origin,
-            normal,
-            positive,
-            negative,
-            capEnabled_);
+        MeshCut::Cut(piece.mesh, origin, normal, positive, negative, capEnabled_);
 
         // 平面をまたいでいなかった場合はそのまま残す
         // (頂点はワールド座標に直したので、重心基準へ組み直す。
         //  速度・角速度・色は引き継ぐ)
         if (positive.faces.empty() || negative.faces.empty())
         {
-            Piece kept = MakePiece(
-                std::move(piece.mesh), piece.vel, piece.angVel, piece.color);
+            Piece kept = MakePiece(std::move(piece.mesh), piece.vel, piece.angVel, piece.color);
             kept.age = piece.age;                 // ← 追加
             next.push_back(std::move(kept));
             continue;
@@ -165,13 +141,11 @@ void MeshCutter::Cut(
     pieces_ = std::move(next);
 }
 
-
 // ================================================================
 // 更新 (重力・回転・床判定・移動)
 // ================================================================
 
-void MeshCutter::Update(
-    float deltaTime)
+void MeshCutter::Update(float deltaTime)
 {
     const float gravity = gravityEnabled_ ? gravityValue_ : 0.0f;
 
@@ -245,7 +219,6 @@ void MeshCutter::Update(
     }
 }
 
-
 // ================================================================
 // 床に着いている破片の倒れ込み
 //
@@ -256,11 +229,7 @@ void MeshCutter::Update(
 //   (底が平らな破片や、足で立っている破片がゆっくり倒れるのを防ぐ)。
 // ================================================================
 
-void MeshCutter::ApplyTipping(
-    Piece& piece,
-    float lowest,
-    float gravity,
-    float deltaTime) const
+void MeshCutter::ApplyTipping(Piece& piece, float lowest, float gravity, float deltaTime) const
 {
     const float eps = contactEps_ > 0.0f ? contactEps_ : GetRadius() * 0.02f;
 
@@ -318,13 +287,11 @@ void MeshCutter::ApplyTipping(
     piece.angVel = VScale(piece.angVel, std::pow(angularFriction_, deltaTime));
 }
 
-
 // ================================================================
 // 回転行列の誤差除去 (グラム・シュミット)
 // ================================================================
 
-void MeshCutter::Orthonormalize(
-    MATRIX& m)
+void MeshCutter::Orthonormalize(MATRIX& m)
 {
     VECTOR x = VNorm(VGet(m.m[0][0], m.m[0][1], m.m[0][2]));
 
@@ -352,8 +319,7 @@ void MeshCutter::Draw()
     SetTransformToWorld(&identity);
 }
 
-void MeshCutter::BuildDrawCache(
-    Piece& piece) const
+void MeshCutter::BuildDrawCache(Piece& piece) const
 {
     const auto& m = piece.mesh;
     const bool hasColor = !m.colors.empty();
@@ -447,7 +413,6 @@ void MeshCutter::DrawPiece(const Piece& piece)
     if (alpha < 255) SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);   // 描画の最後で戻す
 }
 
-
 // ================================================================
 // 破片数
 // ================================================================
@@ -456,7 +421,6 @@ int MeshCutter::GetPieceCount() const
 {
     return static_cast<int>(pieces_.size());
 }
-
 
 // ================================================================
 // 破片一覧
@@ -468,13 +432,11 @@ MeshCutter::GetPieces() const
     return pieces_;
 }
 
-
 std::vector<MeshCutter::Piece>&
 MeshCutter::GetPieces()
 {
     return pieces_;
 }
-
 
 // ================================================================
 // 元メッシュの中心・半径
@@ -485,76 +447,59 @@ VECTOR MeshCutter::GetCenter() const
     return VScale(VAdd(boundsMin_, boundsMax_), 0.5f);
 }
 
-
 float MeshCutter::GetRadius() const
 {
     return VSize(VSub(boundsMax_, boundsMin_)) * 0.5f;
 }
 
-
 // ================================================================
 // 切断時の設定
 // ================================================================
 
-void MeshCutter::SetPushSpeed(
-    float speed)
+void MeshCutter::SetPushSpeed(float speed)
 {
     pushSpeed_ = speed;
 }
 
-
-void MeshCutter::SetCapEnabled(
-    bool enabled)
+void MeshCutter::SetCapEnabled(bool enabled)
 {
     capEnabled_ = enabled;
 }
-
 
 // ================================================================
 // 回転の設定
 // ================================================================
 
-void MeshCutter::SetRotationEnabled(
-    bool enabled)
+void MeshCutter::SetRotationEnabled(bool enabled)
 {
     rotationEnabled_ = enabled;
 }
 
-
-void MeshCutter::SetSpin(
-    float spin)
+void MeshCutter::SetSpin(float spin)
 {
     spin_ = spin;
 }
 
-
-void MeshCutter::SetAngularFriction(
-    float friction)
+void MeshCutter::SetAngularFriction(float friction)
 {
     angularFriction_ = friction;
 }
 
-
-void MeshCutter::SetContactEps(
-    float eps)
+void MeshCutter::SetContactEps(float eps)
 {
     contactEps_ = eps;
 }
-
 
 // ================================================================
 // 重力・床の設定
 // ================================================================
 
-void MeshCutter::SetGravity(
-    float gravity)
+void MeshCutter::SetGravity(float gravity)
 {
     gravityValue_ = gravity;
 }
 
-
-void MeshCutter::SetGravityEnabled(
-    bool enabled)
+void MeshCutter::SetGravityEnabled(bool enabled)
 {
     gravityEnabled_ = enabled;
 
@@ -569,67 +514,52 @@ void MeshCutter::SetGravityEnabled(
     }
 }
 
-
 bool MeshCutter::IsGravityEnabled() const
 {
     return gravityEnabled_;
 }
 
-
-void MeshCutter::SetDamping(
-    float damping)
+void MeshCutter::SetDamping(float damping)
 {
     damping_ = damping;
 }
 
-
-void MeshCutter::SetFloor(
-    float floorY)
+void MeshCutter::SetFloor(float floorY)
 {
     floorEnabled_ = true;
     floorY_ = floorY;
 }
-
 
 void MeshCutter::SetFloorFromMesh()
 {
     SetFloor(boundsMin_.y);
 }
 
-
 void MeshCutter::DisableFloor()
 {
     floorEnabled_ = false;
 }
 
-
-void MeshCutter::SetBounce(
-    float bounce)
+void MeshCutter::SetBounce(float bounce)
 {
     bounce_ = bounce;
 }
 
-
-void MeshCutter::SetFriction(
-    float friction)
+void MeshCutter::SetFriction(float friction)
 {
     friction_ = friction;
 }
-
 
 // ================================================================
 // 描画の見た目
 // ================================================================
 
-void MeshCutter::SetLight(
-    VECTOR light)
+void MeshCutter::SetLight(VECTOR light)
 {
     light_ = VNorm(light);
 }
 
-
-void MeshCutter::SetPalette(
-    const std::vector<std::array<int, 3>>& palette)
+void MeshCutter::SetPalette(const std::vector<std::array<int, 3>>& palette)
 {
     if (palette.empty())
         return;
@@ -639,7 +569,6 @@ void MeshCutter::SetPalette(
     for (auto& piece : pieces_)
         BuildDrawCache(piece);
 }
-
 
 // ================================================================
 // ドラッグした線から切断平面を作る
@@ -655,13 +584,9 @@ bool MeshCutter::ComputePlaneFromDrag(
 {
     VECTOR camPos = GetCameraPosition();
 
-    VECTOR a = VSub(
-        ConvScreenPosToWorldPos(VGet((float)startX, (float)startY, 0.0f)),
-        camPos);
+    VECTOR a = VSub(ConvScreenPosToWorldPos(VGet((float)startX, (float)startY, 0.0f)), camPos);
 
-    VECTOR b = VSub(
-        ConvScreenPosToWorldPos(VGet((float)endX, (float)endY, 0.0f)),
-        camPos);
+    VECTOR b = VSub(ConvScreenPosToWorldPos(VGet((float)endX, (float)endY, 0.0f)), camPos);
 
     if (VSize(a) < 1e-6f || VSize(b) < 1e-6f)
         return false;
@@ -677,18 +602,13 @@ bool MeshCutter::ComputePlaneFromDrag(
     return true;
 }
 
-
 // ================================================================
 // Piece を1個組み立てる
 //   mesh はワールド座標。重心 (バウンディングボックスの中心) を原点とした
 //   ローカル座標へ直し、重心の位置を pos に入れる
 // ================================================================
 
-MeshCutter::Piece MeshCutter::MakePiece(
-    MeshCut::Mesh&& mesh,
-    VECTOR vel,
-    VECTOR angVel,
-    int color)
+MeshCutter::Piece MeshCutter::MakePiece(MeshCut::Mesh&& mesh, VECTOR vel, VECTOR angVel, int color)
 {
     VECTOR mn = mesh.verts[0];
     VECTOR mx = mesh.verts[0];

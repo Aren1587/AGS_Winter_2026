@@ -227,12 +227,27 @@ void GameScene::Draw(void)
 	for (const auto& enemy : enemys_)
 	{
 		enemy->Draw();
-
 	}
 
 	cutEffect_->Draw();
 
 	DrawUI();
+
+	if (player_->IsBladeMode())
+	{
+		for (const auto& enemy : enemys_)
+		{
+			auto weekPos = ConvWorldPosToScreenPos(enemy->GetCorePos());
+			const int X_SIZE = 10;
+			const int Y_SIZE = 10;
+			int x1 = weekPos.x - X_SIZE / 2;
+			int x2 = weekPos.x + X_SIZE / 2;
+			int y1 = weekPos.y - Y_SIZE / 2;
+			int y2 = weekPos.y + Y_SIZE / 2;
+			DrawBox(x1, y1, x2, y2, 0xffffff, true);
+		}
+	}
+
 	player_->Draw();
 
 	cutEffect_->DrawScreen();

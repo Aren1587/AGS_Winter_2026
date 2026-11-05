@@ -73,6 +73,7 @@ public:
 	const Capsule& GetCapsule(void) const;
 
 	const bool IsSlashing() const { return isSlashing_; }
+	const bool IsBladeMode() const { return isBladeMode_; }
 	const std::unique_ptr<Sword>& GetSword() const { return sword_; }
 	const Status& GetStatus() const { return status_; }
 
