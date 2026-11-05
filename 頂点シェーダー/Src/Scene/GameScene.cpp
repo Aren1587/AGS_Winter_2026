@@ -162,6 +162,7 @@ void GameScene::Update(void)
 
 		for (const auto& enemy : enemys_)
 		{
+			VECTOR corePos = enemy->GetCorePos();
 			VECTOR center = enemy->GetTransform().pos;
 			center.y += BODY_HEIGHT;
 			float radius = 100.0f;
