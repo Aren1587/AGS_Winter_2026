@@ -1,4 +1,5 @@
-﻿#include <DxLib.h>
+﻿#include <algorithm>
+#include <DxLib.h>
 #include "../Application.h"
 #include "../Utility/AsoUtility.h"
 #include "../Manager/SceneManager.h"
@@ -91,15 +92,12 @@ void GameScene::Update(void)
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE);
 	}
 
-	bool isEnd = true;
-	for (const auto& enemy : enemys_)
+	if (ins.IsTrgDown(KEY_INPUT_V))
 	{
-		if (!enemy->GetIsCut())
-		{
-			isEnd = false;
-			break;
-		}
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::CLEAR);
 	}
+
+	bool isEnd = enemys_.empty();
 
 	if (isEnd)
 	{
@@ -213,6 +211,13 @@ void GameScene::Update(void)
 	{
 		alreadyCutThisSwing_ = false;  // 振り終わったらリセット
 	}
+
+	// 消えてよい敵を配列から取り除く
+	enemys_.erase(
+		std::remove_if(enemys_.begin(), enemys_.end(),
+			[](const std::unique_ptr<Enemy>& e) { return e->IsRemovable(); }),
+		enemys_.end());
+
 	cutEffect_->Update();
 }
 
@@ -241,11 +246,11 @@ void GameScene::Draw(void)
 			auto weekPos = ConvWorldPosToScreenPos(enemy->GetCorePos());
 			const int X_SIZE = 10;
 			const int Y_SIZE = 10;
-			int x1 = weekPos.x - X_SIZE / 2;
-			int x2 = weekPos.x + X_SIZE / 2;
-			int y1 = weekPos.y - Y_SIZE / 2;
-			int y2 = weekPos.y + Y_SIZE / 2;
-			DrawBox(x1, y1, x2, y2, 0xffffff, true);
+			const auto x1 = weekPos.x - X_SIZE / 2;
+			const auto x2 = weekPos.x + X_SIZE / 2;
+			const auto y1 = weekPos.y - Y_SIZE / 2;
+			const auto y2 = weekPos.y + Y_SIZE / 2;
+			DrawBoxAA(x1, y1, x2, y2, 0xffffff, true);
 		}
 	}
 

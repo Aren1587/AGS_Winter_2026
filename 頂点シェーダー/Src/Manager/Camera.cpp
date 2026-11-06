@@ -5,6 +5,7 @@
 #include "../Utility/AsoUtility.h"
 #include "../Manager/InputManager.h"
 #include "../Object/Common/Transform.h"
+#include "PadInput.h"
 #include "Camera.h"
 
 Camera::Camera(void)
@@ -178,8 +179,6 @@ void Camera::ProcessRot(void)
 {
 	auto& ins = InputManager::GetInstance();
 
-	float movePow = 5.0f;
-
 	// カメラ回転
 	if (ins.IsNew(KEY_INPUT_RIGHT))
 	{
@@ -210,6 +209,26 @@ void Camera::ProcessRot(void)
 		{
 			angles_.x = -LIMIT_X_DW_RAD;
 		}
+	}
+
+	// カメラ回転(右スティック)
+	const float rx = PadInput::RStickX();
+	const float ry = PadInput::RStickY();
+
+	// 倒した量に比例して回す(1.0 倒しきり = 2度/フレーム)
+	constexpr float PAD_ROT_SPEED_DEG = 2.0f;
+
+	angles_.y += AsoUtility::Deg2RadF(rx * PAD_ROT_SPEED_DEG);
+	angles_.x += AsoUtility::Deg2RadF(ry * PAD_ROT_SPEED_DEG);
+
+	// 上下の制限(キーボードとパッドの両方にまとめて効かせる)
+	if (angles_.x > LIMIT_X_UP_RAD)
+	{
+		angles_.x = LIMIT_X_UP_RAD;
+	}
+	if (angles_.x < -LIMIT_X_DW_RAD)
+	{
+		angles_.x = -LIMIT_X_DW_RAD;
 	}
 }
 

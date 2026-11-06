@@ -7,6 +7,7 @@
 #include "../Scene/GameScene.h"
 #include "../Scene/GameClear.h"
 #include "Camera.h"
+#include "Padinput.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
 
@@ -95,6 +96,8 @@ void SceneManager::Update(void)
 
 	// ƒQ[ƒ€ŽÀsŽžŠÔ
 	totalTime_ += deltaTime_;
+
+	PadInput::Update();
 
 	fader_->Update();
 	if (isSceneChanging_)

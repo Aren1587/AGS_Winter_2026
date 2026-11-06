@@ -63,6 +63,15 @@ namespace
 	constexpr float TRAIL_LIFE = 0.25f;        // 残像が消えるまでの時間(秒)
 	constexpr size_t TRAIL_MAX_POINTS = 40;    // 記録する点の上限
 	constexpr float TRAIL_ROOT_RATE = 0.3f;    // 手→切っ先の何割の位置を根元にするか(小さいほど幅が広い)
+
+	constexpr float STICK_DEAD_ZONE = 0.3f;  // スティックの入力を無視する範囲(0~1)
+
+	// 操作キー
+	constexpr int MOVE_UP_KEY =		KEY_INPUT_W;
+	constexpr int MOVE_LEFT_KEY =	KEY_INPUT_A;
+	constexpr int MOVE_DOWN_KEY =	KEY_INPUT_S;
+	constexpr int MOVE_RIGHT_KEY =	KEY_INPUT_D;
+	constexpr int RUN_KEY =			KEY_INPUT_LSHIFT;
 }
 
 Player::Player(void)
@@ -362,38 +371,65 @@ void Player::ProcessMove(void)
 		InputManager::GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
 
 	// カメラ方向に前進したい
-	if (ins.IsNew(KEY_INPUT_W))
+	if (ins.IsNew(MOVE_UP_KEY))
 	{
 		rotRad = AsoUtility::Deg2RadD(0.0);
 		dir = cameraRot.GetForward();
 	}
 
 	// カメラ方向から後退したい
-	if (ins.IsNew(KEY_INPUT_S))
+	if (ins.IsNew(MOVE_DOWN_KEY))
 	{
 		rotRad = AsoUtility::Deg2RadD(180.0);
 		dir = cameraRot.GetBack();
 	}
 
 	// カメラ方向から右側へ移動したい
-	if (ins.IsNew(KEY_INPUT_D))
+	if (ins.IsNew(MOVE_RIGHT_KEY))
 	{
 		rotRad = AsoUtility::Deg2RadD(90.0);
 		dir = cameraRot.GetRight();
 	}
 
 	// カメラ方向から左側へ移動したい
-	if (ins.IsNew(KEY_INPUT_A))
+	if (ins.IsNew(MOVE_LEFT_KEY))
 	{
 		rotRad = AsoUtility::Deg2RadD(270.0);
 		dir = cameraRot.GetLeft();
+	}
+
+	// パッド(左スティック)：カメラ基準で移動
+	float lx = padState.AKeyLX / 1000.0f;   // 右が+
+	float ly = -padState.AKeyLY / 1000.0f;  // 上(前)が+ になるよう反転
+
+	// デッドゾーン(ベクトル長で判定)
+	float len = sqrtf(lx * lx + ly * ly);
+	if (len > 0.2f)
+	{
+		// 斜め入力で1を超えないように正規化
+		if (len > 1.0f)
+		{
+			lx /= len;
+			ly /= len;
+		}
+
+		// カメラの右方向 * 横入力 + カメラの前方向 * 縦入力
+		VECTOR right = cameraRot.GetRight();
+		VECTOR forward = cameraRot.GetForward();
+		dir = VAdd(VScale(right, lx), VScale(forward, ly));
+
+		// カメラ前方向を0度とした、スティックの傾き角度
+		// (キーボードの D=90度, S=180度, A=270度 と同じ基準)
+		rotRad = atan2((double)lx, (double)ly);
 	}
 
 	if (!AsoUtility::EqualsVZero(dir) && (isJump_ || IsEndLanding())) {
 
 		// 移動処理
 		speed_ = SPEED_MOVE;
-		if (ins.IsNew(KEY_INPUT_LSHIFT))
+		if (ins.IsNew(RUN_KEY) ||
+			InputManager::GetInstance().IsPadBtnNew(
+				InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 		{
 			speed_ = SPEED_RUN;
 		}
@@ -406,7 +442,9 @@ void Player::ProcessMove(void)
 		if (!isAttack_ && !isJump_ && IsEndLanding())
 		{
 			// アニメーション
-			if (ins.IsNew(KEY_INPUT_LSHIFT))
+			if (ins.IsNew(RUN_KEY) ||
+				InputManager::GetInstance().IsPadBtnNew(
+					InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
 			{
 				animationController_->Play((int)ANIM_TYPE::FAST_RUN);
 			}
@@ -462,8 +500,14 @@ void Player::ProcessJump(void)
 
 void Player::Attack(void)
 {
+	// 接続しているゲームパッド1の情報取得
+	InputManager::JOYPAD_IN_STATE padState =
+		InputManager::GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
+
 	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_E) ||
-		InputManager::GetInstance().IsClickMouseLeft())
+		InputManager::GetInstance().IsTrgMouseLeft() ||
+		InputManager::GetInstance().IsPadBtnTrgDown(
+			InputManager::JOYPAD_NO::PAD1,InputManager::JOYPAD_BTN::LEFT))
 	{
 		animationController_->Play((int)ANIM_TYPE::ATTACK, false);
 		isAttack_ = true;
@@ -559,7 +603,11 @@ void Player::ApplySlashLineToBody(void)
 void Player::SlashAttackMode(void)
 {
 	// Qキーを押している間、肩越しカメラ
-	bool isSlashMode = InputManager::GetInstance().IsNew(KEY_INPUT_Q) && status_.energy_ > 0;
+	bool isSlashMode = 
+		(InputManager::GetInstance().IsNew(KEY_INPUT_Q) || 
+			InputManager::GetInstance().IsPadBtnNew(
+				InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::L_TRIGGER))
+		&& status_.energy_ > 0;
 	mainCamera.SetShoulder(isSlashMode);
 
 	// モード開始時にマウスを中央へ戻して基準を作る
@@ -584,10 +632,10 @@ void Player::SlashAttackMode(void)
 
 void Player::UpdateSlashLine(void)
 {
-	// ここに来るとエナジーゲージを減少させる
+	// 長く入力するとエネルギーゲージが減少する
 	status_.energy_ -= ENERGY_MINUS_NUM * (1.0f / 60.0f);
 
-	// マウスが中央からどれだけ動いたか=入力方向
+	// --- マウス(今まで通り) ---
 	int cx = Application::SCREEN_SIZE_X / 2;
 	int cy = Application::SCREEN_SIZE_Y / 2;
 	int mx, my;
@@ -596,10 +644,22 @@ void Player::UpdateSlashLine(void)
 	float dy = static_cast<float>(my - cy);
 	SetMousePoint(cx, cy);
 
-	// 動いた方向にラインを向ける(小さな揺れは無視)
 	if (dx * dx + dy * dy > MOUSE_DEAD_ZONE * MOUSE_DEAD_ZONE)
 	{
 		slashLineAngle_ = atan2f(dy, dx);
+	}
+
+	// --- パッド右スティック ---
+	InputManager::JOYPAD_IN_STATE pad =
+		InputManager::GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
+
+	float rx = pad.AKeyRX / 1000.0f;   // 右が+
+	float ry = pad.AKeyRY / 1000.0f;   // 下が+(画面のY軸と同じ向き)
+
+	if (rx * rx + ry * ry > STICK_DEAD_ZONE * STICK_DEAD_ZONE)
+	{
+		// 傾けた方向にラインを向ける
+		slashLineAngle_ = atan2f(ry, rx);
 	}
 }
 

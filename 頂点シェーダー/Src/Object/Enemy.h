@@ -23,6 +23,11 @@ public:
     void Draw();
     void Release();
 
+    void TakeDamage(int damage);
+    bool IsDead() const { return isDead_; }
+    bool IsRemovable() const;   // 消してよい状態か（管理側で使う）
+    int  GetHp() const { return hp_; }
+
     VECTOR GetCenter() const { return cutter_.GetCenter(); }
     float GetRadius() const { return cutter_.GetRadius(); }
     float GetIsCut() const { return isCut_; }
@@ -37,16 +42,26 @@ private:
         ATTACK,
     };
 
-    enum STATE
+    enum class STATE
     {
-        null,
-        one,
-        ui
+        IDLE,
+        CHASE,
+        WINDUP,
+        ATTACK,
+        COOLDOWN,
+        DAMAGE,    // 追加：のけぞり
+        DEAD,      // 追加：通常撃破
     };
 
-    STATE state_;
+    int  hp_;
+    int  invincibleTimer_;   // 連続ヒット防止
+    bool isDead_;
 
-    void ChangeState(STATE state = null)const;
+    STATE state_;
+    int    stateTimer_;   // フレーム数で管理
+    bool   isMelee_;      // 今回の攻撃が近距離かどうか
+    bool   hitDone_;      // 1回の攻撃で多段ヒットさせない
+    VECTOR attackDir_;    // 突進方向（攻撃開始時に固定）
 
     std::unique_ptr<AnimationController> animationController_;
 
@@ -60,15 +75,22 @@ private:
 
     bool isCut_;
 
-    bool test;
-    float testTime;
-
     float rotSpeed;
 
     int coreFrame_;
     VECTOR corePos_;
 
-    void EnemyAI();
+    void ChangeState(STATE state);
+
+    void UpdateIdle();
+    void UpdateChase();
+    void UpdateWindup();
+    void UpdateAttack();
+    void UpdateCooldown();
+
+    VECTOR DirToPlayer(float& dist) const;
+    void   FacePlayer();
+
     void EnemyMove();
 
     void MeshInit();
