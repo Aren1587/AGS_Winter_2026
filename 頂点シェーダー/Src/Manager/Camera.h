@@ -30,6 +30,9 @@ public:
 	static constexpr float LIMIT_X_UP_RAD = 40.0f * (DX_PI_F / 180.0f);
 	static constexpr float LIMIT_X_DW_RAD = 15.0f * (DX_PI_F / 180.0f);
 
+	// カメラが追従対象より低くなれる最小高度(地面突き抜け防止)
+	static constexpr float CAMERA_MIN_HEIGHT = 20.0f;
+
 	// 肩越し時の追従位置からカメラ位置までの相対座標(右に寄せて近づける)
 	static constexpr VECTOR SHOULDER_F2C_POS = { 80.0f, 90.0f, -180.0f };
 
@@ -82,6 +85,9 @@ public:
 	// 肩越しカメラのON/OFF
 	void SetShoulder(bool isShoulder) { isShoulder_ = isShoulder; }
 
+	// 回転入力のロック（ポーズ中に使用）
+	void SetRotLocked(bool locked) { rotLocked_ = locked; }
+
 private:
 
 	// カメラが追従対象とするTransform
@@ -113,6 +119,9 @@ private:
 
 	// 肩越しブレンド率(0.0f:通常 〜 1.0f:肩越し)
 	float shoulderRate_;
+
+	// 回転入力ロックフラグ
+	bool rotLocked_;
 
 	// カメラを初期位置に戻す
 	void SetDefault(void);

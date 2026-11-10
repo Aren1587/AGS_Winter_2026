@@ -6,6 +6,7 @@
 #define mainCamera SceneManager::GetInstance().GetCamera()
 
 class SceneBase;
+class PauseScene;
 class Fader;
 class Camera;
 
@@ -22,6 +23,7 @@ public:
 		GAME,
 		CLEAR,
 		PAUSE,
+		GAME_OVER,
 	};
 	
 	// インスタンスの生成
@@ -46,6 +48,10 @@ public:
 
 	// デルタタイムの取得
 	float GetDeltaTime(void) const;
+
+	// $B%?%$%%9%1!<%k(B
+	void SetTimeScale(float scale);
+	float GetTimeScale(void) const;
 
 	// カメラの取得
 	Camera& GetCamera(void);
@@ -74,10 +80,14 @@ private:
 
 	// シーン遷移中判定
 	bool isSceneChanging_;
+	bool isPaused_;
+	std::unique_ptr<PauseScene> pauseScene_;
 
 	// デルタタイム
 	std::chrono::system_clock::time_point preTime_;
 	float deltaTime_;
+
+	float timeScale_;
 
 	// ゲーム実行時間
 	float totalTime_;

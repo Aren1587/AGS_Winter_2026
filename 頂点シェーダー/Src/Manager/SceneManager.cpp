@@ -6,9 +6,11 @@
 #include "../Scene/TitleScene.h"
 #include "../Scene/GameScene.h"
 #include "../Scene/GameClear.h"
+#include "../Scene/PauseScene.h"
 #include "Camera.h"
 #include "Padinput.h"
 #include "ResourceManager.h"
+#include "InputManager.h"
 #include "SceneManager.h"
 
 SceneManager* SceneManager::instance_ = nullptr;
@@ -106,11 +108,53 @@ void SceneManager::Update(void)
 	}
 	else
 	{
-		scene_->Update();
+		// ESCでポーズトグル（ゲームシーンのみ）
+		if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_ESCAPE))
+		{
+			isPaused_ = !isPaused_;
+			if (isPaused_)
+			{
+				pauseScene_ = std::make_unique<PauseScene>();
+				pauseScene_->SetIsGameScene(sceneId_ == SCENE_ID::GAME);
+				pauseScene_->SetShowTitleOption(sceneId_ != SCENE_ID::TITLE);
+				pauseScene_->Init();
+				camera_->SetRotLocked(true);
+			}
+			else
+			{
+				pauseScene_.reset();
+				camera_->SetRotLocked(false);
+			}
+		}
+
+		else if (isPaused_)
+		{
+			pauseScene_->Update();
+			if (pauseScene_->IsResume())
+			{
+				isPaused_ = false;
+				pauseScene_.reset();
+				camera_->SetRotLocked(false);
+			}
+			else if (pauseScene_->IsGotoTitle())
+			{
+				isPaused_ = false;
+				pauseScene_.reset();
+				ChangeScene(SCENE_ID::TITLE);
+			}
+			else if (pauseScene_->IsExit())
+			{
+				PostQuitMessage(0);
+			}
+		}
+		else
+		{
+			scene_->Update();
+		}
 	}
 
 	// カメラ更新
-	camera_->Update();
+	if (!isPaused_) camera_->Update();
 }
 
 void SceneManager::Draw(void)
@@ -130,6 +174,12 @@ void SceneManager::Draw(void)
 
 	// 描画
 	scene_->Draw();
+
+	// ポーズオーバーレイ
+	if (isPaused_ && pauseScene_ != nullptr)
+	{
+		pauseScene_->Draw();
+	}
 
 	// 主にポストエフェクト用
 	camera_->Draw();
@@ -188,6 +238,16 @@ float SceneManager::GetTotalTime(void) const
 	return totalTime_;
 }
 
+void SceneManager::SetTimeScale(float scale)
+{
+	timeScale_ = scale;
+}
+
+float SceneManager::GetTimeScale(void) const
+{
+	return timeScale_;
+}
+
 SceneManager::SceneManager(void)
 {
 	sceneId_ = SCENE_ID::NONE;
@@ -202,6 +262,9 @@ SceneManager::SceneManager(void)
 	deltaTime_ = 1.0f / 60.0f;
 
 	camera_ = nullptr;
+	timeScale_ = 1.0f;
+	totalTime_ = 0.0f;
+	isPaused_ = false;
 }
 
 void SceneManager::ResetDeltaTime(void)
@@ -212,10 +275,7 @@ void SceneManager::ResetDeltaTime(void)
 
 void SceneManager::DoChangeScene(SCENE_ID sceneId)
 {
-	// リソースの解放
-	ResourceManager::GetInstance().Release();
-
-	// シーンを変更する
+	isPaused_ = false;
 	sceneId_ = sceneId;
 
 	// 現在のシーンを解放
@@ -223,6 +283,9 @@ void SceneManager::DoChangeScene(SCENE_ID sceneId)
 	{
 		scene_.reset();
 	}
+
+	// リソースの解放
+	ResourceManager::GetInstance().Release();
 
 	switch (sceneId_)
 	{

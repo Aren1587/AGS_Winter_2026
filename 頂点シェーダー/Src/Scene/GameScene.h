@@ -56,5 +56,11 @@ private:
 
 	bool alreadyCutThisSwing_ = false;
 
+	int playerHitEffectFrame_ = 0;
+	int prevPlayerHp_ = 100;
+
+	int goalFontHandle_ = -1;
+	int goalMessageFrame_ = 0;
+
 	float worldTimeAccum_ = 0.0f;   // プレイヤー以外の時間の貯金
 };

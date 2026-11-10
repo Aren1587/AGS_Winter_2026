@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Manager\Padinput.cpp" />
+    <ClCompile Include="Src\Scene\GameOverScene.cpp" />
     <ClCompile Include="Src\Scene\PauseScene.cpp" />
     <ClCompile Include="Src\Object\CutEffect.cpp" />
     <ClCompile Include="Src\MeshCutter\MeshCutter.cpp" />
@@ -62,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Manager\Padinput.h" />
+    <ClInclude Include="Src\Scene\GameOverScene.h" />
     <ClInclude Include="Src\Scene\PauseScene.h" />
     <ClInclude Include="Src\Object\CutEffect.h" />
     <ClInclude Include="Src\MeshCutter\MeshCut.h" />

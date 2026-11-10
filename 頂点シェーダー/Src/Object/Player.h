@@ -5,6 +5,7 @@
 #include <map>
 #include <functional>
 #include <deque>
+#include <chrono>
 #include <DxLib.h>
 
 #include "ActorBase.h"
@@ -49,6 +50,7 @@ public:
 		VICTORY,
 		ATTACK,
 		FAST_ATTACK,
+		DEATH,
 	};
 
 	// 最大値
@@ -73,6 +75,7 @@ public:
 	const Capsule& GetCapsule(void) const;
 
 	const bool IsSlashing() const { return isSlashing_; }
+	bool IsDead() const { return state_ == STATE::DEAD; }
 	const bool IsBladeMode() const { return isBladeMode_; }
 	const std::unique_ptr<Sword>& GetSword() const { return sword_; }
 	const Status& GetStatus() const { return status_; }
@@ -81,6 +84,9 @@ public:
 	bool GetSlashPlane(VECTOR& outOrigin, VECTOR& outNormal) const;
 
 	// 敵に当たった時の処理
+
+	void TakeDamage(int damage);
+
 	void HitProcess();
 private:
 
@@ -146,6 +152,9 @@ private:
 
 	Status status_;
 
+	std::chrono::system_clock::time_point deadStartTime_;
+	std::chrono::system_clock::time_point deathAnimEndTime_;
+	bool deathAnimEnded_;
 	float attackTimer_ = 0.0f;
 
 	bool  isBladeMode_ = false;     // 斬撃モード中か
@@ -159,6 +168,9 @@ private:
 	bool   hasSlashPlane_ = false;
 	VECTOR slashPlaneOrigin_ = VGet(0, 0, 0);
 	VECTOR slashPlaneNormal_ = VGet(0, 0, 0);
+	VECTOR attackStartTip_ = VGet(0, 0, 0);
+	bool   slashFlash_ = false;
+	float  slashFlashLife_ = 0.0f;
 	bool BuildSlashPlane(float angle, VECTOR& o, VECTOR& n) const;
 
 	void ApplySlashLineToBody(void);
@@ -169,16 +181,19 @@ private:
 	void ChangeState(STATE state);
 	void ChangeStateNone(void);
 	void ChangeStatePlay(void);
+	void ChangeStateDead(void);
 
 	// 更新ステップ
 	void UpdateNone(void);
 	void UpdatePlay(void);
+	void UpdateDead(void);
 	void UpdateSlashLine(void);
 	void UpdateSlashTrail(void);
 
 	// 描画系
 	void DrawShadow(void);
 	void DrawSlashLine(void);
+	void DrawSlashFlash(void);
 	void DrawSlashTrail(void);
 
 	// 操作

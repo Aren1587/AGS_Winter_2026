@@ -18,6 +18,7 @@ Camera::Camera(void)
 	followTransform_ = nullptr;
 	isShoulder_ = false;
 	shoulderRate_ = 0.0f;
+	rotLocked_ = false;
 }
 
 Camera::~Camera(void)
@@ -173,10 +174,19 @@ void Camera::SyncFollow(void)
 	pos_ = VAdd(pos, localPos);
 
 	cameraUp_ = AsoUtility::DIR_U;
+
+	// カメラが地面を突き抜けないように最低高度を保持
+	const float minY = followTransform_->pos.y + CAMERA_MIN_HEIGHT;
+	if (pos_.y < minY)
+	{
+		pos_.y = minY;
+	}
 }
 
 void Camera::ProcessRot(void)
 {
+	if (rotLocked_) return;
+
 	auto& ins = InputManager::GetInstance();
 
 	// カメラ回転

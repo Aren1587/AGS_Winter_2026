@@ -45,7 +45,7 @@ GameScene::GameScene(void)
 
 GameScene::~GameScene(void)
 {
-	//DeleteGraph(postEffectScreen_);
+	if (goalFontHandle_ != -1) DeleteFontToHandle(goalFontHandle_);
 }
 
 void GameScene::Init(void)
@@ -81,12 +81,16 @@ void GameScene::Init(void)
 
 	mainCamera.SetFollow(&player_->GetTransform());
 	mainCamera.ChangeMode(Camera::MODE::FOLLOW);
+
+	goalFontHandle_ = CreateFontToHandle(nullptr, 60, 3, DX_FONTTYPE_ANTIALIASING);
+	goalMessageFrame_ = 0;
 }
 
 void GameScene::Update(void)
 {
-	// シーン遷移
 	InputManager& ins = InputManager::GetInstance();
+
+	// シーン遷移
 	if (ins.IsTrgDown(KEY_INPUT_SPACE))
 	{
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE);
@@ -126,17 +130,23 @@ void GameScene::Update(void)
 
 	// 肩越しの度合いに合わせて、プレイヤー以外の時間を遅くする
 	constexpr float SLOW_SCALE = 0.2f;
-	const float worldTimeScale =
-		1.0f + (SLOW_SCALE - 1.0f) * mainCamera.GetShoulderRate();
+	const bool isSlow = SceneManager::GetInstance().GetTimeScale() < 1.0f;
+	const float worldTimeScale = isSlow
+		? SLOW_SCALE
+		: 1.0f + (SLOW_SCALE - 1.0f) * mainCamera.GetShoulderRate();
 
-	// プレイヤーは常に等速
-	player_->Update();
+	// スロー中はプレイヤーも worldTimeAccum_ 経由。通常時はプレイヤー常に等速
+	if (!isSlow)
+	{
+		player_->Update();
+	}
 
 	// それ以外はスケール分だけ進める
 	worldTimeAccum_ += worldTimeScale;
 	while (worldTimeAccum_ >= 1.0f)
 	{
 		worldTimeAccum_ -= 1.0f;
+		if (isSlow) player_->Update();
 		skyDome_->Update();
 		stage_->Update();
 		for (const auto& enemy : enemys_)
@@ -145,12 +155,46 @@ void GameScene::Update(void)
 		}
 	}
 
+	// ゴールメッセージタイマー
+	if (goalMessageFrame_ < 240) ++goalMessageFrame_;
+
+	// プレイヤー被弾エフェクト
+	if (playerHitEffectFrame_ > 0) --playerHitEffectFrame_;
+	{
+		int curHp = player_->GetStatus().hp_;
+		if (curHp < prevPlayerHp_)
+		{
+			playerHitEffectFrame_ = 20;
+			hitStopFrame_ = 4;
+		}
+		prevPlayerHp_ = curHp;
+	}
+
+	// 敵同士が重ならないよう押しのける
+	constexpr float ENEMY_SEP_RADIUS = 80.0f;
+	for (int si = 0; si < (int)enemys_.size(); si++)
+	{
+		for (int sj = si + 1; sj < (int)enemys_.size(); sj++)
+		{
+			VECTOR diff = VSub(enemys_[si]->GetTransform().pos, enemys_[sj]->GetTransform().pos);
+			diff.y = 0.0f;
+			float dist = VSize(diff);
+			if (dist < ENEMY_SEP_RADIUS && dist > 0.001f)
+			{
+				float push = (ENEMY_SEP_RADIUS - dist) * 0.5f;
+				VECTOR pushVec = VScale(VNorm(diff), push);
+				enemys_[si]->Separate(pushVec);
+				enemys_[sj]->Separate(VScale(pushVec, -1.0f));
+			}
+		}
+	}
+
 	// HIT時の斬る処理
 	if (player_->IsSlashing() && !alreadyCutThisSwing_)
 	{
 		// ラインモードなら、ラインから切断面を作る
 		VECTOR lineOrigin = VGet(0, 0, 0), lineNormal = VGet(0, 0, 0);
-		const bool useLine =
+		bool useLine =
 			player_->IsLineAttack() &&
 			player_->GetSlashPlane(lineOrigin, lineNormal);
 
@@ -167,7 +211,7 @@ void GameScene::Update(void)
 
 			VECTOR origin, normal;
 			bool hit = false;
-
+			useLine = false;
 			if (useLine)
 			{
 				// 敵の中心が切断面から radius 以内で、カメラの前方かつ射程内
@@ -189,21 +233,53 @@ void GameScene::Update(void)
 
 			if (!hit) continue;
 
-			enemy->Cut(origin, normal);
+			// 弱点(コア)への命中判定
+			float coreDist = useLine
+				? fabsf(VDot(VSub(enemy->GetCorePos(), lineOrigin), lineNormal))
+				: VSize(VSub(tip, enemy->GetCorePos()));
+			const bool hitCore = coreDist < 40.0f;
+
 			player_->HitProcess();
 			alreadyCutThisSwing_ = true;
 
-			// 演出の中心 = 敵の中心を切断平面へ射影した点
-			VECTOR toCenter = VSub(center, origin);
-			VECTOR onPlane = VSub(center, VScale(normal, VDot(toCenter, normal)));
+			if (hitCore)
+			{
+				enemy->Cut(origin, normal);
 
-			// 演出の向き: ラインモードならライン方向、通常なら刃の向き
-			VECTOR bladeDir = useLine
-				? VNorm(VCross(normal, camFront))
-				: VSub(tip, player_->GetSword()->GetHilt());
+				// 演出の中心 = 敵の中心を切断平面へ射影した点
+				VECTOR toCenter = VSub(center, origin);
+				VECTOR onPlane = VSub(center, VScale(normal, VDot(toCenter, normal)));
 
-			cutEffect_->Start(onPlane, normal, bladeDir);
-			hitStopFrame_ = 6;
+				// 演出の向き: ラインモードならライン方向、通常なら刃の向き
+				VECTOR bladeDir = useLine
+					? VNorm(VCross(normal, camFront))
+					: VSub(tip, player_->GetSword()->GetHilt());
+
+				cutEffect_->Start(onPlane, normal, bladeDir);
+				hitStopFrame_ = 6;
+			}
+			else
+			{
+				enemy->TakeDamage(1);
+
+				VECTOR toCenter = VSub(center, origin);
+				VECTOR onPlane = VSub(center, VScale(normal, VDot(toCenter, normal)));
+				VECTOR bladeDir = useLine
+					? VNorm(VCross(normal, camFront))
+					: VSub(tip, player_->GetSword()->GetHilt());
+
+				if (enemy->IsDead())
+				{
+					enemy->Cut(origin, normal);
+					hitStopFrame_ = 6;
+				}
+				else
+				{
+					hitStopFrame_ = 3;
+				}
+
+				cutEffect_->Start(onPlane, normal, bladeDir);
+			}
 		}
 	}
 
@@ -257,6 +333,16 @@ void GameScene::Draw(void)
 	player_->Draw();
 
 	cutEffect_->DrawScreen();
+
+	// 被弾赤フラッシュ
+	if (playerHitEffectFrame_ > 0)
+	{
+		int alpha = (int)(180.0f * playerHitEffectFrame_ / 20);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawBox(0, 0, Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, GetColor(255, 0, 0), TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
 }
 
 void GameScene::DrawUI(void)const
@@ -277,6 +363,26 @@ void GameScene::DrawUI(void)const
 	energy_rate = std::clamp(energy_rate, 0.0f, 1.0f);
 	DrawBoxAA(gageX, 20, gageX + MAX_GAGE_POS,	30, backColor, TRUE);
 	DrawBoxAA(gageX, 20, gageX + MAX_GAGE_POS * energy_rate, 30, energyColor, TRUE);
+
+	// ゴールメッセージ（最初の240フレーム）
+	if (goalMessageFrame_ < 240 && goalFontHandle_ != -1)
+	{
+		int alpha = 255;
+		if (goalMessageFrame_ < 30)
+			alpha = goalMessageFrame_ * 255 / 30;
+		else if (goalMessageFrame_ > 210)
+			alpha = (240 - goalMessageFrame_) * 255 / 30;
+
+		const char* msg = "全ての敵を倒せ";
+		int w = GetDrawStringWidthToHandle(msg, (int)strlen(msg), goalFontHandle_);
+		int x = (Application::SCREEN_SIZE_X - w) / 2;
+		int y = Application::SCREEN_SIZE_Y / 3;
+
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawStringToHandle(x, y - 2, msg, GetColor(0, 0, 0), goalFontHandle_);   // 影
+		DrawStringToHandle(x, y,     msg, GetColor(255, 220, 50), goalFontHandle_);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 
 	// ヘルプ
 	DrawFormatString(840, 20, 0x000000, "移動　　 ： WASD");

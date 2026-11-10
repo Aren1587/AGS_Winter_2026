@@ -1,5 +1,5 @@
 #pragma once
-
+#include <vector>
 #include "SceneBase.h"
 
 class GameClear : public SceneBase
@@ -13,6 +13,20 @@ public:
 	void Draw(void) override;
 
 private:
-	// クリア画像(今は未使用)
-	//int imgClear_;
+	struct Particle
+	{
+		float x, y;
+		float vx, vy;
+		float life, maxLife;
+		float size;
+		int r, g, b;
+		bool isBurst;
+	};
+
+	float timer_;
+	float nextBurstTimer_;
+	std::vector<Particle> particles_;
+
+	void SpawnStar(void);
+	void SpawnBurst(float cx, float cy);
 };

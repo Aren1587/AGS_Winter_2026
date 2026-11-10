@@ -1,21 +1,17 @@
-#include <string>
+#include <math.h>
 #include <DxLib.h>
 #include "../Application.h"
-#include "../Utility/AsoUtility.h"
 #include "../Manager/SceneManager.h"
-#include "../Manager/ResourceManager.h"
 #include "../Manager/InputManager.h"
 #include "../Manager/Camera.h"
-#include "../Object/Common/AnimationController.h"
-#include "../Object/SkyDome.h"
 #include "TitleScene.h"
 
 TitleScene::TitleScene(void)
 {
-	imgPush_ = -1;
 	imgTitle_ = -1;
-	skyDome_ = nullptr;
-	animationController_ = nullptr;
+	fontSub_ = -1;
+	timer_ = 0;
+	select_ = 0;
 }
 
 TitleScene::~TitleScene(void)
@@ -24,84 +20,94 @@ TitleScene::~TitleScene(void)
 
 void TitleScene::Init(void)
 {
+	imgTitle_   = LoadGraph("Data/Image/Title.png");
+	fontSub_   = CreateFontToHandle(NULL, 28, 1, DX_FONTTYPE_ANTIALIASING, -1);
 
-	// 画像読み込み
-	imgTitle_ = resMng_.Load(ResourceManager::SRC::TITLE).handleId_;
-	imgPush_ = resMng_.Load(ResourceManager::SRC::PUSH_SPACE).handleId_;
-
-	// 背景
-	spaceDomeTran_.pos = AsoUtility::VECTOR_ZERO;
-	skyDome_ = std::make_unique<SkyDome>(spaceDomeTran_);
-	skyDome_->Init();
-
-	float size;
-
-	// メイン惑星
-	planet_.SetModel(resMng_.LoadModelDuplicate(ResourceManager::SRC::FALL_PLANET));
-	planet_.pos = AsoUtility::VECTOR_ZERO;
-	planet_.scl = AsoUtility::VECTOR_ONE;
-	planet_.Update();
-
-	// 回転する惑星
-	movePlanet_.SetModel(resMng_.LoadModelDuplicate(ResourceManager::SRC::LAST_PLANET));
-	movePlanet_.pos = { -250.0f, -100.0f, -100.0f };
-	size = 0.7f;
-	movePlanet_.scl = { size, size, size };
-	movePlanet_.quaRotLocal = Quaternion::Euler(
-		AsoUtility::Deg2RadF(90.0f), 0.0f, 0.0f);
-	movePlanet_.Update();
-
-	// キャラ
-	charactor_.SetModel(resMng_.LoadModelDuplicate(ResourceManager::SRC::PLAYER));
-	charactor_.pos = { -250.0f, -32.0f, -105.0f };
-	size = 0.4f;
-	charactor_.scl = { size, size, size };
-	charactor_.quaRot = Quaternion::Euler(
-		0.0f, AsoUtility::Deg2RadF(90.0f), 0.0f);
-	charactor_.Update();
-
-	// アニメーションの設定
-	std::string path = Application::PATH_MODEL + "Player/";
-	animationController_ = std::make_unique<AnimationController>(charactor_.modelId);
-	animationController_->Add(0, path + "Run.mv1", 20.0f);
-	animationController_->Play(0);
-
-	// 定点カメラ
 	mainCamera.ChangeMode(Camera::MODE::FIXED_POINT);
-
 }
 
 void TitleScene::Update(void)
 {
-	// シーン遷移
+	timer_++;
+
 	InputManager& ins = InputManager::GetInstance();
-	if (ins.IsTrgDown(KEY_INPUT_SPACE) ||
-		ins.IsPadBtnNew(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+
+	if (ins.IsTrgDown(KEY_INPUT_S) || ins.IsTrgDown(KEY_INPUT_DOWN))
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME);
+		select_ = (select_ + 1) % 2;
+	}
+	if (ins.IsTrgDown(KEY_INPUT_W) || ins.IsTrgDown(KEY_INPUT_UP))
+	{
+		select_ = (select_ + 1) % 2;
 	}
 
-	// 惑星の回転
-	movePlanet_.quaRot = movePlanet_.quaRot.Mult(
-		Quaternion::Euler(AsoUtility::DIR_B));
-	movePlanet_.Update();
-
-	// キャラアニメーション
-	animationController_->Update();
-
-	skyDome_->Update();
+	if (ins.IsTrgDown(KEY_INPUT_SPACE) || ins.IsTrgDown(KEY_INPUT_RETURN) ||
+		ins.IsPadBtnNew(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN))
+	{
+		if (select_ == 0)
+			SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME);
+		else
+			PostQuitMessage(0);
+	}
 }
 
 void TitleScene::Draw(void)
 {
+	const int CX = Application::SCREEN_SIZE_X / 2;
+	const int SX = Application::SCREEN_SIZE_X;
+	const int SY = Application::SCREEN_SIZE_Y;
 
-	skyDome_->Draw();
+	// --- 背景 ---
+	DrawBox(0, 0, SX, SY, GetColor(3, 5, 18), TRUE);
 
-	MV1DrawModel(planet_.modelId);
-	MV1DrawModel(movePlanet_.modelId);
-	MV1DrawModel(charactor_.modelId);
+	// スキャンライン
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 20);
+	for (int y = 0; y < SY; y += 4)
+	{
+		DrawLine(0, y, SX, y, GetColor(0, 80, 160));
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, 250, 1.0, 0.0, imgTitle_, true);
-	DrawRotaGraph(Application::SCREEN_SIZE_X / 2, 500, 1.0, 0.0, imgPush_, true);
+	// 中央の水平ラインアクセント
+	float pulse = sinf(timer_ * 0.04f);
+	int lineAlpha = (int)(160 + pulse * 60);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, lineAlpha);
+	DrawBox(CX - 350, 290, CX + 350, 293, GetColor(0, 180, 255), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	// --- Title.png ---
+	if (imgTitle_ != -1)
+	{
+		int imgW, imgH;
+		GetGraphSize(imgTitle_, &imgW, &imgH);
+		int drawW = imgW / 2;
+		int drawH = imgH / 2;
+		DrawExtendGraph(CX - drawW / 2, 60, CX + drawW / 2, 60 + drawH, imgTitle_, TRUE);
+	}
+
+	// --- PRESS SPACE 点滅 ---
+	// Menu
+	const char* items[2] = { "GAME START", "GAME EXIT" };
+	const int menuY   = 400;
+	const int menuStep = 65;
+
+	for (int i = 0; i < 2; i++)
+	{
+		bool sel = (select_ == i);
+		unsigned int col = sel ? GetColor(200, 240, 255) : GetColor(55, 95, 140);
+		int iw = GetDrawStringWidthToHandle(items[i], (int)strlen(items[i]), fontSub_);
+		int ix = CX - iw / 2;
+		int iy = menuY + i * menuStep;
+
+		if (sel)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ADD, 55);
+			DrawStringToHandle(ix - 2, iy, items[i], GetColor(0, 180, 255), fontSub_);
+			DrawStringToHandle(ix + 2, iy, items[i], GetColor(0, 180, 255), fontSub_);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			DrawStringToHandle(ix - 32, iy, ">", GetColor(0, 220, 255), fontSub_);
+		}
+
+		DrawStringToHandle(ix, iy, items[i], col, fontSub_);
+	}
 }

@@ -53,6 +53,7 @@ namespace
 	constexpr float ATTACK_END_TIME = 40.0f;
 
 	constexpr float LINE_LENGTH = 1200.0f;     // ラインの長さ(画面サイズより長めに)
+	constexpr float LINE_CENTER_OFFSET_X = -50.0f; // 
 	constexpr float MOUSE_DEAD_ZONE = 3.0f;    // 角度を更新する最小マウス移動量
 	constexpr int   LINE_COLOR_CORE = 0xE0FFFF; // 中心の白っぽい青
 	constexpr int   LINE_COLOR_GLOW = 0x1E90FF; // 外側の青
@@ -100,6 +101,7 @@ Player::Player(void)
 	// 状態管理
 	stateChanges_.emplace(STATE::NONE, std::bind(&Player::ChangeStateNone, this));
 	stateChanges_.emplace(STATE::PLAY, std::bind(&Player::ChangeStatePlay, this));
+	stateChanges_.emplace(STATE::DEAD, std::bind(&Player::ChangeStateDead, this));
 }
 
 Player::~Player(void)
@@ -206,6 +208,7 @@ void Player::InitAnimation(void)
 	animationController_->Add((int)ANIM_TYPE::VICTORY, path + "Victory.mv1", 60.0f);
 	animationController_->Add((int)ANIM_TYPE::ATTACK, path + "Stable Sword Inward Slash.mv1", 60.0f);
 	animationController_->Add((int)ANIM_TYPE::FAST_ATTACK, path + "StableSwordInwardSlash.mv1", 60.0f);
+	animationController_->Add((int)ANIM_TYPE::DEATH, path + "Death.mv1", 60.0f);
 
 	animationController_->Play((int)ANIM_TYPE::IDLE);
 }
@@ -227,6 +230,15 @@ void Player::ChangeStateNone(void)
 void Player::ChangeStatePlay(void)
 {
 	stateUpdate_ = std::bind(&Player::UpdatePlay, this);
+}
+
+void Player::ChangeStateDead(void)
+{
+	animationController_->Play((int)ANIM_TYPE::DEATH, false);
+	stateUpdate_ = std::bind(&Player::UpdateDead, this);
+	SceneManager::GetInstance().SetTimeScale(0.2f);
+	deadStartTime_ = std::chrono::system_clock::now();
+	deathAnimEnded_ = false;
 }
 
 void Player::UpdateNone(void)
@@ -260,6 +272,34 @@ void Player::UpdatePlay(void)
 	transform_.quaRot = playerRotY_;
 }
 
+void Player::UpdateDead(void)
+{
+	// 3秒経ったらスロー解除
+	auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+		std::chrono::system_clock::now() - deadStartTime_).count();
+	if (elapsed >= 3000)
+	{
+		SceneManager::GetInstance().SetTimeScale(1.0f);
+	}
+
+	// 死亡アニメ終了を検知
+	if (!deathAnimEnded_ && animationController_->IsEnd())
+	{
+		deathAnimEnded_ = true;
+		deathAnimEndTime_ = std::chrono::system_clock::now();
+	}
+
+	// アニメ終了後1秒でゲームオーバー
+	if (deathAnimEnded_)
+	{
+		auto afterEnd = std::chrono::duration_cast<std::chrono::milliseconds>(
+			std::chrono::system_clock::now() - deathAnimEndTime_).count();
+		if (afterEnd >= 1000)
+		{
+			SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::GAME_OVER);
+		}
+	}
+}
 void Player::DrawShadow(void)
 {
 	float PLAYER_SHADOW_HEIGHT = 300.0f;
@@ -515,6 +555,8 @@ void Player::Attack(void)
 		// 斬撃モード中ならラインの角度を固定して使う
 		lineAttack_ = isBladeMode_;
 		attackLineAngle_ = slashLineAngle_;
+		if (isBladeMode_)
+			hasSlashPlane_ = BuildSlashPlane(slashLineAngle_, slashPlaneOrigin_, slashPlaneNormal_);
 	}
 
 	if (animationController_->IsEnd())
@@ -543,7 +585,7 @@ void Player::Attack(void)
 
 bool Player::BuildSlashPlane(float a, VECTOR& o, VECTOR& n) const
 {
-	float cx = Application::SCREEN_SIZE_X / 2.0f;
+	float cx = Application::SCREEN_SIZE_X / 2.0f + LINE_CENTER_OFFSET_X;
 	float cy = Application::SCREEN_SIZE_Y / 2.0f;
 	float vx = cosf(a) * LINE_LENGTH * 0.5f;
 	float vy = sinf(a) * LINE_LENGTH * 0.5f;
@@ -568,6 +610,17 @@ bool Player::GetSlashPlane(VECTOR& outOrigin, VECTOR& outNormal) const
 void Player::HitProcess()
 {
 	status_.energy_ = MAX_ENERGY;
+}
+
+void Player::TakeDamage(int damage)
+{
+	if (state_ == STATE::DEAD) return;
+	status_.hp_ -= damage;
+	if (status_.hp_ <= 0)
+	{
+		status_.hp_ = 0;
+		ChangeState(STATE::DEAD);
+	}
 }
 
 void Player::ApplySlashLineToBody(void)
@@ -732,12 +785,28 @@ void Player::DrawSlashLine(void)
 {
 	if (!isBladeMode_) return;
 
-	float cx = Application::SCREEN_SIZE_X / 2.0f;
+	float cx = Application::SCREEN_SIZE_X / 2.0f + LINE_CENTER_OFFSET_X;
 	float cy = Application::SCREEN_SIZE_Y / 2.0f;
 	float vx = cosf(slashLineAngle_) * LINE_LENGTH * 0.5f;
 	float vy = sinf(slashLineAngle_) * LINE_LENGTH * 0.5f;
 
 	// 加算合成で発光っぽく:太い青 → 細い白の順に重ねる
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 50);
+	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_GLOW, 10.0f);
+	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_GLOW, 5.0f);
+	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_CORE, 2.0f);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void Player::DrawSlashFlash(void)
+{
+	if (!isAttack_) return;
+
+	float cx = Application::SCREEN_SIZE_X / 2.0f;
+	float cy = Application::SCREEN_SIZE_Y / 2.0f;
+	float vx = cosf(slashLineAngle_) * LINE_LENGTH * 0.5f;
+	float vy = sinf(slashLineAngle_) * LINE_LENGTH * 0.5f;
+
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 50);
 	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_GLOW, 10.0f);
 	DrawLineAA(cx - vx, cy - vy, cx + vx, cy + vy, LINE_COLOR_GLOW, 5.0f);

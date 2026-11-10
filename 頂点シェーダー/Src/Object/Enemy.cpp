@@ -81,9 +81,10 @@ void Enemy::Init(const VECTOR& vec)
 
     std::string path = Application::PATH_MODEL;
     animationController_ = std::make_unique<AnimationController>(transform_.modelId);
-    animationController_->Add(ANIM_TYPE::IDOL, path + "SkinningTest.mv1", 50.0f);
+    animationController_->Add(ANIM_TYPE::IDOL, path + "Idle.mv1", 50.0f);
     animationController_->Add(ANIM_TYPE::RUN, path + "Running.mv1", 50.0f);
     animationController_->Add(ANIM_TYPE::ATTACK, path + "Punching.mv1", 50.0f);
+    animationController_->Add(ANIM_TYPE::ATTACK_IDOL, path + "Fight Idle.mv1", 50.0f);
 
     animationController_->Play(ANIM_TYPE::IDOL);
 
@@ -132,7 +133,7 @@ void Enemy::ChangeState(STATE state)
         break;
     case STATE::WINDUP:
         stateTimer_ = WINDUP_FRAME;
-        animationController_->Play(ANIM_TYPE::IDOL);   // 溜め用の動きがあれば差し替え
+        animationController_->Play(ANIM_TYPE::ATTACK_IDOL);
         break;
     case STATE::ATTACK:
         stateTimer_ = ATTACK_FRAME;
@@ -143,7 +144,7 @@ void Enemy::ChangeState(STATE state)
         break;
     case STATE::COOLDOWN:
         stateTimer_ = COOLDOWN_FRAME + GetRand(COOLDOWN_RAND);
-        animationController_->Play(ANIM_TYPE::IDOL);
+        animationController_->Play(ANIM_TYPE::ATTACK_IDOL);
         break;
     case STATE::DAMAGE:
         stateTimer_ = DAMAGE_STUN_FRAME;
@@ -201,7 +202,7 @@ void Enemy::UpdateAttack()
         DirToPlayer(dist);
         if (dist <= HIT_RANGE)
         {
-            // TODO: Player側のダメージ処理を呼ぶ
+            player_.TakeDamage(10);
         }
     }
 
@@ -317,6 +318,12 @@ void Enemy::Release()
 {
 }
 
+
+void Enemy::Separate(const VECTOR& offset)
+{
+    if (isCut_ || isDead_) return;
+    transform_.pos = VAdd(transform_.pos, offset);
+}
 void Enemy::TakeDamage(int damage)
 {
     if (isCut_ || isDead_ || invincibleTimer_ > 0) return;

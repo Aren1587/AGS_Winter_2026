@@ -45,6 +45,8 @@ void InputManager::Init(void)
 	InputManager::GetInstance().Add(KEY_INPUT_LSHIFT);
 
 	InputManager::GetInstance().Add(KEY_INPUT_BACKSLASH);
+	InputManager::GetInstance().Add(KEY_INPUT_ESCAPE);
+	InputManager::GetInstance().Add(KEY_INPUT_RETURN);
 
 	InputManager::MouseInfo info;
 

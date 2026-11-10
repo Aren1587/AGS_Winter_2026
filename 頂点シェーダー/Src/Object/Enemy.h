@@ -24,6 +24,7 @@ public:
     void Release();
 
     void TakeDamage(int damage);
+    void Separate(const VECTOR& offset);
     bool IsDead() const { return isDead_; }
     bool IsRemovable() const;   // Á‚µ‚Ä‚æ‚¢ó‘Ô‚©iŠÇ—‘¤‚Åg‚¤j
     int  GetHp() const { return hp_; }
@@ -40,6 +41,7 @@ private:
         IDOL,
         RUN,
         ATTACK,
+        ATTACK_IDOL,
     };
 
     enum class STATE
