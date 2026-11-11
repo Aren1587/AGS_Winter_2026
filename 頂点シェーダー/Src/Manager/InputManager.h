@@ -47,6 +47,16 @@ public:
 		MAX
 	};
 
+	// ゲームコントローラーの方向入力(十字キー + 左スティック)
+	enum class JOYPAD_DIR
+	{
+		UP = 0,
+		DOWN,
+		LEFT,
+		RIGHT,
+		MAX
+	};
+
 	// ゲームコントローラーの入力情報
 	struct JOYPAD_IN_STATE
 	{
@@ -60,6 +70,14 @@ public:
 		int AKeyLY;
 		int AKeyRX;
 		int AKeyRY;
+
+		// 十字キー(POV)。1/100度単位、-1 は未入力
+		int POV;
+
+		// 方向入力(十字キー or 左スティック)
+		bool DirOld[static_cast<int>(JOYPAD_DIR::MAX)];
+		bool DirNew[static_cast<int>(JOYPAD_DIR::MAX)];
+		bool DirTrgDown[static_cast<int>(JOYPAD_DIR::MAX)];
 	};
 
 	// インスタンスを明示的に生成
@@ -115,6 +133,11 @@ public:
 	bool IsPadBtnTrgDown(JOYPAD_NO no, JOYPAD_BTN btn) const;
 	bool IsPadBtnTrgUp(JOYPAD_NO no, JOYPAD_BTN btn) const;
 
+	// 方向入力(十字キー or 左スティック)
+	bool IsPadDirNew(JOYPAD_NO no, JOYPAD_DIR dir) const;
+	// 方向入力が入った瞬間(押しっぱなしはNG)。メニュー選択用
+	bool IsPadDirTrgDown(JOYPAD_NO no, JOYPAD_DIR dir) const;
+
 private:
 
 	// キー情報
@@ -156,7 +179,7 @@ private:
 
 	// マウスカーソルの位置
 	Vector2 mousePos_;
-	
+
 	// マウスボタンの入力状態
 	int mouseInput_;
 

@@ -20,8 +20,8 @@ TitleScene::~TitleScene(void)
 
 void TitleScene::Init(void)
 {
-	imgTitle_   = LoadGraph("Data/Image/Title.png");
-	fontSub_   = CreateFontToHandle(NULL, 28, 1, DX_FONTTYPE_ANTIALIASING, -1);
+	imgTitle_ = LoadGraph("Data/Image/Title.png");
+	fontSub_ = CreateFontToHandle(NULL, 28, 1, DX_FONTTYPE_ANTIALIASING, -1);
 
 	mainCamera.ChangeMode(Camera::MODE::FIXED_POINT);
 }
@@ -32,11 +32,18 @@ void TitleScene::Update(void)
 
 	InputManager& ins = InputManager::GetInstance();
 
-	if (ins.IsTrgDown(KEY_INPUT_S) || ins.IsTrgDown(KEY_INPUT_DOWN))
+	using PAD = InputManager::JOYPAD_NO;
+	using DIR = InputManager::JOYPAD_DIR;
+
+	// 下:S / ↓ / 十字キー下 / 左スティック下
+	if (ins.IsTrgDown(KEY_INPUT_S) || ins.IsTrgDown(KEY_INPUT_DOWN) ||
+		ins.IsPadDirTrgDown(PAD::PAD1, DIR::DOWN))
 	{
 		select_ = (select_ + 1) % 2;
 	}
-	if (ins.IsTrgDown(KEY_INPUT_W) || ins.IsTrgDown(KEY_INPUT_UP))
+	// 上:W / ↑ / 十字キー上 / 左スティック上
+	if (ins.IsTrgDown(KEY_INPUT_W) || ins.IsTrgDown(KEY_INPUT_UP) ||
+		ins.IsPadDirTrgDown(PAD::PAD1, DIR::UP))
 	{
 		select_ = (select_ + 1) % 2;
 	}
@@ -88,7 +95,7 @@ void TitleScene::Draw(void)
 	// --- PRESS SPACE 点滅 ---
 	// Menu
 	const char* items[2] = { "GAME START", "GAME EXIT" };
-	const int menuY   = 400;
+	const int menuY = 400;
 	const int menuStep = 65;
 
 	for (int i = 0; i < 2; i++)

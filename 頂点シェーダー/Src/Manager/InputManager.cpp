@@ -241,14 +241,47 @@ void InputManager::SetJPadInState(JOYPAD_NO jpNo)
 		stateNow.AKeyRY = stateNew.AKeyRY;
 
 	}
+
+	// --- 方向入力(十字キー + 左スティック) ---
+	stateNow.POV = stateNew.POV;
+
+	// スティックをどれだけ倒したら入力とみなすか(-1000 ~ 1000)
+	constexpr int STICK_THRESHOLD = 500;
+
+	bool dir[static_cast<int>(JOYPAD_DIR::MAX)] = {};
+
+	// 十字キー(斜めは両方向とも入力扱い)
+	int pov = stateNew.POV;
+	if (pov >= 0)
+	{
+		dir[static_cast<int>(JOYPAD_DIR::UP)] = (pov >= 31500 || pov <= 4500);
+		dir[static_cast<int>(JOYPAD_DIR::RIGHT)] = (pov >= 4500 && pov <= 13500);
+		dir[static_cast<int>(JOYPAD_DIR::DOWN)] = (pov >= 13500 && pov <= 22500);
+		dir[static_cast<int>(JOYPAD_DIR::LEFT)] = (pov >= 22500 && pov <= 31500);
+	}
+
+	// 左スティック(Y は上がマイナス)
+	if (stateNew.AKeyLY < -STICK_THRESHOLD) dir[static_cast<int>(JOYPAD_DIR::UP)] = true;
+	if (stateNew.AKeyLY > STICK_THRESHOLD) dir[static_cast<int>(JOYPAD_DIR::DOWN)] = true;
+	if (stateNew.AKeyLX < -STICK_THRESHOLD) dir[static_cast<int>(JOYPAD_DIR::LEFT)] = true;
+	if (stateNew.AKeyLX > STICK_THRESHOLD) dir[static_cast<int>(JOYPAD_DIR::RIGHT)] = true;
+
+	int dirMax = static_cast<int>(JOYPAD_DIR::MAX);
+	for (int i = 0; i < dirMax; i++)
+	{
+		stateNow.DirOld[i] = stateNow.DirNew[i];
+		stateNow.DirNew[i] = dir[i];
+		stateNow.DirTrgDown[i] = stateNow.DirNew[i] && !stateNow.DirOld[i];
+	}
 }
 
 InputManager::JOYPAD_IN_STATE InputManager::GetJPadInputState(JOYPAD_NO no)
 {
 	JOYPAD_IN_STATE ret = JOYPAD_IN_STATE();
+	ret.POV = -1;	// 十字キー未入力
 
 	auto type = GetJPadType(no);
-	
+
 	switch (type)
 	{
 	case InputManager::JOYPAD_TYPE::OTHER:
@@ -256,7 +289,7 @@ InputManager::JOYPAD_IN_STATE InputManager::GetJPadInputState(JOYPAD_NO no)
 	case InputManager::JOYPAD_TYPE::XBOX_360:
 	{
 	}
-		break;
+	break;
 	case InputManager::JOYPAD_TYPE::XBOX_ONE:
 	{
 
@@ -290,18 +323,21 @@ InputManager::JOYPAD_IN_STATE InputManager::GetJPadInputState(JOYPAD_NO no)
 		// 左スティック
 		ret.AKeyLX = d.X;
 		ret.AKeyLY = d.Y;
-		
+
 		// 右スティック
 		ret.AKeyRX = d.Rx;
 		ret.AKeyRY = d.Ry;
 
+		// 十字キー(未入力時は 0xFFFFFFFF)
+		ret.POV = (d.POV[0] == 0xFFFFFFFF) ? -1 : static_cast<int>(d.POV[0]);
+
 	}
-		break;
+	break;
 	case InputManager::JOYPAD_TYPE::DUAL_SHOCK_4:
 		break;
 	case InputManager::JOYPAD_TYPE::DUAL_SENSE:
 	{
-		
+
 		auto d = GetJPadDInputState(no);
 		int idx;
 
@@ -324,13 +360,16 @@ InputManager::JOYPAD_IN_STATE InputManager::GetJPadInputState(JOYPAD_NO no)
 		// 左スティック
 		ret.AKeyLX = d.X;
 		ret.AKeyLY = d.Y;
-		
+
 		// 右スティック
 		ret.AKeyRX = d.Z;
 		ret.AKeyRY = d.Rz;
 
+		// 十字キー(未入力時は 0xFFFFFFFF)
+		ret.POV = (d.POV[0] == 0xFFFFFFFF) ? -1 : static_cast<int>(d.POV[0]);
+
 	}
-		break;
+	break;
 	case InputManager::JOYPAD_TYPE::SWITCH_JOY_CON_L:
 		break;
 	case InputManager::JOYPAD_TYPE::SWITCH_JOY_CON_R:
@@ -359,4 +398,12 @@ bool InputManager::IsPadBtnTrgUp(JOYPAD_NO no, JOYPAD_BTN btn) const
 	return padInfos_[static_cast<int>(no)].IsTrgUp[static_cast<int>(btn)];
 }
 
+bool InputManager::IsPadDirNew(JOYPAD_NO no, JOYPAD_DIR dir) const
+{
+	return padInfos_[static_cast<int>(no)].DirNew[static_cast<int>(dir)];
+}
 
+bool InputManager::IsPadDirTrgDown(JOYPAD_NO no, JOYPAD_DIR dir) const
+{
+	return padInfos_[static_cast<int>(no)].DirTrgDown[static_cast<int>(dir)];
+}
