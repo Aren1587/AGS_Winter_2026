@@ -24,10 +24,7 @@
     <ClCompile Include="Src\Scene\PauseScene.cpp" />
     <ClCompile Include="Src\Object\CutEffect.cpp" />
     <ClCompile Include="Src\MeshCutter\MeshCutter.cpp" />
-    <ClCompile Include="Src\Object\Gate.cpp" />
     <ClCompile Include="Src\Object\Enemy.cpp" />
-    <ClCompile Include="Src\Object\Rim.cpp" />
-    <ClCompile Include="Src\Object\Metal.cpp" />
     <ClCompile Include="Src\Renderer\PixelRenderer.cpp" />
     <ClCompile Include="Src\Renderer\PixelMaterial.cpp" />
     <ClCompile Include="Src\Object\ActorBase.cpp" />
@@ -50,7 +47,6 @@
     <ClCompile Include="Src\Object\Player.cpp" />
     <ClCompile Include="Src\Object\SkyDome.cpp" />
     <ClCompile Include="Src\Object\Stage.cpp" />
-    <ClCompile Include="Src\Object\WarpStar.cpp" />
     <ClCompile Include="Src\Scene\GameClear.cpp" />
     <ClCompile Include="Src\Scene\GameScene.cpp" />
     <ClCompile Include="Src\Scene\SceneBase.cpp" />
@@ -58,7 +54,6 @@
     <ClCompile Include="Src\Utility\AsoUtility.cpp" />
     <ClCompile Include="Src\Renderer\VertexRenderer.cpp" />
     <ClCompile Include="Src\Renderer\VertexMaterial.cpp" />
-    <ClCompile Include="Src\Object\Water.cpp" />
     <ClCompile Include="Src\Object\Sword.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -69,10 +64,7 @@
     <ClInclude Include="Src\MeshCutter\MeshCut.h" />
     <ClInclude Include="Src\MeshCutter\MeshCutter.h" />
     <ClInclude Include="Src\Object\Common\Dxfileloader.h" />
-    <ClInclude Include="Src\Object\Gate.h" />
     <ClInclude Include="Src\Object\Enemy.h" />
-    <ClInclude Include="Src\Object\Rim.h" />
-    <ClInclude Include="Src\Object\Metal.h" />
     <ClInclude Include="Src\Renderer\PixelRenderer.h" />
     <ClInclude Include="Src\Renderer\PixelMaterial.h" />
     <ClInclude Include="Src\Object\ActorBase.h" />
@@ -95,7 +87,6 @@
     <ClInclude Include="Src\Object\Player.h" />
     <ClInclude Include="Src\Object\SkyDome.h" />
     <ClInclude Include="Src\Object\Stage.h" />
-    <ClInclude Include="Src\Object\WarpStar.h" />
     <ClInclude Include="Src\Scene\GameClear.h" />
     <ClInclude Include="Src\Scene\GameScene.h" />
     <ClInclude Include="Src\Scene\SceneBase.h" />
@@ -103,7 +94,6 @@
     <ClInclude Include="Src\Utility\AsoUtility.h" />
     <ClInclude Include="Src\Renderer\VertexRenderer.h" />
     <ClInclude Include="Src\Renderer\VertexMaterial.h" />
-    <ClInclude Include="Src\Object\Water.h" />
     <ClInclude Include="Src\Object\Sword.h" />
   </ItemGroup>
   <ItemGroup>

@@ -35,7 +35,7 @@ namespace
     constexpr int COOLDOWN_FRAME = 90;
     constexpr int COOLDOWN_RAND = 30;      // “G‚²‚Æ‚ÉUŒ‚ƒ^ƒCƒ~ƒ“ƒO‚ğ‚¸‚ç‚·
 
-    constexpr int MAX_HP = 3;
+    constexpr int MAX_HP = 1;
     constexpr int DAMAGE_STUN_FRAME = 20;   // ‚Ì‚¯‚¼‚è –ñ0.33•b
     constexpr int INVINCIBLE_FRAME = 15;   // ”í’eŒã‚Ì–³“G 0.25•b
     constexpr int DEAD_FRAME = 60;   // “|‚ê‚Ä‚©‚çÁ‚¦‚é‚Ü‚Å

@@ -702,7 +702,7 @@ void Player::UpdateSlashLine(void)
 		slashLineAngle_ = atan2f(dy, dx);
 	}
 
-	// --- パッド右スティック ---
+	// パッド右スティック
 	InputManager::JOYPAD_IN_STATE pad =
 		InputManager::GetInstance().GetJPadInputState(InputManager::JOYPAD_NO::PAD1);
 

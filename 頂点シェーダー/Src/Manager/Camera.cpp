@@ -225,7 +225,7 @@ void Camera::ProcessRot(void)
 	const float rx = PadInput::RStickX();
 	const float ry = PadInput::RStickY();
 
-	// “|‚µ‚½—Ê‚É”ä—á‚µ‚Ä‰ñ‚·(1.0 “|‚µ‚«‚è = 2“x/ƒtƒŒ[ƒ€)
+	// “|‚µ‚½—Ê‚É”ä—á‚µ‚Ä‰ñ‚·
 	constexpr float PAD_ROT_SPEED_DEG = 2.0f;
 
 	angles_.y += AsoUtility::Deg2RadF(rx * PAD_ROT_SPEED_DEG);

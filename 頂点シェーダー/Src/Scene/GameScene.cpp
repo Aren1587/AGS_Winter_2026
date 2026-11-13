@@ -105,7 +105,7 @@ void GameScene::Update(void)
 
 	if (isEnd)
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::CLEAR);
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE);
 	}
 
 	// モード切替
@@ -373,7 +373,7 @@ void GameScene::DrawUI(void)const
 		else if (goalMessageFrame_ > 210)
 			alpha = (240 - goalMessageFrame_) * 255 / 30;
 
-		const char* msg = "全ての敵を倒せ";
+		const char* msg = "";//全ての敵を倒せ";
 		int w = GetDrawStringWidthToHandle(msg, (int)strlen(msg), goalFontHandle_);
 		int x = (Application::SCREEN_SIZE_X - w) / 2;
 		int y = Application::SCREEN_SIZE_Y / 3;

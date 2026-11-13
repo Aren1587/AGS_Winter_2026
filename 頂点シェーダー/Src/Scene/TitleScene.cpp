@@ -64,7 +64,7 @@ void TitleScene::Draw(void)
 	const int SX = Application::SCREEN_SIZE_X;
 	const int SY = Application::SCREEN_SIZE_Y;
 
-	// --- ”wŒi ---
+	// ”wŒi
 	DrawBox(0, 0, SX, SY, GetColor(3, 5, 18), TRUE);
 
 	// ƒXƒLƒƒƒ“ƒ‰ƒCƒ“
@@ -82,7 +82,6 @@ void TitleScene::Draw(void)
 	DrawBox(CX - 350, 290, CX + 350, 293, GetColor(0, 180, 255), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	// --- Title.png ---
 	if (imgTitle_ != -1)
 	{
 		int imgW, imgH;
@@ -92,7 +91,7 @@ void TitleScene::Draw(void)
 		DrawExtendGraph(CX - drawW / 2, 60, CX + drawW / 2, 60 + drawH, imgTitle_, TRUE);
 	}
 
-	// --- PRESS SPACE “_–Å ---
+	// “_–Å
 	// Menu
 	const char* items[2] = { "GAME START", "GAME EXIT" };
 	const int menuY = 400;
