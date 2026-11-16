@@ -62,8 +62,7 @@ namespace MeshCut
 
     inline Mesh Weld(const Mesh& src, float tol = 1e-4f)
     {
-        using Key =
-            std::tuple<long long, long long, long long>;
+        using Key = std::tuple<long long, long long, long long>;
 
         std::map<Key, int> table;
 
@@ -71,17 +70,13 @@ namespace MeshCut
 
         Mesh out;
 
-        bool hasColor =
-            !src.colors.empty();
+        bool hasColor = !src.colors.empty();
 
         out.textureHandle = src.textureHandle;
 
-        for (size_t i = 0;
-            i < src.verts.size();
-            ++i)
+        for (size_t i = 0; i < src.verts.size(); ++i)
         {
-            const VECTOR& p =
-                src.verts[i];
+            const VECTOR& p = src.verts[i];
 
             Key key =
             {
@@ -90,14 +85,11 @@ namespace MeshCut
                 std::llround(p.z / tol)
             };
 
-            auto it =
-                table.find(key);
+            auto it = table.find(key);
 
             if (it == table.end())
             {
-                it =
-                    table.emplace(key, (int)out.verts.size()
-                    ).first;
+                it = table.emplace(key, (int)out.verts.size()).first;
 
                 out.verts.push_back(p);
 
@@ -110,12 +102,10 @@ namespace MeshCut
                 }
             }
 
-            remap[i] =
-                it->second;
+            remap[i] = it->second;
         }
 
-        for (const auto& face :
-            src.faces)
+        for (const auto& face : src.faces)
         {
             std::array<int, 3> f =
             {
@@ -143,8 +133,7 @@ namespace MeshCut
     {
         MV1SetupReferenceMesh(modelHandle, -1, TRUE);
 
-        MV1_REF_POLYGONLIST polygonList =
-            MV1GetReferenceMesh(modelHandle, -1, TRUE);
+        MV1_REF_POLYGONLIST polygonList = MV1GetReferenceMesh(modelHandle, -1, TRUE);
 
         Mesh raw;
 
@@ -163,9 +152,7 @@ namespace MeshCut
         // 頂点 (座標と色)
         // DiffuseColor は、頂点カラーが無いモデルでは
         // そのままマテリアル(テクスチャ)の色が入っている
-        for (int i = 0;
-            i < polygonList.VertexNum;
-            ++i)
+        for (int i = 0; i < polygonList.VertexNum; ++i)
         {
             raw.verts.push_back(polygonList.Vertexs[i].Position);
 
@@ -177,12 +164,9 @@ namespace MeshCut
         }
 
         // ポリゴン
-        for (int i = 0;
-            i < polygonList.PolygonNum;
-            ++i)
+        for (int i = 0; i < polygonList.PolygonNum; ++i)
         {
-            const auto& polygon =
-                polygonList.Polygons[i];
+            const auto& polygon = polygonList.Polygons[i];
 
             raw.faces.push_back({
                     polygon.VIndex[0],
@@ -208,8 +192,7 @@ namespace MeshCut
 
             for (const auto& edge : edges)
             {
-                next[edge.first] =
-                    edge.second;
+                next[edge.first] = edge.second;
             }
 
             std::unordered_map<int, bool> visited;
@@ -218,8 +201,7 @@ namespace MeshCut
 
             for (const auto& pair : next)
             {
-                int start =
-                    pair.first;
+                int start = pair.first;
 
                 if (visited[start])
                     continue;
@@ -230,8 +212,7 @@ namespace MeshCut
 
                 visited[start] = true;
 
-                int current =
-                    pair.second;
+                int current = pair.second;
 
                 while (current != start && !visited[current])
                 {
@@ -239,8 +220,7 @@ namespace MeshCut
 
                     visited[current] = true;
 
-                    auto it =
-                        next.find(current);
+                    auto it = next.find(current);
 
                     if (it == next.end())
                     {
@@ -248,8 +228,7 @@ namespace MeshCut
                         break;
                     }
 
-                    current =
-                        it->second;
+                    current = it->second;
                 }
 
                 if (current == start && loop.size() >= 3)
@@ -275,11 +254,9 @@ namespace MeshCut
         {
             Mesh out;
 
-            bool hasColor =
-                !colors.empty();
+            bool hasColor = !colors.empty();
 
-            out.textureHandle =
-                textureHandle;
+            out.textureHandle = textureHandle;
 
             std::vector<int> remap(verts.size(), -1);
 
@@ -287,17 +264,13 @@ namespace MeshCut
             {
                 std::array<int, 3> newFace{};
 
-                for (int i = 0;
-                    i < 3;
-                    ++i)
+                for (int i = 0; i < 3; ++i)
                 {
-                    int index =
-                        face[i];
+                    int index = face[i];
 
                     if (remap[index] < 0)
                     {
-                        remap[index] =
-                            (int)out.verts.size();
+                        remap[index] = (int)out.verts.size();
 
                         out.verts.push_back(verts[index]);
 
@@ -313,8 +286,7 @@ namespace MeshCut
                         }
                     }
 
-                    newFace[i] =
-                        remap[index];
+                    newFace[i] = remap[index];
                 }
 
                 out.faces.push_back(newFace);
@@ -352,12 +324,9 @@ namespace MeshCut
 
         std::vector<float> distance(src.verts.size());
 
-        for (size_t i = 0;
-            i < distance.size();
-            ++i)
+        for (size_t i = 0; i < distance.size(); ++i)
         {
-            distance[i] =
-                VDot(VSub( src.verts[i], origin), normal);
+            distance[i] = VDot(VSub(src.verts[i], origin), normal);
 
             if (std::fabs(distance[i]) < eps)
             {
@@ -369,24 +338,18 @@ namespace MeshCut
         // 頂点 (色は src に無ければ空のまま)
         // --------------------------------------------------------
 
-        std::vector<VECTOR> verts =
-            src.verts;
+        std::vector<VECTOR> verts = src.verts;
 
-        std::vector<COLOR_U8> colors =
-            src.colors;
+        std::vector<COLOR_U8> colors = src.colors;
 
-        std::vector<float> u =
-            src.u;
+        std::vector<float> u = src.u;
 
-        std::vector<float> v =
-            src.v;
+        std::vector<float> v = src.v;
 
-        bool hasColor =
-            !colors.empty();
+        bool hasColor = !colors.empty();
 
         // 2色を t (0〜1) で線形補間する
-        auto LerpColor =
-            [](COLOR_U8 a, COLOR_U8 b, float t)
+        auto LerpColor = [](COLOR_U8 a, COLOR_U8 b, float t)
             {
                 COLOR_U8 c{};
 
@@ -402,65 +365,42 @@ namespace MeshCut
         // 辺と平面の交点キャッシュ
         // --------------------------------------------------------
 
-        std::map<
-            std::pair<int, int>,
-            int> intersectionCache;
+        std::map<std::pair<int, int>, int> intersectionCache;
 
-        auto GetIntersection =
-            [&](int i, int j)
+        auto GetIntersection = [&](int i, int j)
             {
                 std::pair<int, int> key;
 
                 if (i < j)
                 {
-                    key =
-                    {
-                        i,
-                        j
-                    };
+                    key = { i, j };
                 }
                 else
                 {
-                    key =
-                    {
-                        j,
-                        i
-                    };
+                    key = { j, i };
                 }
 
-                auto it =
-                    intersectionCache.find(key);
+                auto it = intersectionCache.find(key);
 
-                if (it !=
-                    intersectionCache.end())
+                if (it != intersectionCache.end())
                 {
                     return it->second;
                 }
 
-                int a =
-                    key.first;
+                int a = key.first;
 
-                int b =
-                    key.second;
+                int b = key.second;
 
-                float t =
-                    distance[a] /
-                    (distance[a] -
-                        distance[b]);
+                float t = distance[a] / (distance[a] - distance[b]);
 
-                VECTOR position =
-                    VAdd(src.verts[a], VScale( VSub( src.verts[b], src.verts[a]), t));
+                VECTOR position = VAdd(src.verts[a], VScale( VSub( src.verts[b], src.verts[a]), t));
 
                 verts.push_back(position);
 
                 // UVを補間
-                float newU =
-                    src.u[a] +
-                    (src.u[b] - src.u[a]) * t;
+                float newU = src.u[a] + (src.u[b] - src.u[a]) * t;
 
-                float newV =
-                    src.v[a] +
-                    (src.v[b] - src.v[a]) * t;
+                float newV = src.v[a] + (src.v[b] - src.v[a]) * t;
 
                 u.push_back(newU);
                 v.push_back(newV);
@@ -470,11 +410,9 @@ namespace MeshCut
                     colors.push_back(LerpColor( src.colors[a], src.colors[b], t));
                 }
 
-                int index =
-                    (int)verts.size() - 1;
+                int index = (int)verts.size() - 1;
 
-                intersectionCache[key] =
-                    index;
+                intersectionCache[key] = index;
 
                 return index;
             };
@@ -483,22 +421,18 @@ namespace MeshCut
         // 切断後の面
         // --------------------------------------------------------
 
-        std::vector<std::array<int, 3>>
-            positiveFaces;
+        std::vector<std::array<int, 3>> positiveFaces;
 
-        std::vector<std::array<int, 3>>
-            negativeFaces;
+        std::vector<std::array<int, 3>> negativeFaces;
 
         // 切断面の辺
-        std::vector<std::pair<int, int>>
-            cutEdges;
+        std::vector<std::pair<int, int>> cutEdges;
 
         // --------------------------------------------------------
         // 全三角形を処理
         // --------------------------------------------------------
 
-        for (const auto& triangle :
-            src.faces)
+        for (const auto& triangle : src.faces)
         {
             bool side[3] =
             {
@@ -534,9 +468,7 @@ namespace MeshCut
 
             int loneIndex = 0;
 
-            for (int i = 0;
-                i < 3;
-                ++i)
+            for (int i = 0; i < 3; ++i)
             {
                 if (side[i] == (positiveCount == 1))
                 {
@@ -545,22 +477,15 @@ namespace MeshCut
                 }
             }
 
-            int a =
-                triangle[loneIndex];
+            int a = triangle[loneIndex];
 
-            int b =
-                triangle[
-                    (static_cast<std::array<int, 3Ui64>::size_type>(loneIndex) + 1) % 3];
+            int b = triangle[(static_cast<std::array<int, 3Ui64>::size_type>(loneIndex) + 1) % 3];
 
-            int c =
-                triangle[
-                    (static_cast<std::array<int, 3Ui64>::size_type>(loneIndex) + 2) % 3];
+            int c = triangle[(static_cast<std::array<int, 3Ui64>::size_type>(loneIndex) + 2) % 3];
 
-            int ab =
-                GetIntersection(a, b);
+            int ab = GetIntersection(a, b);
 
-            int ca =
-                GetIntersection(c, a);
+            int ca = GetIntersection(c, a);
 
             std::array<int, 3> lone =
             {
@@ -615,8 +540,7 @@ namespace MeshCut
                 [&](const std::vector<std::vector<int>>& loops,
                     std::vector<std::array<int, 3>>& output)
                 {
-                    for (const auto& loop :
-                        loops)
+                    for (const auto& loop : loops)
                     {
                         VECTOR center =
                             VGet(0, 0, 0);
@@ -633,14 +557,11 @@ namespace MeshCut
                             centerV += v[index];
                         }
 
-                        center =
-                            VScale(center, 1.0f / (float)loop.size());
+                        center = VScale(center, 1.0f / (float)loop.size());
 
-                        centerU /=
-                            (float)loop.size();
+                        centerU /= (float)loop.size();
 
-                        centerV /=
-                            (float)loop.size();
+                        centerV /= (float)loop.size();
 
                         verts.push_back(center);
 
@@ -672,9 +593,7 @@ namespace MeshCut
                         int centerIndex =
                             (int)verts.size() - 1;
 
-                        for (size_t i = 0;
-                            i < loop.size();
-                            ++i)
+                        for (size_t i = 0; i < loop.size(); ++i)
                         {
                             output.push_back({
                                     centerIndex,
@@ -687,11 +606,9 @@ namespace MeshCut
                     }
                 };
 
-            std::vector<std::pair<int, int>>
-                reverseEdges;
+            std::vector<std::pair<int, int>> reverseEdges;
 
-            for (const auto& edge :
-                cutEdges)
+            for (const auto& edge : cutEdges)
             {
                 reverseEdges.emplace_back(edge.second, edge.first);
             }
@@ -705,11 +622,9 @@ namespace MeshCut
         // 余分な頂点を整理
         // --------------------------------------------------------
 
-        outPos =
-            detail::Compact(verts, colors, u, v, positiveFaces, src.textureHandle);
+        outPos = detail::Compact(verts, colors, u, v, positiveFaces, src.textureHandle);
 
-        outNeg =
-            detail::Compact(verts, colors, u, v, negativeFaces, src.textureHandle);
+        outNeg = detail::Compact(verts, colors, u, v, negativeFaces, src.textureHandle);
     }
 
     // ============================================================
@@ -720,11 +635,9 @@ namespace MeshCut
     {
         double volume = 0.0;
 
-        for (const auto& face :
-            mesh.faces)
+        for (const auto& face : mesh.faces)
         {
-            volume +=
-                VDot(mesh.verts[face[0]], VCross( mesh.verts[face[1]], mesh.verts[face[2]]));
+            volume += VDot(mesh.verts[face[0]], VCross( mesh.verts[face[1]], mesh.verts[face[2]]));
         }
 
         return (float)(volume / 6.0);
