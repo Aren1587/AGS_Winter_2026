@@ -103,63 +103,64 @@ void GameClear::Update(void)
 
 void GameClear::Draw(void)
 {
-	// 暗いグラデーション背景
-	for (int y = 0; y < H; y += 2)
-	{
-		float t = static_cast<float>(y) / H;
-		DrawBox(0, y, W, y + 2,
-			GetColor(
-				static_cast<int>(5  + t * 10),
-				static_cast<int>(5  + t * 20),
-				static_cast<int>(30 + t * 50)),
-			TRUE);
-	}
+	DrawFormatString(Application::SCREEN_SIZE_X / 2, Application::SCREEN_SIZE_Y / 2, 0xffffff, "GameClear");
+	//// 暗いグラデーション背景
+	//for (int y = 0; y < H; y += 2)
+	//{
+	//	float t = static_cast<float>(y) / H;
+	//	DrawBox(0, y, W, y + 2,
+	//		GetColor(
+	//			static_cast<int>(5  + t * 10),
+	//			static_cast<int>(5  + t * 20),
+	//			static_cast<int>(30 + t * 50)),
+	//		TRUE);
+	//}
 
-	// 加算合成でパーティクル描画
-	for (const auto& p : particles_)
-	{
-		int alpha = static_cast<int>(255.0f * p.life / p.maxLife);
-		SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
-		int s = static_cast<int>(p.size);
-		DrawBox(
-			static_cast<int>(p.x) - s, static_cast<int>(p.y) - s,
-			static_cast<int>(p.x) + s, static_cast<int>(p.y) + s,
-			GetColor(p.r, p.g, p.b), TRUE);
-	}
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//// 加算合成でパーティクル描画
+	//for (const auto& p : particles_)
+	//{
+	//	int alpha = static_cast<int>(255.0f * p.life / p.maxLife);
+	//	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
+	//	int s = static_cast<int>(p.size);
+	//	DrawBox(
+	//		static_cast<int>(p.x) - s, static_cast<int>(p.y) - s,
+	//		static_cast<int>(p.x) + s, static_cast<int>(p.y) + s,
+	//		GetColor(p.r, p.g, p.b), TRUE);
+	//}
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	// GAME CLEAR テキスト: 上からスライドイン + 色サイクル + スケールパルス
-	float slideT = timer_ < 1.0f ? timer_ : 1.0f;
-	slideT = 1.0f - (1.0f - slideT) * (1.0f - slideT); // ease out
-	int titleY = static_cast<int>(-100.0f + (H / 2 - 60) * slideT);
+	//// GAME CLEAR テキスト: 上からスライドイン + 色サイクル + スケールパルス
+	//float slideT = timer_ < 1.0f ? timer_ : 1.0f;
+	//slideT = 1.0f - (1.0f - slideT) * (1.0f - slideT); // ease out
+	//int titleY = static_cast<int>(-100.0f + (H / 2 - 60) * slideT);
 
-	float hue   = timer_ * 1.5f;
-	int tr = 255;
-	int tg = static_cast<int>(200 + 55 * sinf(hue));
-	int tb = static_cast<int>(60  + 60 * sinf(hue + 2.0f));
+	//float hue   = timer_ * 1.5f;
+	//int tr = 255;
+	//int tg = static_cast<int>(200 + 55 * sinf(hue));
+	//int tb = static_cast<int>(60  + 60 * sinf(hue + 2.0f));
 
-	double pulse = 1.0 + 0.06 * sin(timer_ * 2.5);
+	//double pulse = 1.0 + 0.06 * sin(timer_ * 2.5);
 
-	SetFontSize(64);
-	int textW = GetDrawStringWidth("GAME CLEAR", 10);
-	int textX = W / 2 - static_cast<int>(textW * pulse * 0.5);
+	//SetFontSize(64);
+	//int textW = GetDrawStringWidth("GAME CLEAR", 10);
+	//int textX = W / 2 - static_cast<int>(textW * pulse * 0.5);
 
-	DrawExtendString(textX + 4, titleY + 4, pulse, pulse, "GAME CLEAR", GetColor(0, 0, 0));
-	DrawExtendString(textX,     titleY,     pulse, pulse, "GAME CLEAR", GetColor(tr, tg, tb));
+	//DrawExtendString(textX + 4, titleY + 4, pulse, pulse, "GAME CLEAR", GetColor(0, 0, 0));
+	//DrawExtendString(textX,     titleY,     pulse, pulse, "GAME CLEAR", GetColor(tr, tg, tb));
 
-	// ヒントテキスト: フェードイン + 点滅
-	if (timer_ > 1.5f)
-	{
-		float fadeIn = (timer_ - 1.5f) / 0.5f;
-		if (fadeIn > 1.0f) fadeIn = 1.0f;
-		int alpha = static_cast<int>(255.0f * fadeIn * (0.65f + 0.35f * sinf(timer_ * 3.5f)));
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		SetFontSize(22);
-		const char* hint = "Space / A で戻る";
-		int hintW = GetDrawStringWidth(hint, -1);
-		DrawString(W / 2 - hintW / 2, H * 3 / 4, hint, GetColor(255, 255, 255));
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	}
+	//// ヒントテキスト: フェードイン + 点滅
+	//if (timer_ > 1.5f)
+	//{
+	//	float fadeIn = (timer_ - 1.5f) / 0.5f;
+	//	if (fadeIn > 1.0f) fadeIn = 1.0f;
+	//	int alpha = static_cast<int>(255.0f * fadeIn * (0.65f + 0.35f * sinf(timer_ * 3.5f)));
+	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	//	SetFontSize(22);
+	//	const char* hint = "Space / A で戻る";
+	//	int hintW = GetDrawStringWidth(hint, -1);
+	//	DrawString(W / 2 - hintW / 2, H * 3 / 4, hint, GetColor(255, 255, 255));
+	//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//}
 
-	SetFontSize(16);
+	//SetFontSize(16);
 }

@@ -129,7 +129,7 @@ void MeshCutter::Cut(VECTOR origin, VECTOR normal, float pushSpeed)
         if (positive.faces.empty() || negative.faces.empty())
         {
             Piece kept = MakePiece(std::move(piece.mesh), piece.vel, piece.angVel, piece.color);
-            kept.age = piece.age;                 // Å© í«â¡
+            kept.age = piece.age;
             next.push_back(std::move(kept));
             continue;
         }

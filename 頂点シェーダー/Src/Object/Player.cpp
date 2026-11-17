@@ -206,8 +206,8 @@ void Player::InitAnimation(void)
 	animationController_->Add((int)ANIM_TYPE::FLY, path + "Flying.mv1", 60.0f);
 	animationController_->Add((int)ANIM_TYPE::FALLING, path + "Falling.mv1", 80.0f);
 	animationController_->Add((int)ANIM_TYPE::VICTORY, path + "Victory.mv1", 60.0f);
-	animationController_->Add((int)ANIM_TYPE::ATTACK, path + "Stable Sword Inward Slash.mv1", 60.0f);
-	animationController_->Add((int)ANIM_TYPE::FAST_ATTACK, path + "StableSwordInwardSlash.mv1", 60.0f);
+	animationController_->Add((int)ANIM_TYPE::ATTACK, path + "Stable Sword Inward Slash.mv1", 120.0f);
+	animationController_->Add((int)ANIM_TYPE::FAST_ATTACK, path + "StableSwordInwardSlash.mv1", 120.0f);
 	animationController_->Add((int)ANIM_TYPE::DEATH, path + "Death.mv1", 60.0f);
 
 	animationController_->Play((int)ANIM_TYPE::IDLE);

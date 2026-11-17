@@ -6,6 +6,7 @@
 #include "../Scene/TitleScene.h"
 #include "../Scene/GameScene.h"
 #include "../Scene/GameClear.h"
+#include "../Scene/GameOverScene.h"
 #include "../Scene/PauseScene.h"
 #include "Camera.h"
 #include "Padinput.h"
@@ -54,7 +55,7 @@ void SceneManager::Init(void)
 	Init3D();
 
 	// èâä˙ÉVÅ[ÉìÇÃê›íË
-	DoChangeScene(SCENE_ID::TITLE);
+	DoChangeScene(SCENE_ID::GAME);
 }
 
 void SceneManager::Init3D(void)
@@ -297,6 +298,9 @@ void SceneManager::DoChangeScene(SCENE_ID sceneId)
 		break;
 	case SCENE_ID::CLEAR:
 		scene_ = std::make_unique<GameClear>();
+		break;
+	case SCENE_ID::GAME_OVER:
+		scene_ = std::make_unique<GameOverScene>();
 		break;
 	}
 

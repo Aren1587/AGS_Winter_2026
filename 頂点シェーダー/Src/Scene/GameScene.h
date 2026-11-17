@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include <vector>
+#include <DxLib.h>
 #include "SceneBase.h"
 class Stage;
 class SkyDome;
@@ -9,11 +11,12 @@ class Enemy;
 class PixelMaterial;
 class PixelRenderer;
 class CutEffect;
+class InputManager;
 
 class GameScene : public SceneBase
 {
 public:
-	
+
 	// ポストエフェクトモード
 	enum class MODE
 	{
@@ -38,6 +41,53 @@ public:
 
 private:
 
+	// 1回の斬撃判定で共通して使う情報
+	struct SlashInfo
+	{
+		bool   useLine;      // ラインモードで判定するか
+		VECTOR lineOrigin;   // ラインの切断面の原点
+		VECTOR lineNormal;   // ラインの切断面の法線
+		VECTOR tip;          // 剣先
+		VECTOR hilt;         // 柄
+		VECTOR camFront;     // カメラ前方
+		VECTOR playerPos;    // プレイヤー位置
+	};
+
+	// 初期化
+	void InitPlayer(void);
+	void InitEnemies(void);
+	void InitStage(void);
+	void InitCamera(void);
+	void InitShadow(void);
+
+	// 更新
+	void UpdateDebugInput(InputManager& ins);
+	void CheckGameEnd(void);
+	void UpdateModeChange(InputManager& ins);
+	bool UpdateHitStop(void);
+	void UpdateWorld(void);
+	void UpdateTimers(void);
+	void CheckPlayerDamage(void);
+	void SeparateEnemies(void);
+
+	// 斬撃
+	void UpdateSlash(void);
+	SlashInfo MakeSlashInfo(void) const;
+	bool CheckSlashHit(Enemy& enemy, const SlashInfo& info, const VECTOR& center, VECTOR& origin, VECTOR& normal) const;
+	void ApplySlashHit(Enemy& enemy, const SlashInfo& info, const VECTOR& center, const VECTOR& origin, const VECTOR& normal);
+
+	void RemoveEnemies(void);
+
+	// ---------- 描画 ----------
+	void DrawWorld(void);
+	void DrawWeakPoints(void) const;
+	void DrawHitFlash(void) const;
+
+	// UI
+	void DrawGauges(void) const;
+	void DrawGoalMessage(void) const;
+	void DrawHelp(void) const;
+
 	// ステージ
 	std::unique_ptr<Stage> stage_;
 
@@ -53,6 +103,9 @@ private:
 
 	// ポストエフェクトモード
 	MODE mode_;
+
+	int shadowMapHandle_;
+	int fillLight_ = -1;
 
 	bool alreadyCutThisSwing_ = false;
 

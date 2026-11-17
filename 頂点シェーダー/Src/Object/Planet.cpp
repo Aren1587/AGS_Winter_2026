@@ -46,11 +46,12 @@ void Planet::Update(void)
 
 void Planet::Draw(void)
 {
-	auto dir = GetLightDirection();
-	vertexMaterial_->SetConstBufPS(0, { dir.x, dir.y, dir.z, 0.0f });
+	MV1DrawModel(transform_.modelId);
+	//auto dir = GetLightDirection();
+	//vertexMaterial_->SetConstBufPS(0, { dir.x, dir.y, dir.z, 0.0f });
 
     //MV1DrawModel(transform_.modelId);
-	vertexRenderer_->Draw();
+	//vertexRenderer_->Draw();
 }
 
 void Planet::SetPosition(const VECTOR& pos)

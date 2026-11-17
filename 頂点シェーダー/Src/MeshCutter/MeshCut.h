@@ -315,8 +315,7 @@ namespace MeshCut
         bool cap = true,
         float eps = 1e-6f)
     {
-        normal =
-            VNorm(normal);
+        normal = VNorm(normal);
 
         // --------------------------------------------------------
         // 各頂点が平面のどちら側にあるか
@@ -542,16 +541,14 @@ namespace MeshCut
                 {
                     for (const auto& loop : loops)
                     {
-                        VECTOR center =
-                            VGet(0, 0, 0);
+                        VECTOR center = VGet(0, 0, 0);
 
                         float centerU = 0.0f;
                         float centerV = 0.0f;
 
                         for (int index : loop)
                         {
-                            center =
-                                VAdd(center, verts[index]);
+                            center = VAdd(center, verts[index]);
 
                             centerU += u[index];
                             centerV += v[index];
@@ -598,9 +595,7 @@ namespace MeshCut
                             output.push_back({
                                     centerIndex,
                                     loop[i],
-                                    loop[
-                                        (i + 1) %
-                                        loop.size()]
+                                    loop[(i + 1) % loop.size()]
                                 });
                         }
                     }

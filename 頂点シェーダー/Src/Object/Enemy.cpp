@@ -88,6 +88,12 @@ void Enemy::Init(const VECTOR& vec)
 
     animationController_->Play(ANIM_TYPE::IDOL);
 
+    MV1SetDifColorScale(transform_.modelId, GetColorF(2.0f, 2.0f, 2.0f, 1.0f));
+    const int matNum = MV1GetMaterialNum(transform_.modelId);
+    for (int i = 0; i < matNum; i++)
+    {
+        MV1SetMaterialEmiColor(transform_.modelId, i, GetColorF(0.4f, 0.4f, 0.4f, 1.0f));
+    }
 }
 
 void Enemy::Update()
