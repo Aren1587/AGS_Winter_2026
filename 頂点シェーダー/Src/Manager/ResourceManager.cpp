@@ -55,7 +55,7 @@ void ResourceManager::Init(void)
 	resourcesMap_.emplace(SRC::SKY_DOME, std::move(res));
 
 	// Å‰‚Ì˜f¯
-	res = std::make_unique<RES>(RES_T::MODEL, PATH_MDL + "Planet/MainPlanet.mv1");
+	res = std::make_unique<RES>(RES_T::MODEL, PATH_MDL + "Planet/p4/BigCity.mv1");
 	resourcesMap_.emplace(SRC::MAIN_PLANET, std::move(res));
 
 	// —‚Æ‚µŒŠ‚Ì˜f¯
